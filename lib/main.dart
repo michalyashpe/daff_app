@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:device_info/device_info.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,6 +22,9 @@ class MyHomePage extends StatefulWidget {
 
 
   final String title;
+
+
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -52,13 +56,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   void _launchURL() async {
-    String url = 'https://daff.co.il/users/sign_up';
-    // const url = 'https://flutter.io';
+    String url;
+    await getDeviceInfo().then((String id){
+      url = 'https://daff.co.il/users/sign_up?id=' + id;
+    });
+    print(url);
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
   }
+
+  Future<String> getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo.androidId}');
+    print('----------------------');
+    return androidInfo.androidId.toString();
+
+    // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    // print('Running on ${iosInfo.utsname.machine}');  // e.g. "iPod7,1"
+  }
+
   
 }

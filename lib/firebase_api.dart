@@ -1,17 +1,16 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseAPI extends ChangeNotifier {
   bool isLoading = false;
-  String deviceToken;
+  String deviceToken = "";
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
   void initialize(){
     initFirebase();
     initDeviceToken();
   }
-
-
   void initFirebase() {
   _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
@@ -39,9 +38,7 @@ class FirebaseAPI extends ChangeNotifier {
       deviceToken = token;
     });
     isLoading = false;
-    notifyListeners();
   }
-
 
 
 }

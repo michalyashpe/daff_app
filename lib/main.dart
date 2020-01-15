@@ -1,4 +1,5 @@
-import 'package:daff_app/firebaseAPI_model.dart';
+import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/firebase_api.dart';
 import 'package:daff_app/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthenticationModel()),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
           
       ],
@@ -31,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: LoginScreen(firebaseAPI),
     ));
   }
 }

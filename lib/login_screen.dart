@@ -2,8 +2,6 @@ import 'package:provider/provider.dart';
 import 'package:daff_app/firebaseAPI_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:device_info/device_info.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen();
@@ -51,16 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<String> getDeviceInfo() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo.androidId}');
-    print('----------------------');
-    return androidInfo.androidId.toString();
-
-    // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    // print('Running on ${iosInfo.utsname.machine}');  // e.g. "iPod7,1"
-  }
 
   
 }

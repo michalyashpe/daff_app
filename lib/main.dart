@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,6 +32,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+
+
+  @override
+  void initState() {
+    print("++++++++++++++++++++++");
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print("**************");
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) {
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        print('on resume $message');
+        print(message['data']['url']);
+        _launchURL(url: message['data']['url']);
+
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print("^^^^^^^^^^^^^^^^^^^^");
+        print('on launch $message');
+      },
+    );
+    // _firebaseMessaging.requestNotificationPermissions(
+    //     const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.getToken().then((token){
+      print('--------------------------');
+      print(token);
+    });
+  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
             RaisedButton(
-              child: Text('Daff Home'),
+              child: Text('Log in'),
               onPressed: _launchURL,)
           ],
         ),
@@ -55,10 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  void _launchURL() async {
-    String url;
+  void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
     await getDeviceInfo().then((String id){
-      url = 'https://daff.co.il/users/sign_up?id=' + id;
+      url = url + '?id=' + id;
     });
     print(url);
     if (await canLaunch(url)) {

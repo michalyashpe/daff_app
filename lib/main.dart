@@ -1,6 +1,6 @@
 import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/firebase_api.dart';
-import 'package:daff_app/login_screen.dart';
+import 'package:daff_app/helpers/firebase_api.dart';
+import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

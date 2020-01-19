@@ -1,8 +1,10 @@
 import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/firebase_api.dart';
+import 'package:daff_app/helpers/firebase_api.dart';
+import 'package:daff_app/screens/story_screen.dart';
+import 'package:daff_app/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen(this.firebaseAPI);
@@ -37,6 +39,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginForm(AuthenticationModel model){
+    void onPressedFunction() async {
+      if (!_formKey.currentState.validate()) return;
+      _formKey.currentState.save();
+      String deviceToken = widget.firebaseAPI.deviceToken ;
+      int status = await model.daffLogin(deviceToken);
+      print(model.isLoading);
+      if (!model.isLoading && status == 200) {
+        Navigator.push(context, new MaterialPageRoute(
+          builder: (context) => WelcomeScreen(model.user)
+          )
+        );
+      }
+
+    }
     return Form(                                                                                                          // form knows about the TextFormFields exist as children, this is automatic behind the scenes, form is a stateful widget by default because it re-renders when a user inputs text
       key: _formKey,  
       child: Column(children: <Widget>[
@@ -45,12 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 10.0,),
         RaisedButton(
           child: Text('Log in'),
-          onPressed: () {
-            if (!_formKey.currentState.validate()) return;
-            _formKey.currentState.save();
-            String deviceToken = widget.firebaseAPI.deviceToken ;
-            model.daffLogin(deviceToken);
-          },
+          onPressed:() => onPressedFunction()
         )
       ],)
     );
@@ -83,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onSaved: (String value) {
         model.password = value;
       },
-      initialValue: '123123',
+      initialValue: 'michmich',
       validator: (String value) {
         if (value.isEmpty)
           return 'please enter a password';
@@ -99,13 +110,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
-  void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
 
   

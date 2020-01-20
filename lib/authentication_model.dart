@@ -36,7 +36,6 @@ class AuthenticationModel extends ChangeNotifier {
             nameInEnglish: result['user']['name_in_english'],
             gender: result['user']['gender'],
           );
-          print(user.email);
           //show user message - thanks and we'll send you updates with new stories
           //maybe notification settings page?
         }

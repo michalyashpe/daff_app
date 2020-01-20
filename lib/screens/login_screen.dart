@@ -1,6 +1,5 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _buildLoginForm(model),
-                
               ],
             ),
           ),
@@ -44,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _formKey.currentState.save();
       String deviceToken = widget.firebaseAPI.deviceToken ;
       int status = await model.daffLogin(deviceToken);
-      print(model.isLoading);
       if (!model.isLoading && status == 200) {
         Navigator.push(context, new MaterialPageRoute(
           builder: (context) => WelcomeScreen(model.user)
@@ -110,13 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
-  // void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
 
 
   

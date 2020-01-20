@@ -1,11 +1,15 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+
+String notificationUrl = '';
 class FirebaseAPI extends ChangeNotifier {
   bool isLoading = false;
   String deviceToken = "";
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  // String url;
 
   void initialize(){
     initFirebase();
@@ -14,23 +18,27 @@ class FirebaseAPI extends ChangeNotifier {
   void initFirebase() {
   _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-        print("**************");
         print('on message $message');
+        showStory(message);
       },
       onResume: (Map<String, dynamic> message) {
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~");
         print('on resume $message');
-        print(message['data']['url']);
-        // _launchURL(url: message['data']['url']);
+        showStory(message);
 
       },
       onLaunch: (Map<String, dynamic> message) {
-        print("^^^^^^^^^^^^^^^^^^^^");
         print('on launch $message');
+        showStory(message);
       },
     );
   }
 
+  void showStory(Map<String, dynamic> message){
+        notificationUrl = message['data']['url'];
+        print(notificationUrl);
+        notifyListeners();
+        _launchURL(url: message['data']['url']);
+  }
 
   void initDeviceToken(){
     isLoading = true;
@@ -38,6 +46,14 @@ class FirebaseAPI extends ChangeNotifier {
       deviceToken = token;
     });
     isLoading = false;
+  }
+
+  void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
 

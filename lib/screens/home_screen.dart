@@ -3,9 +3,9 @@ import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final User user;
-  WelcomeScreen(this.user);
+  HomeScreen(this.user);
   
   @override
   Widget build(BuildContext context) {

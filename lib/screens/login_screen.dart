@@ -1,6 +1,6 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/screens/welcome_screen.dart';
+import 'package:daff_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // return model.isLoading ? CircularProgressIndicator() :
         return Scaffold(
           appBar: AppBar(
-            title: Text('login'),
+            title: Text('כניסה'),
           ),
           body: Container(
             padding: EdgeInsets.all(30.0),
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       int status = await model.daffLogin(deviceToken);
       if (!model.isLoading && status == 200) {
         Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => WelcomeScreen(model.user)
+          builder: (context) => HomeScreen(model.user)
           )
         );
       }
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _buildPasswordField(model),
         SizedBox(height: 10.0,),
         RaisedButton(
-          child: Text('Log in'),
+          child: Text('כניסה'),
           onPressed:() => onPressedFunction()
         )
       ],)
@@ -74,13 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: 'you@example.com',
-        labelText: 'Email Address *',
+        labelText: 'כתובת מייל *',
       ),
       validator: (String value) {
         if (value.isEmpty)
-          return 'please enter an email address';
+          return 'יש להקליד כתובת מייל';
         else if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value))
-          return 'please enter a valid email address';
+          return 'כתובת המייל אינה תקינה';
         return null;
       },
 
@@ -94,13 +94,13 @@ class _LoginScreenState extends State<LoginScreen> {
       initialValue: 'michmich',
       validator: (String value) {
         if (value.isEmpty)
-          return 'please enter a password';
+          return 'יש להקליד סיסמה';
         return null;
       },
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        hintText: 'Password',
-        labelText: 'Password *',
+        hintText: 'סיסמה',
+        labelText: 'סיסמה *',
       ),
 
     );

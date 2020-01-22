@@ -3,7 +3,6 @@ import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   child: MaterialApp(
       title: 'Daff Rocking App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: LoginScreen(firebaseAPI),
     ));

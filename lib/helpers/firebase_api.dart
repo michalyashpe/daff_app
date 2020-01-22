@@ -1,6 +1,7 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -54,6 +55,13 @@ class FirebaseAPI extends ChangeNotifier {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+
+  Future<bool> getDeviceTokenFromSP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String deviceToken = prefs.getString('deviceToken') ?? 0;
+    return (deviceToken != null);
   }
 
 

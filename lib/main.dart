@@ -3,8 +3,9 @@ import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(  MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   MyApp();
@@ -18,7 +19,12 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
+
+
+    
   }
+
+
   _MyAppState();
   @override
   Widget build(BuildContext context) {

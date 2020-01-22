@@ -1,6 +1,7 @@
 
 import 'package:daff_app/helpers/daff_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -36,6 +37,7 @@ class AuthenticationModel extends ChangeNotifier {
             nameInEnglish: result['user']['name_in_english'],
             gender: result['user']['gender'],
           );
+          addDeviceTokenToSP(deviceToken);
           //show user message - thanks and we'll send you updates with new stories
           //maybe notification settings page?
         }
@@ -48,6 +50,13 @@ class AuthenticationModel extends ChangeNotifier {
       return status;
 
   }
+
+  void addDeviceTokenToSP(String deviceToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('deviceToken', deviceToken);
+  }
+
+
 }
 
 class User {
@@ -62,6 +71,6 @@ class User {
     this.email,
     this.name,
     this.nameInEnglish,
-    this.gender
+    this.gender,
   });
 }

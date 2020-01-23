@@ -1,12 +1,18 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
+import 'package:daff_app/models/stories_model.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final User user;
   HomeScreen(this.user);
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>{
   
   @override
   Widget build(BuildContext context) {
@@ -31,20 +37,24 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // _buildWelcomeMessage(),
-            _buildLastWeekStories()
+            _buildAllStories()
         ],)
       )
         
     );
     }
 
-    Widget _buildLastWeekStories(){
-      return Column(children: <Widget>[
-        _buildStoryPreview(),
-      ],);
+    Widget _buildAllStories(){
+      List<Widget> storyPreviewList = List<Widget>(); 
+      Provider.of<StoriesModel>(context).allStories.forEach((Story story){
+      // widget.storiesModel.allStories.forEach((Story story){
+        print(story.name);
+        storyPreviewList.add(_buildStoryPreview(story));
+      });
+      return Column(children: storyPreviewList);
     }
 
-    Widget _buildStoryPreview(){
+    Widget _buildStoryPreview(Story story){
       return Container( 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),

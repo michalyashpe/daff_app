@@ -9,15 +9,23 @@ class StoriesModel extends ChangeNotifier{
     Author ozFrankel = Author(
       authorId: 408,
       name: 'עוז פרנקל',
+      imageUrl: 'https://ik.imagekit.io/g3jrzlo0a/tr:w-200,h-200,fo-face//rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaE1HIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--81f37516eec04e29b3f41b3b44eb06b62c76707c/userimage',
     );
     Story story = Story(
       author: ozFrankel,
-      title: 'העניין עם געגוע',
+      title: 'הָעִנְיָן עִם גַּעְגּוּעַ',
       authorPick: true,
       date: DateTime(2019, 01, 22),
       readingDuration: 1,
+      readCount: 7,
       imageUrl: 'https://ik.imagekit.io/g3jrzlo0a/tr:w-800,h-/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcVFIIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d0bcc7a6455d7df2a120c33f3b593f38362619b3/RackMultipart20200122-7455-q0pjra.png',
       tags: ['שירה'],
+      contents: """
+        <div class="content_without_header">
+        <figure class="image"><img src="https://ik.imagekit.io/g3jrzlo0a/tr:w-800,h-/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcVFIIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d0bcc7a6455d7df2a120c33f3b593f38362619b3/RackMultipart20200122-7455-q0pjra.png"></figure><p>הָעִנְיָן עִם גַּעְגּוּעַ<br>שֶׁאֵין לוֹ כַּפְתּוֹר<br>הוּא יוֹשֵׁב לוֹ קָבוּעַ<br>בְּתוֹךְ מִין מִסְתּוֹר<br>נִצְמָד לְרֵיחוֹת, מְקוֹמוֹת, חֲפָצִים<br>אִי אֶפְשָׁר לְכַבּוֹת אוֹתוֹ<br>גַּם אִם רוֹצִים</p><p>הָעִנְיָן עִם גַּעְגּוּעַ<br>שֶׁאֵין לוֹ כַּפְתּוֹר<br>הוּא כְּמוֹ קַעֲקוּעַ<br>חָרוּט עַל הָעוֹר<br>מַצִּית זִכְרוֹנוֹת<br>כְּמוֹ אֵשׁ בְּקוֹצִים<br>אִי אֶפְשָׁר לְכַבּוֹת אוֹתוֹ<br>גַּם אִם רוֹצִים</p><p>הָעִנְיָן עִם גַּעְגּוּעַ<br>שֶׁאֵין לוֹ כַּפְתּוֹר<br>הוּא כְּמוֹ תַּעְתּוּעַ<br>עִם לַהַב לִדְקֹר<br>מֵגִיחַ בְּשֶׁקֶט<br>יוֹרֶה קְצָת חִצִּים<br>אִי אֶפְשָׁר לְכַבּוֹת אוֹתוֹ<br>גַּם אִם רוֹצִים</p>
+        <br style="clear: both">
+        </div>
+        """,
     );
     allStories.add(story);
     print('stories count: ' + allStories.length.toString());
@@ -72,11 +80,13 @@ class Story {
 class Author {
   String name;
   int authorId;
+  String imageUrl;
   List<Story> stories = List<Story>();
 
   Author({
     this.name,
     this.authorId,
-    this.stories
+    this.stories,
+    this.imageUrl
   });
 }

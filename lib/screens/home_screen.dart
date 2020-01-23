@@ -1,9 +1,9 @@
 import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/models/stories_model.dart';
 import 'package:daff_app/screens/story_screen.dart';
+import 'package:daff_app/widgets/app_bar_widget.dart';
+import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,21 +16,8 @@ class _HomeScreenState extends State<HomeScreen>{
   
   @override
   Widget build(BuildContext context) {
-    return notificationUrl != '' ? StoryScreen() : Scaffold(
-      appBar: AppBar(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-          Text('הדף'),
-          SizedBox(width: 10.0,),
-          Text('מדורת שבט לכתיבה יוצרת', style: TextStyle(fontSize: 15.0),)
-        ],),
-        leading: SvgPicture.asset(
-          'assets/logo.svg',
-          semanticsLabel: 'Acme Logo'
-        ),
-        automaticallyImplyLeading: false,
-      ),
+    return Scaffold(
+      appBar: buildAppBarWidget(),
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: Column(
@@ -68,7 +55,11 @@ class _HomeScreenState extends State<HomeScreen>{
           ),
           child: GestureDetector(
             onTap: () {
-              StoryScreen();
+              Navigator.push(context, new MaterialPageRoute(
+                builder: (context) => StoryScreen(story)
+              )
+            );
+              
             },
             child: Image.network( //story image
               story.imageUrl,
@@ -87,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ],),
             Text(story.author.name , style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
             Text(story.readingDurationString),
-            _buildTagsList(story.tags),
+            buildStoryTagsWidget(story.tags),
             Text(story.dateFormatted)
 
         ],)
@@ -96,22 +87,7 @@ class _HomeScreenState extends State<HomeScreen>{
     }
 
 
-    Widget _buildTagsList(List<String> tags){
-      List<Widget> tagsList = List<Widget>();
-      tags.forEach((String tagName) {
-        Widget tag = Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          color: Colors.grey[300],
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(tagName)
-      );
-      tagsList.add(tag);
-      });
-      return Row(children: tagsList);
-    }
-
+    
 
 
 

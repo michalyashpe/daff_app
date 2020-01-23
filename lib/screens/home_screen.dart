@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen>{
       List<Widget> storyPreviewList = List<Widget>(); 
       Provider.of<StoriesModel>(context).allStories.forEach((Story story){
       // widget.storiesModel.allStories.forEach((Story story){
-        print(story.name);
+        print(story.title);
         storyPreviewList.add(_buildStoryPreview(story));
       });
       return Column(children: storyPreviewList);
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen>{
               StoryScreen();
             },
             child: Image.network( //story image
-              'https://ik.imagekit.io/g3jrzlo0a/tr:w-800,h-/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcVFIIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d0bcc7a6455d7df2a120c33f3b593f38362619b3/RackMultipart20200122-7455-q0pjra.png',
+              story.imageUrl,
               width: 170.0,
             )
           )
@@ -81,29 +81,35 @@ class _HomeScreenState extends State<HomeScreen>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(children: <Widget>[
-              Text('העניין עם געגוע', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)), //story title
-              Image.asset('assets/medal.png', width: 20.0,), //editor pick
+              Text(story.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)), 
+              story.authorPick ? Image.asset('assets/medal.png', width: 20.0,) : Text(''), 
               Text(', '),
             ],),
-            Text('עוז פרנקל', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)), //author name
-            Text('דקת קריאה'),
-            _buildTag('שירה'),
-            Text('22 לינואר')
+            Text(story.author.name , style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+            Text(story.readingDurationString),
+            _buildTagsList(story.tags),
+            Text(story.dateFormatted)
 
         ],)
 
       ],));
     }
 
-    Widget _buildTag(String name){
-      return Container(
+
+    Widget _buildTagsList(List<String> tags){
+      List<Widget> tagsList = List<Widget>();
+      tags.forEach((String tagName) {
+        Widget tag = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(name)
+        child: Text(tagName)
       );
+      tagsList.add(tag);
+      });
+      return Row(children: tagsList);
     }
 
 

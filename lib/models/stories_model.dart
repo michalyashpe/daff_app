@@ -12,10 +12,12 @@ class StoriesModel extends ChangeNotifier{
     );
     Story story = Story(
       author: ozFrankel,
-      name: 'העניין עם געגוע',
+      title: 'העניין עם געגוע',
       authorPick: true,
-      date: DateTime(2020, 01, 22),
+      date: DateTime(2019, 01, 22),
       readingDuration: 1,
+      imageUrl: 'https://ik.imagekit.io/g3jrzlo0a/tr:w-800,h-/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcVFIIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d0bcc7a6455d7df2a120c33f3b593f38362619b3/RackMultipart20200122-7455-q0pjra.png',
+      tags: ['שירה'],
     );
     allStories.add(story);
     print('stories count: ' + allStories.length.toString());
@@ -28,7 +30,7 @@ class StoriesModel extends ChangeNotifier{
 }
 
 class Story {
-  String name;
+  String title;
   Author author;
   DateTime date;
   String contents;
@@ -38,9 +40,10 @@ class Story {
   String imageUrl;
   List<Author> mefargenim = List<Author>();
   bool authorPick = false;
+  List<String> tags = List<String>();
 
   Story({
-    this.name,
+    this.title,
     this.author,
     this.date,
     this.readingDuration,
@@ -49,8 +52,21 @@ class Story {
     this.firgunCount,
     this.mefargenim,
     this.authorPick,
-    this.imageUrl
+    this.imageUrl,
+    this.tags,
   });
+
+  String get readingDurationString {
+     return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
+  }
+
+  String get dateFormatted {
+    List<String> hebrewMonthNames = ['ינואר', 'פברואר', 'מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+    return date.year == DateTime.now().year ? 
+       '${date.day} ל${hebrewMonthNames[date.month]}'
+       :
+       '${date.day} ל${hebrewMonthNames[date.month]} ${date.year}';
+  }
 }
 
 class Author {

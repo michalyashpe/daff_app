@@ -21,7 +21,9 @@ class StoryScreen extends StatelessWidget {
             _buildStoryTitle(),
             SizedBox(height: 15.0,),
             _buildProfileBox(),
-            _buildContent()
+            _buildContent(),
+            SizedBox(height: 10.0,),
+            _buildRatingBox()
 
            
         ],)
@@ -70,5 +72,21 @@ class StoryScreen extends StatelessWidget {
         return TextAlign.right;
       },
     );
+  }
+
+  Widget _buildRatingBox(){
+    return Column(children: <Widget>[
+      Row(children: <Widget>[
+        Icon(Icons.favorite),
+        SizedBox(width: 5.0,),
+        Text(story.firgunSummary)
+      ],),
+      Row(children: <Widget>[
+        Icon(Icons.remove_red_eye),
+        SizedBox(width: 5.0,),
+        Text(story.readCountString)
+      ],)
+
+    ],);
   }
 }

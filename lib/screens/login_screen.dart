@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       int status = await model.daffLogin(deviceToken);
       if (!model.isLoading && status == 200) {
         Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => HomeScreen(model.user)
+          builder: (context) => HomeScreen()
           )
         );
       }

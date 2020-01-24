@@ -1,6 +1,7 @@
 import 'package:daff_app/models/stories_model.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
+import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -23,7 +24,13 @@ class StoryScreen extends StatelessWidget {
             _buildProfileBox(),
             _buildContent(),
             SizedBox(height: 10.0,),
-            _buildRatingBox()
+            buildStoryTagsWidget(story.tags),
+            SizedBox(height: 10.0,),
+            _buildRatingBox(),
+            SizedBox(height: 20.0,),
+            _buildMoreStories(context),
+            SizedBox(height: 10.0,),
+            _buildAllRights()
 
            
         ],)
@@ -41,7 +48,6 @@ class StoryScreen extends StatelessWidget {
         SizedBox(width: 5.0,),
         buildEditerPickMedalWidget(story),
       ],),
-      buildStoryTagsWidget(story.tags)
     ],);
   }
 
@@ -87,6 +93,28 @@ class StoryScreen extends StatelessWidget {
         Text(story.readCountString)
       ],)
 
+    ],);
+  }
+
+  Widget _buildMoreStories(BuildContext context){
+    List<Widget> moreStoriesPreviewList = List<Widget>();
+    story.moreStories.forEach((Story s){
+      moreStoriesPreviewList.add(buildStoryPreviewWidget(s, context));
+    });
+    return Column(children: <Widget>[
+      // Text('עוד דפים:'),
+      Column(children: moreStoriesPreviewList)
+
+    ],);
+  }
+
+  Widget _buildAllRights(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('כל הזכויות שמורות למחבר כפרה עליו '),
+        Icon(Icons.copyright, size: 15.0),
+        Text( ' ' + DateTime.now().year.toString())
     ],);
   }
 }

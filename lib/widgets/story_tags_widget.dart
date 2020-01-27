@@ -12,7 +12,10 @@ Widget buildStoryTagsWidget(List<String> tags){
     child: Text(tagName)
   );
   tagsList.add(tag);
-  tagsList.add(SizedBox(width: 5.0));
   });
-  return Row(children: tagsList);
+  return Wrap(
+    spacing: 5.0,
+    runSpacing: 5.0,
+    children: tagsList
+  );
 }

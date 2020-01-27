@@ -9,6 +9,7 @@ class HomeModel extends ChangeNotifier{
   List<Story> mostReadStoriesThisWeek = List<Story>();
   List<Story> mostCheeredStoriesThisMonth = List<Story>();
   List<Story> thisWeekStories = List<Story>();
+  int thisWeekAuthorsCount;
 
   void initialize(){
     fetchHomeData();
@@ -41,6 +42,8 @@ class HomeModel extends ChangeNotifier{
         Story s = parseStoryFromJson(story);
         thisWeekStories.add(s);
       });
+
+      thisWeekAuthorsCount = homeData['this_week_authors_count'];
       notifyListeners();
 
       print('mostCheeredStoriesThisMonth: ' + mostCheeredStoriesThisMonth.length.toString());

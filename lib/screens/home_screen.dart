@@ -58,10 +58,16 @@ class _HomeScreenState extends State<HomeScreen>{
 
   Widget _buildThisWeekStories(){
     List<Story> stories = Provider.of<HomeModel>(context).thisWeekStories;
+    int thisWeekAuthorsCount = Provider.of<HomeModel>(context).thisWeekAuthorsCount;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('סיפורים ושירים מהשבוע האחרון', style: h5),
+        thisWeekAuthorsCount == null || stories.isEmpty ? 
+          Text('סיפורים ושירים מהשבוע האחרון', style: h5) 
+          : Wrap(children: <Widget>[
+              Text('${stories.length} סיפורים ושירים מהשבוע האחרון' , style: h5 ),
+              Text('($thisWeekAuthorsCount כותבים)' , style: h5grey ),
+          ],),
         stories.isEmpty ? CircularProgressIndicator() : Container(
           height: MediaQuery.of(context).size.height - 150.0,
           child: buildStoryPreviewList(stories, context)

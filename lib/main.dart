@@ -4,6 +4,7 @@ import 'package:daff_app/models/stories_model.dart';
 import 'package:daff_app/screens/home_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 // import 'package:flutter_cupertino_localizations/flutter_cupertino_localizations.dart';
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Daff Rocking App',
       theme: ThemeData(
         primarySwatch: Colors.grey,
+        textTheme: GoogleFonts.alefTextTheme(Theme.of(context).textTheme,),
       ),
       home: Directionality( // add this
         textDirection: TextDirection.rtl, // set this property 

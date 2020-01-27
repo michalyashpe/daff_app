@@ -1,4 +1,4 @@
-import 'package:daff_app/models/stories_model.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context){
       children: <Widget>[
         Row(children: <Widget>[
           Text(story.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)), 
-          story.authorPick ? Image.asset('assets/medal.png', width: 20.0,) : Text(''), 
+          story.editorPick ? Image.asset('assets/medal.png', width: 20.0,) : Text(''), 
           Text(', '),
         ],),
         Text(story.author.name , style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
@@ -46,4 +46,13 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context){
     ],)
 
   ],));
+}
+
+
+Widget buildStoryPreviewList(List<Story> stories, BuildContext context){
+  List<Widget> storyPreviewList = List<Widget>(); 
+  stories.forEach((Story story){
+    storyPreviewList.add(buildStoryPreviewWidget(story, context));
+  });
+  return ListView(children: storyPreviewList);
 }

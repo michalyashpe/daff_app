@@ -1,6 +1,9 @@
 // import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/models/stories_model.dart';
+import 'package:daff_app/helpers/style.dart';
+import 'package:daff_app/models/home_model.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
+import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,48 +22,68 @@ class _HomeScreenState extends State<HomeScreen>{
       appBar: buildAppBarWidget(),
       body: Padding(
         padding: EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
-            // _buildWelcomeMessage(),
-            _buildAllStories()
+            _buildMostReadStoriesThisWeek(),
+            SizedBox(height: 10.0,),
+            _buildMostCheeredStoriesThisMonth(),
+            SizedBox(height: 10.0,),
+            _buildThisWeekStories(),
         ],)
       )
         
     );
     }
 
-    Widget _buildAllStories(){
-      List<Widget> storyPreviewList = List<Widget>(); 
-      Provider.of<StoriesModel>(context).allStories.forEach((Story story){
-      // widget.storiesModel.allStories.forEach((Story story){
-        storyPreviewList.add(buildStoryPreviewWidget(story, context));
-      });
-      return Container(
-        height: MediaQuery.of(context).size.height - 150.0,
-        child: ListView(children: storyPreviewList)
-      );
-    }
 
-    
+  Widget _buildMostReadStoriesThisWeek(){
+    List<Story> stories = Provider.of<HomeModel>(context).mostReadStoriesThisWeek;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('הדפים הנקראים ביותר השבוע', style: h5),
+        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+    ],);
+  }
 
-    
+  Widget _buildMostCheeredStoriesThisMonth(){
+    List<Story> stories = Provider.of<HomeModel>(context).mostCheeredStoriesThisMonth;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('הדפים המפורגנים ביותר החודש', style: h5),
+        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+    ],);
+  }
+
+  Widget _buildThisWeekStories(){
+    List<Story> stories = Provider.of<HomeModel>(context).thisWeekStories;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('סיפורים ושירים מהשבוע האחרון', style: h5),
+        stories.isEmpty ? CircularProgressIndicator() : Container(
+          height: MediaQuery.of(context).size.height - 150.0,
+          child: buildStoryPreviewList(stories, context)
+        )
+        ],
+    );
+  }
 
 
-
-
-    // Widget _buildWelcomeMessage(){
-    //   String receive = user.gender == 'female' ? 'תקבלי': 'תקבל';
-    //   return Column(
-    //     children: <Widget>[
-    //     Text('הי ${user.name}, התחברת בהצלחה :)',
-    //       textAlign: TextAlign.right,
-    //       style:  TextStyle(fontSize: 18.0,),
-    //     ),
-    //     Text('איזה כיף, מעכשיו $receive עדכון בכל פעם שסיפור חדש יוצא.',
-    //       textAlign: TextAlign.right,
-    //       style:  TextStyle(fontSize: 18.0),
-    //     )
-    //   ],);
-    // }
+  Widget buildNumberedStoriesList(List<Story> stories){
+    List<Widget> storiesList = List<Widget>();
+    int index = 1;
+    stories.forEach((Story story) {
+      Widget row = Row(children: <Widget>[
+        Text('$index. ${story.title}, ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(story.author.name),
+        buildEditerPickMedalWidget(story)
+      ],);
+      storiesList.add(row);
+      storiesList.add(SizedBox(height: 3.0,));
+      index ++;
+    });
+    return Column(children: storiesList);
+  }
 }

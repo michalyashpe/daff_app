@@ -1,4 +1,4 @@
-import 'package:daff_app/models/stories_model.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';

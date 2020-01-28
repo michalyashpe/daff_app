@@ -34,8 +34,7 @@ class StoryModel extends ChangeNotifier{
     ).then((http.Response response){
       Map<String, dynamic> storyData = json.decode(response.body);
       story = parseStoryFromJson(storyData);
-      print(story.cheersCount);
-      print(story.title);
+      print(story.contents);
       notifyListeners();
 
     });

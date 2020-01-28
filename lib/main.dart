@@ -1,7 +1,7 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/models/home_screen_model.dart';
-import 'package:daff_app/models/story_screen_model.dart';
+import 'package:daff_app/providers/home_screen_provider.dart';
+import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/home_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';

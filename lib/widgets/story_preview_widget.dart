@@ -5,13 +5,13 @@ import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 
 
-Widget buildStoryPreviewList(List<Story> stories, BuildContext context){
+List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context){
   List<Widget> storyPreviewList = List<Widget>(); 
   stories.forEach((Story story){
     storyPreviewList.add(buildStoryPreviewWidget(story, context));
     storyPreviewList.add(SizedBox(height: 15.0,));
   });
-  return ListView(children: storyPreviewList);
+  return storyPreviewList;
 }
 
 Widget buildStoryPreviewWidget(Story story, BuildContext context){
@@ -30,7 +30,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context){
         SizedBox(width: 10.0,),
         Expanded(
           flex: 3,
-          child: _buildStoryInfo(story)
+          child: _buildStoryInfo(story, context)
         )
         
   ],));
@@ -44,7 +44,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
     ),
     constraints: BoxConstraints( maxWidth: width, maxHeight: width),
     width: width,
-    // height: 200.0,
+    // height: 80.0,
     child: GestureDetector(
       onTap: () {
         Navigator.push(context, new MaterialPageRoute(
@@ -60,7 +60,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
           widthFactor: 0.5,
           child: Image.network(
             story.imageUrl,
-            fit: BoxFit.fitWidth
+            fit: BoxFit.fitHeight
           ),
         ),
       )
@@ -68,7 +68,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
   );
 }
 
-Widget _buildStoryInfo(Story story){
+Widget _buildStoryInfo(Story story, BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -82,7 +82,7 @@ Widget _buildStoryInfo(Story story){
           ),
         ],),
       Text(story.readingDurationString),
-      buildStoryTagsWidget(story.tags),
+      buildStoryTagsWidget(story.tags, context),
       Text(story.dateFormatted)
   ],);
 }

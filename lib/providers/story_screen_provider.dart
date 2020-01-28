@@ -1,8 +1,7 @@
-//  https://daff.dev/stories.json?tag=%D7%9B%D7%90%D7%91
+
 //  https://daff.dev/authors/1.json
 
 import 'dart:convert';
-
 import 'package:daff_app/helpers/daff_api.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +30,6 @@ class StoryModel extends ChangeNotifier{
     ).then((http.Response response){
       Map<String, dynamic> storyData = json.decode(response.body);
       story = parseStoryFromJson(storyData);
-      print(story.contents);
       notifyListeners();
 
     });

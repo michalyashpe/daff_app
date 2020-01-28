@@ -71,9 +71,11 @@ class _HomeScreenState extends State<HomeScreen>{
               Text('${stories.length} סיפורים ושירים מהשבוע האחרון' , style: h5 ),
               Text('($thisWeekAuthorsCount כותבים)' , style: h5grey ),
           ],),
-        stories.isEmpty ? CircularProgressIndicator() : Container(
-          height: MediaQuery.of(context).size.height - 150.0,
-          child: buildStoryPreviewList(stories, context)
+        stories.isEmpty ? CircularProgressIndicator() : 
+        Container(
+          // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
+          height: stories.length * 120.0,
+          child: Column(children: buildStoryPreviewList(stories, context))
         )
         ],
     );
@@ -103,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen>{
           builder: (context) => StoriesScreen()
           )
         ),
-      child: Text('לכל הסיפורים והשירים...'),
+      child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
     );
   }
 }

@@ -21,15 +21,18 @@ class FirebaseAPI extends ChangeNotifier {
       onMessage: (Map<String, dynamic> message) {
         print('on message $message');
         showStory(message);
+        return;
       },
       onResume: (Map<String, dynamic> message) {
         print('on resume $message');
         showStory(message);
+        return;
 
       },
       onLaunch: (Map<String, dynamic> message) {
         print('on launch $message');
         showStory(message);
+        return;
       },
     );
   }

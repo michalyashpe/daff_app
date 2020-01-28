@@ -46,9 +46,9 @@ class HomeModel extends ChangeNotifier{
       thisWeekAuthorsCount = homeData['this_week_authors_count'];
       notifyListeners();
 
-      print('mostCheeredStoriesThisMonth: ' + mostCheeredStoriesThisMonth.length.toString());
-      print('mostReadStoriesThisWeek: ' + mostReadStoriesThisWeek.length.toString());
-      print('thisWeekStories: ' + thisWeekStories.length.toString());
+      // print('mostCheeredStoriesThisMonth: ' + mostCheeredStoriesThisMonth.length.toString());
+      // print('mostReadStoriesThisWeek: ' + mostReadStoriesThisWeek.length.toString());
+      // print('thisWeekStories: ' + thisWeekStories.length.toString());
 
 
     });

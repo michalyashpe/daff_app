@@ -32,8 +32,7 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI.initialize();
     homeModel = HomeModel();
     homeModel.initialize();
-    storiesModel = StoriesModel();
-    storiesModel.initialize();
+    
   }
 
 
@@ -46,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => homeModel),
         ChangeNotifierProvider(create: (_) => StoryModel()),
-        ChangeNotifierProvider(create: (_) =>  storiesModel),
+        ChangeNotifierProvider(create: (_) =>  StoriesModel()),
           
       ],
   child: MaterialApp(

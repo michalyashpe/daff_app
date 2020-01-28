@@ -2,7 +2,6 @@ import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
-import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -44,13 +43,13 @@ class _StoryScreenState extends State<StoryScreen>{
                   SizedBox(height: 15.0,),
                   _buildContent(model.story),
                   SizedBox(height: 10.0,),
-                  buildStoryTagsWidget(model.story.tags),
+                  buildStoryTagsWidget(model.story.tags, context),
                   SizedBox(height: 10.0,),
                   _buildRatingBox(model.story),
                   // SizedBox(height: 20.0,),
                   // _buildMoreStories(context),
-                  // SizedBox(height: 10.0,),
-                  // _buildAllRights()
+                  SizedBox(height: 10.0,),
+                  _buildAllRights()
 
                 
               ],);
@@ -127,18 +126,6 @@ class _StoryScreenState extends State<StoryScreen>{
         SizedBox(width: 5.0,),
         Text(story.readCountString)
       ],)
-
-    ],);
-  }
-
-  Widget _buildMoreStories(BuildContext context, Story story){
-    List<Widget> moreStoriesPreviewList = List<Widget>();
-    story.moreStories.forEach((Story s){
-      moreStoriesPreviewList.add(buildStoryPreviewWidget(s, context));
-    });
-    return Column(children: <Widget>[
-      // Text('עוד דפים:'),
-      Column(children: moreStoriesPreviewList)
 
     ],);
   }

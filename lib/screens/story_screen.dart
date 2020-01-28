@@ -7,6 +7,7 @@ import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class StoryScreen extends StatefulWidget{
@@ -105,6 +106,11 @@ class _StoryScreenState extends State<StoryScreen>{
       defaultTextStyle: TextStyle(fontFamily: 'serif',),
       customTextAlign: (node) {
         return TextAlign.right;
+      },
+      customTextStyle: ( node, TextStyle baseStyle) {
+        //  if (node is dom.Element) {}
+        return baseStyle.merge(GoogleFonts.alef())
+          .merge(TextStyle(fontSize: 18.0, height: 1.2));
       },
     );
   }

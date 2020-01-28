@@ -1,12 +1,14 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/models/home_model.dart';
+import 'package:daff_app/models/home_screen_model.dart';
+import 'package:daff_app/models/story_screen_model.dart';
 import 'package:daff_app/screens/home_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 // import 'package:flutter_cupertino_localizations/flutter_cupertino_localizations.dart';
 
 
@@ -39,6 +41,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => AuthenticationModel()),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => homeModel),
+        ChangeNotifierProvider(create: (_) => StoryModel()),
           
       ],
   child: MaterialApp(

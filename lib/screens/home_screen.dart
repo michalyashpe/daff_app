@@ -1,6 +1,6 @@
 // import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/style.dart';
-import 'package:daff_app/models/home_model.dart';
+import 'package:daff_app/models/home_screen_model.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';

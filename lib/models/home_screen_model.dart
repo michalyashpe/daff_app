@@ -57,31 +57,7 @@ class HomeModel extends ChangeNotifier{
 
 
 
-  Story parseStoryFromJson(Map<String, dynamic> story){
-    List<String> sTags = List<String>();
-    story['tags'].forEach((tag) => sTags.add(tag.toString()));
-    return Story(
-      id: story['id'],
-      slug: story['slug'],
-      tags: sTags,
-      editorPick: story['editor_vote'] == 2,
-      imageUrl: story['image'],
-      date: DateTime.parse(story['publication_date']),
-      title: story['header'],
-      formattedDate: story['nice_publication_date'],
-      readCount: story['reads'],
-      readingDuration: story['min_read'],
-      author: parseAuthorfromJson(story['user'])
-    );
-  }
 
-  Author parseAuthorfromJson(Map<String, dynamic> user){
-    return Author(
-      id: user['id'],
-      name: user['name'],
-      imageUrl: user['avatar']
-    );
-  }
 
 
 

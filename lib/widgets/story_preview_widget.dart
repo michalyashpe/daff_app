@@ -42,13 +42,13 @@ Widget _buildStoryImage(Story story, BuildContext context){
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
     ),
-    // constraints: BoxConstraints( maxWidth: width, maxHeight: width),
-    // width: width,
+    constraints: BoxConstraints( maxWidth: width, maxHeight: width),
+    width: width,
     // height: 200.0,
     child: GestureDetector(
       onTap: () {
         Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => StoryScreen(story)
+          builder: (context) => StoryScreen(story.id)
         )
       );
       },
@@ -56,11 +56,11 @@ Widget _buildStoryImage(Story story, BuildContext context){
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Align(
           alignment: Alignment.bottomRight,
-          // heightFactor: 1.0,
+          heightFactor: 0.5,
           widthFactor: 0.5,
           child: Image.network(
             story.imageUrl,
-            // fit: BoxFit.fitWidth
+            fit: BoxFit.fitWidth
           ),
         ),
       )

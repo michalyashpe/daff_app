@@ -1,5 +1,8 @@
 
 
+
+import 'package:daff_app/models/author.dart';
+
 class Story {
   int id;
   String slug;
@@ -10,12 +13,12 @@ class Story {
   String contents;
   int readingDuration = 1;
   int readCount = 0;
-  int firgunCount = 0;
+  int cheersCount = 0;
   String imageUrl;
-  List<Author> mefargenim = List<Author>();
   bool editorPick = false;
   List<String> tags = List<String>();
   List<Story> moreStories = List<Story>();
+  List<Author> cheerers = List<Author>();
 
   Story({
     this.id,
@@ -27,12 +30,12 @@ class Story {
     this.readingDuration,
     this.contents,
     this.readCount,
-    this.firgunCount,
-    this.mefargenim,
+    this.cheersCount,
     this.editorPick,
     this.imageUrl,
     this.tags,
     this.moreStories,
+    this.cheerers
   });
 
 
@@ -49,8 +52,8 @@ class Story {
   }
   
   String get firgunSummary {
-    String names = mefargenim.map((author) => author.name).join(', ');
-    return '$firgunCount פירגונים מ$names';
+    String names = cheerers.map((author) => author.name).join(', ');
+    return '$cheersCount פירגונים מ$names';
   }
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';
@@ -59,16 +62,28 @@ class Story {
 
 
 
-class Author {
-  String name;
-  int id;
-  String imageUrl;
-  List<Story> stories = List<Story>();
 
-  Author({
-    this.name,
-    this.id,
-    this.stories,
-    this.imageUrl
-  });
+
+
+Story parseStoryFromJson(Map<String, dynamic> story){
+  List<String> sTags = List<String>();
+  story['tags'].forEach((tag) => sTags.add(tag.toString()));
+  return Story(
+    id: story['id'],
+    slug: story['slug'],
+    tags: sTags,
+    editorPick: story['editor_vote'] == 2,
+    imageUrl: story['image'],
+    date: DateTime.parse(story['publication_date']),
+    title: story['header'],
+    formattedDate: story['nice_publication_date'],
+    readCount: story['reads'],
+    readingDuration: story['min_read'],
+    author: parseAuthorFromJson(story['user']),
+    contents: story['content_without_header'].toString(),
+    cheersCount: story['cheers_count'],
+    cheerers: story['cheerers'] != null ? parseCheerersFromJson(story['cheerers']) : null
+    // comments: story['comments'],
+    // recommended: story['recommended'],
+  );
 }

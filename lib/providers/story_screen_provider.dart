@@ -1,6 +1,3 @@
-//  https://daff.dev/stories/555.json
-//  https://daff.dev/homepage.json
-//  https://daff.dev/stories.json
 //  https://daff.dev/stories.json?tag=%D7%9B%D7%90%D7%91
 //  https://daff.dev/authors/1.json
 

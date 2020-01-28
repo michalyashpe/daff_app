@@ -2,6 +2,7 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen>{
             _buildMostCheeredStoriesThisMonth(),
             SizedBox(height: 10.0,),
             _buildThisWeekStories(),
+            SizedBox(height: 10.0,),
+            _buildAllStoriesLink(),
         ],)
       )
         
@@ -91,5 +94,16 @@ class _HomeScreenState extends State<HomeScreen>{
       index ++;
     });
     return Column(children: storiesList);
+  }
+
+
+  Widget _buildAllStoriesLink() {
+    return FlatButton(
+      onPressed: () => Navigator.push(context, new MaterialPageRoute(
+          builder: (context) => StoriesScreen()
+          )
+        ),
+      child: Text('לכל הסיפורים והשירים...'),
+    );
   }
 }

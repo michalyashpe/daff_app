@@ -1,6 +1,7 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/home_screen_provider.dart';
+import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/home_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   FirebaseAPI firebaseAPI;
   HomeModel homeModel;
+  StoriesModel storiesModel ;
 
   void initState() {
     super.initState();
@@ -30,6 +32,8 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI.initialize();
     homeModel = HomeModel();
     homeModel.initialize();
+    storiesModel = StoriesModel();
+    storiesModel.initialize();
   }
 
 
@@ -42,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => homeModel),
         ChangeNotifierProvider(create: (_) => StoryModel()),
+        ChangeNotifierProvider(create: (_) =>  storiesModel),
           
       ],
   child: MaterialApp(

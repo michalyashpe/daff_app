@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StoriesScreen extends StatefulWidget {
-  final String tag;
-  StoriesScreen({this.tag = ''});
+  static const routeName = '/stories_screen';
   _StoriesScreenState createState() => _StoriesScreenState();
 }
 
@@ -16,19 +15,19 @@ class _StoriesScreenState extends State<StoriesScreen>{
     return Consumer<StoriesModel>(
       builder: (BuildContext context,  StoriesModel model, Widget child) {
         return Scaffold(
-          appBar: buildAppBarWidget(),
+          appBar: buildAppBarWidget(context),
           body: Padding(
             padding: EdgeInsets.all(30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildTagTitle(), 
+                _buildTagTitle(model.getTag), 
                 SizedBox(height: 10.0,),
                 Container(
-                  height: MediaQuery.of(context).size.height - 200.0,
+                  height: MediaQuery.of(context).size.height - 290.0,
                   child: model.isLoading ? Center(child: CircularProgressIndicator())
                   : ListView(
-                    children: buildStoryPreviewList(model.stories, context)
+                    children: buildStoryPreviewList(model.stories, context, tagView: true)
                     )
                 )
               ],)
@@ -38,9 +37,9 @@ class _StoriesScreenState extends State<StoriesScreen>{
       });
   }
 
-  Widget _buildTagTitle(){
-    return widget.tag  != null && widget.tag != '' ? 
-      Text('הכל >> ${widget.tag}' , style: h1) 
+  Widget _buildTagTitle(String tag){
+    return tag  != null && tag != '' ? 
+      Text('הכל >> $tag' , style: h1) 
       : Text('כל הסיפורים והשירים', style: h1) ;
   }  
 }

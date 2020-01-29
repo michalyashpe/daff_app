@@ -15,6 +15,9 @@ class StoriesModel extends ChangeNotifier{
   String _tag;
   bool isLoading = false;
   
+  String get getTag {
+    return _tag;
+  }
   void initialize({String tag = ''}){
     stories = List<Story>();
     if (tag != null) _tag = tag;

@@ -24,31 +24,34 @@ class HomeModel extends ChangeNotifier{
         'authorization': basicAuth,
       },
     ).then((http.Response response){
+      print('got response');
       Map<String, dynamic> homeData = json.decode(response.body);
 
       homeData['last_month_most_cheered'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);
         mostCheeredStoriesThisMonth.add(s);
+        notifyListeners();
+
       });
-      notifyListeners();
 
       homeData['last_week_hits'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);
         mostReadStoriesThisWeek.add(s);
+        notifyListeners();
+
       });
+
+
+      thisWeekAuthorsCount = homeData['this_week_authors_count'];
       notifyListeners();
 
       homeData['stories'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);
         thisWeekStories.add(s);
+        notifyListeners();
+
       });
 
-      thisWeekAuthorsCount = homeData['this_week_authors_count'];
-      notifyListeners();
-
-      // print('mostCheeredStoriesThisMonth: ' + mostCheeredStoriesThisMonth.length.toString());
-      // print('mostReadStoriesThisWeek: ' + mostReadStoriesThisWeek.length.toString());
-      // print('thisWeekStories: ' + thisWeekStories.length.toString());
 
 
     });

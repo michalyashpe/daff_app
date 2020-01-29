@@ -52,6 +52,7 @@ class Story {
   }
   
   String get firgunSummary {
+    if (cheersCount == 0) return 'היה הראשון לפרגן';
     String names = cheerers.map((author) => author.name).join(', ');
     return '$cheersCount פירגונים מ$names';
   }

@@ -1,5 +1,6 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
@@ -10,31 +11,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class StoryScreen extends StatefulWidget{
+  static const routeName = '/story_screen';
   // final StoryModel storyModel = StoryModel();
-  final int storyId;
-  StoryScreen(this.storyId);
   _StoryScreenState createState() => _StoryScreenState();
 }
 
 class _StoryScreenState extends State<StoryScreen>{
 
-
-  void initState() {
-    // widget.storyModel.initialize(widget.storyId);
-    super.initState();
-    
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWidget(),
+      appBar: buildAppBarWidget(context),
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: Consumer<StoryModel>(
           builder: (BuildContext context,  StoryModel model, Widget child) {
-            if (!model.storyLoaded(widget.storyId))  model.initialize(widget.storyId);
-            return !model.storyLoaded(widget.storyId) ? CircularProgressIndicator() 
+            return model.isLoading ? CircularProgressIndicator() 
               : ListView(
                 children: <Widget>[
                   _buildStoryTitle(model.story),
@@ -49,7 +41,7 @@ class _StoryScreenState extends State<StoryScreen>{
                   // SizedBox(height: 20.0,),
                   // _buildMoreStories(context),
                   SizedBox(height: 10.0,),
-                  _buildAllRights()
+                  buildAllRights()
 
                 
               ],);
@@ -130,13 +122,5 @@ class _StoryScreenState extends State<StoryScreen>{
     ],);
   }
 
-  Widget _buildAllRights(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text('כל הזכויות שמורות למחבר כפרה עליו '),
-        Icon(Icons.copyright, size: 15.0),
-        Text( ' ' + DateTime.now().year.toString())
-    ],);
-  }
+ 
 }

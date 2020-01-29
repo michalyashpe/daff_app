@@ -4,6 +4,7 @@ import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
+import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home_screen';
   // final User user;
   // HomeScreen(this.user);
   _HomeScreenState createState() => _HomeScreenState();
@@ -21,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWidget(),
+      appBar: buildAppBarWidget(context),
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: ListView(
@@ -33,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen>{
             _buildThisWeekStories(),
             SizedBox(height: 10.0,),
             _buildAllStoriesLink(),
+            SizedBox(height: 10.0,),
+            buildAllRights()
         ],)
       )
         
@@ -75,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen>{
         stories.isEmpty ? CircularProgressIndicator() : 
         Container(
           // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
-          height: stories.length * 120.0 + 20,
+          height: stories.length * 140.0 ,
           child: Column(children: buildStoryPreviewList(stories, context))
         )
         ],
@@ -104,9 +108,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return FlatButton(
       onPressed: () {
         Provider.of<StoriesModel>(context, listen: false).initialize();
-        Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => StoriesScreen()
-        ));
+        Navigator.of(context).pushNamed(StoriesScreen.routeName,);
       },
       child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
     );

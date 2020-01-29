@@ -10,9 +10,7 @@ import 'package:http/http.dart' as http;
 class StoryModel extends ChangeNotifier{
   Story story;
 
-  bool storyLoaded(int id) {
-    return story != null && story.id == id;
-  }
+  bool isLoading = false;
 
   void initialize(int id){
     fetchStoryData(id);
@@ -20,7 +18,9 @@ class StoryModel extends ChangeNotifier{
   }
 
   void fetchStoryData(int id){
-     print('fetching story data...');
+    print('fetching story data...');
+    isLoading = true;
+    notifyListeners();
     http.get(
       daffServerUrl + '/stories/$id.json',
       headers: <String, String>{
@@ -30,6 +30,7 @@ class StoryModel extends ChangeNotifier{
     ).then((http.Response response){
       Map<String, dynamic> storyData = json.decode(response.body);
       story = parseStoryFromJson(storyData);
+      isLoading = false;
       notifyListeners();
 
     });

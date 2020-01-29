@@ -44,10 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String deviceToken = widget.firebaseAPI.deviceToken ;
       int status = await model.daffLogin(deviceToken);
       if (!model.isLoading && status == 200) {
-        Navigator.push(context, new MaterialPageRoute(
-          builder: (context) => HomeScreen()
-          )
-        );
+        Navigator.of(context).pushNamed(HomeScreen.routeName,);
       }
 
     }

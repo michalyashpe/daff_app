@@ -4,6 +4,8 @@ import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/home_screen.dart';
+import 'package:daff_app/screens/stories_screen.dart';
+import 'package:daff_app/screens/story_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -70,7 +72,12 @@ class _MyAppState extends State<MyApp> {
       home: Directionality( // add this
         textDirection: TextDirection.rtl, // set this property 
         child: HomeScreen(),//LoginScreen(firebaseAPI),
-      )
+      ),
+      routes: {
+        HomeScreen.routeName: (ctx) => HomeScreen(),
+        StoriesScreen.routeName: (ctx) => StoriesScreen(),
+        StoryScreen.routeName: (ctx) => StoryScreen(),
+      },
     ));
   }
 }

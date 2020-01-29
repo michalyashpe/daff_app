@@ -2,6 +2,7 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen>{
         stories.isEmpty ? CircularProgressIndicator() : 
         Container(
           // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
-          height: stories.length * 120.0,
+          height: stories.length * 120.0 + 20,
           child: Column(children: buildStoryPreviewList(stories, context))
         )
         ],
@@ -101,10 +102,12 @@ class _HomeScreenState extends State<HomeScreen>{
 
   Widget _buildAllStoriesLink() {
     return FlatButton(
-      onPressed: () => Navigator.push(context, new MaterialPageRoute(
+      onPressed: () {
+        Provider.of<StoriesModel>(context, listen: false).initialize();
+        Navigator.push(context, new MaterialPageRoute(
           builder: (context) => StoriesScreen()
-          )
-        ),
+        ));
+      },
       child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
     );
   }

@@ -8,6 +8,10 @@ import 'package:http/http.dart' as http;
 
 class StoriesModel extends ChangeNotifier{
   List<Story> stories;
+  int storiesCount;
+  int pagesCount;
+  int storiesPerPage;
+  int currentPage;
   String _tag;
   bool isLoading = false;
   
@@ -18,7 +22,7 @@ class StoriesModel extends ChangeNotifier{
   }
 
   void fetchStoriesData(){
-    String tagQuery = _tag != null || _tag != '' ? 'tag=$_tag' : '';
+    String tagQuery = (_tag != null && _tag != '') ? 'tag=$_tag' : '';
     print('fetching all stories...');
     isLoading = true;
     notifyListeners();
@@ -29,8 +33,12 @@ class StoriesModel extends ChangeNotifier{
         'authorization': basicAuth,
       },
     ).then((http.Response response){
-      List<dynamic> storiesData = json.decode(response.body);
-      storiesData.forEach((storyData) {
+      Map<String, dynamic> storiesData = json.decode(response.body);
+      storiesCount = storiesData['total_count'];
+      pagesCount = storiesData['total_pages'];
+      storiesPerPage = storiesData['per_page'];
+      currentPage = storiesData['page'];
+      storiesData['stories'].forEach((storyData) {
         Story story = parseStoryFromJson(storyData);
         stories.add(story);
       });

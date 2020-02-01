@@ -25,7 +25,12 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
     ),
     constraints: BoxConstraints(minHeight: minStoryHeight + 10.0),
     padding: EdgeInsets.all(5.0),
-    child: Row(
+    child: GestureDetector(
+      onTap: () {
+        Provider.of<StoryModel>(context, listen: false).initialize(story.id);
+        Navigator.of(context).pushNamed(StoryScreen.routeName,);
+      },
+      child: Row(
       children: <Widget>[
         Expanded(
           flex: 2,
@@ -37,7 +42,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
           child: _buildStoryInfo(story, context, tagView: tagView)
         )
         
-  ],));
+  ],)));
 }
 
 Widget _buildStoryImage(Story story, BuildContext context){
@@ -48,12 +53,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
     ),
     constraints: BoxConstraints( maxWidth: width, maxHeight: width, minHeight:  minStoryHeight),
     width: width,
-    child: GestureDetector(
-      onTap: () {
-        Provider.of<StoryModel>(context, listen: false).initialize(story.id);
-        Navigator.of(context).pushNamed(StoryScreen.routeName,);
-      },
-      child: ClipRRect(
+    child:  ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Align(
           alignment: Alignment.bottomRight,
@@ -65,7 +65,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
           ),
         ),
       )
-    )
+    
   );
 }
 

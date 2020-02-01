@@ -11,6 +11,11 @@ class HomeModel extends ChangeNotifier{
   List<Story> thisWeekStories = List<Story>();
   int thisWeekAuthorsCount;
 
+
+  List<Story> hits = List<Story>();
+  List<Story> editorVotes = List<Story>();
+  List<Story> recentStories = List<Story>();
+
   void initialize(){
     fetchHomeData();
   }
@@ -26,28 +31,27 @@ class HomeModel extends ChangeNotifier{
     ).then((http.Response response){
       print('got response');
       Map<String, dynamic> homeData = json.decode(response.body);
+      print(homeData.keys);
 
-      homeData['last_month_most_cheered'].forEach((dynamic story){
+      homeData['hits'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);
-        mostCheeredStoriesThisMonth.add(s);
+        hits.add(s);
+        notifyListeners();
+      });
+
+      homeData['editor_votes'].forEach((dynamic story){
+        Story s = parseStoryFromJson(story);
+        editorVotes.add(s);
         notifyListeners();
 
       });
 
-      homeData['last_week_hits'].forEach((dynamic story){
-        Story s = parseStoryFromJson(story);
-        mostReadStoriesThisWeek.add(s);
-        notifyListeners();
-
-      });
-
-
-      thisWeekAuthorsCount = homeData['this_week_authors_count'];
-      notifyListeners();
+      // thisWeekAuthorsCount = homeData['this_week_authors_count'];
+      // notifyListeners();
 
       homeData['stories'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);
-        thisWeekStories.add(s);
+        recentStories.add(s);
         notifyListeners();
 
       });

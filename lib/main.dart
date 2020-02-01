@@ -1,8 +1,10 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
+import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/home_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
@@ -48,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => homeModel),
         ChangeNotifierProvider(create: (_) => StoryModel()),
         ChangeNotifierProvider(create: (_) =>  StoriesModel()),
-          
+        ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],
   child: MaterialApp(
 
@@ -77,6 +79,7 @@ class _MyAppState extends State<MyApp> {
         HomeScreen.routeName: (ctx) => HomeScreen(),
         StoriesScreen.routeName: (ctx) => StoriesScreen(),
         StoryScreen.routeName: (ctx) => StoryScreen(),
+        AuthorScreen.routeName: (ctx) => AuthorScreen(),
       },
     ));
   }

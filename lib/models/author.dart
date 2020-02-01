@@ -15,16 +15,31 @@ class Author {
     this.stories,
     this.imageUrl
   });
+
+  String get activitySummary {
+    return 'פירסם ${stories.length} דפים, וגרף 30* פירגונים'; // TODO: get cheers count from json @dor
+  }
+
 }
 
 
-Author parseAuthorFromJson(Map<String, dynamic> user){
+Author parseAuthorFromJson(Map<String, dynamic> author){
+  
+  List<Story> stories = List<Story>();
+  if (author['stories'] != null) {
+    author['stories'].forEach((story){
+      Story s = parseStoryFromJson(story);
+      stories.add(s);
+    });
+  } 
   return Author(
-    id: user['id'],
-    name: user['name'],
-    imageUrl: user['avatar']
+    id: author['id'],
+    name: author['name'],
+    imageUrl: author['avatar'],
+    stories: stories
   );
-}
+  }
+
 
 List<Author> parseCheerersFromJson(List<dynamic> cheerersData){
   List<Author> cheerersList = List<Author>();

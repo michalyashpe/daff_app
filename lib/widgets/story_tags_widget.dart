@@ -8,13 +8,8 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
   tags.forEach((String tagName) {
     Widget tag = GestureDetector(
       onTap: () {
-        print('hihi');
         Provider.of<StoriesModel>(context, listen: false).initialize(tag: tagName);
         if (!tagView) Navigator.of(context).pushNamed(StoriesScreen.routeName);
-        // Navigator.push(context, new MaterialPageRoute(
-        //   builder: (context) => StoriesScreen(tag: tagName)
-        // )
-        // );
       },
       child: Container(
         decoration: BoxDecoration(

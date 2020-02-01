@@ -1,12 +1,14 @@
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
+import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,7 @@ class _StoryScreenState extends State<StoryScreen>{
     return Scaffold(
       appBar: buildAppBarWidget(context),
       body: Padding(
-        padding: EdgeInsets.all(30.0),
+        padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
         child: Consumer<StoryModel>(
           builder: (BuildContext context,  StoryModel model, Widget child) {
             return model.isLoading ? CircularProgressIndicator() 
@@ -41,7 +43,8 @@ class _StoryScreenState extends State<StoryScreen>{
                   // SizedBox(height: 20.0,),
                   // _buildMoreStories(context),
                   SizedBox(height: 10.0,),
-                  buildAllRights()
+                  buildAllRights(),
+                  SizedBox(height: 10.0,),
 
                 
               ],);
@@ -65,15 +68,18 @@ class _StoryScreenState extends State<StoryScreen>{
 
   Widget _buildProfileBox(Story story){
     return Row(children: <Widget>[
-      ClipOval(
-        // radius: 20.0,
-        child: _buildAvatarImage(story.author.imageUrl)
-      ),
+      buildAvatarImage(story.author.imageUrl),
       SizedBox(width: 10.0,), 
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(story.author.name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+          GestureDetector(
+            child: Text(story.author.name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+            onTap: (){
+              Provider.of<AuthorModel>(context, listen: false).initialize(story.author.id);
+              Navigator.of(context).pushNamed(AuthorScreen.routeName);
+            }
+          ),
           Text(story.readingDurationString + " | " + story.dateFormatted, 
             style: TextStyle(fontSize: 12.0, color: Colors.grey[600]))
         ],
@@ -82,14 +88,7 @@ class _StoryScreenState extends State<StoryScreen>{
     ],);
   }
 
-  Widget _buildAvatarImage(String imageUrl){
-    return Container(
-      height: 50.0,
-      child: imageUrl.split(".").last == 'svg' ? 
-        SvgPicture.network(imageUrl) 
-        : Image.network(imageUrl)
-    );
-  }
+
 
   Widget _buildContent(Story story) {
     return Html(
@@ -111,12 +110,12 @@ class _StoryScreenState extends State<StoryScreen>{
       Row(children: <Widget>[
         Icon(Icons.favorite),
         SizedBox(width: 5.0,),
-        Text(story.firgunSummary)
+        Flexible(child: Text(story.cheersSummary, maxLines: 4,))
       ],),
       Row(children: <Widget>[
         Icon(Icons.remove_red_eye),
         SizedBox(width: 5.0,),
-        Text(story.readCountString)
+        Text(story.readCountString,)
       ],)
 
     ],);
@@ -124,3 +123,4 @@ class _StoryScreenState extends State<StoryScreen>{
 
  
 }
+

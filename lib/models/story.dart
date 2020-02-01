@@ -51,10 +51,10 @@ class Story {
        '${date.day} ל${hebrewMonthNames[date.month-1]} ${date.year}';
   }
   
-  String get firgunSummary {
+  String get cheersSummary {
     if (cheersCount == 0) return 'היה הראשון לפרגן';
-    String names = cheerers.map((author) => author.name).join(', ');
-    return '$cheersCount פירגונים מ$names';
+    String names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
+    return '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
   }
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';

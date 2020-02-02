@@ -1,5 +1,6 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
+import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,19 +18,19 @@ class _StoriesScreenState extends State<StoriesScreen>{
         return Scaffold(
           appBar: buildAppBarWidget(context),
           body: Padding(
-            padding: EdgeInsets.all(30.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.only(right: 30.0, left: 30.0, top: 10.0),
+            child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildTagTitle(model.getTag), 
+                _buildTitle(model.getTag), 
                 SizedBox(height: 10.0,),
                 Container(
-                  height: MediaQuery.of(context).size.height - 290.0,
                   child: model.isLoading ? Center(child: CircularProgressIndicator())
-                  : ListView(
-                    children: buildStoryPreviewList(model.stories, context, tagView: true)
-                    )
-                )
+                  : Column(children: buildStoryPreviewList(model.stories, context, tagView: true))
+                ),
+                SizedBox(height: 10.0,),
+                buildAllRights(),
+                SizedBox(height: 10.0,),
               ],)
 
           )
@@ -37,9 +38,31 @@ class _StoriesScreenState extends State<StoriesScreen>{
       });
   }
 
-  Widget _buildTagTitle(String tag){
+  Widget _buildTitle(String tag){
     return tag  != null && tag != '' ? 
-      Text('הכל >> $tag' , style: h1) 
-      : Text('כל הסיפורים והשירים', style: h1) ;
+      _buildTagTitle(tag) : Text('כל הסיפורים והשירים', style: h5bold) ;
   }  
+
+  Widget _buildTagTitle(String tag){
+    int count = Provider.of<StoriesModel>(context).storiesCount;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+      Row(children: <Widget>[
+        GestureDetector(
+          child: Text("הַכֹּל", style: h5bold),
+          onTap: () => Provider.of<StoriesModel>(context, listen: false).initialize()
+        ),
+        Text(' >> '),
+        Text(tag, style: h5bold)
+      ],),
+      count == null ? Text('') : Text(
+        count.toString()
+        + ' סיפורים ושירים (כרונולוגי)'
+        ,style: TextStyle(fontSize: 20.0)
+      )
+
+    ],);
+
+  }
 }

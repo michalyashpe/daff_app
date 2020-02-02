@@ -8,17 +8,18 @@ import 'package:http/http.dart' as http;
 
 class StoriesModel extends ChangeNotifier{
   List<Story> stories;
-  int storiesCount;
-  int pagesCount;
+  int storiesCount ;
+  int pagesCount ;
   int storiesPerPage;
   int currentPage;
-  String _tag;
+  String _tag ;
   bool isLoading = false;
   
   String get getTag {
     return _tag;
   }
   void initialize({String tag = ''}){
+    storiesCount = null;
     stories = List<Story>();
     if (tag != null) _tag = tag;
     fetchStoriesData();

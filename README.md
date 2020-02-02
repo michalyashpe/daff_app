@@ -1,3 +1,3 @@
 # daff_app
 
-a navtive flutter app for [a link](https://daff.co.il) 
+a navtive flutter app for [daff.co.il](https://daff.co.il) 

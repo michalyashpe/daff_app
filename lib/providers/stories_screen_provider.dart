@@ -34,6 +34,8 @@ class StoriesModel extends ChangeNotifier{
   void fetchStoriesData(){
     String editorVotesQuery = _editorVotes ? 'editor_votes=true' : '';
     String tagQuery = (_tag != null && _tag != '') ? 'tag=$_tag' : '';
+    print('/stories.json?$tagQuery&$editorVotesQuery');
+
     print('fetching all stories...');
     isLoading = true;
     notifyListeners();

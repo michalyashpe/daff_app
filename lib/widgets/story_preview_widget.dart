@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context, {bool tagView = false}){
+List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context, {bool tagView = false, authorName = true}){
   List<Widget> storyPreviewList = List<Widget>(); 
   stories.forEach((Story story){
-    storyPreviewList.add(buildStoryPreviewWidget(story, context, tagView: tagView ));
+    storyPreviewList.add(buildStoryPreviewWidget(story, context, tagView: tagView, authorName: authorName ));
     storyPreviewList.add(SizedBox(height: 15.0,));
   });
   return storyPreviewList;
 }
 
-Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView = false}){
+Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
   return Container( 
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -38,7 +38,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
         SizedBox(width: 10.0,),
         Expanded(
           flex: 3,
-          child: _buildStoryInfo(story, context, tagView: tagView)
+          child: _buildStoryInfo(story, context, tagView: tagView, authorName: authorName)
         )
         
   ],))));
@@ -60,7 +60,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
   );
 }
 
-Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false}){
+Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
   return Container( 
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,9 +72,9 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false}
             children: <Widget>[
               Text(story.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,), ), 
               buildEditerPickMedalWidget(story), 
-              Text(story.author.name, 
+              authorName ? Text(story.author.name, 
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, ),
-              ),
+              ) : Text(''),
             ],
           )
         ),

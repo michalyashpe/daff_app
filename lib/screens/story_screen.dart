@@ -28,7 +28,7 @@ class _StoryScreenState extends State<StoryScreen>{
         padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
         child: Consumer<StoryModel>(
           builder: (BuildContext context,  StoryModel model, Widget child) {
-            return model.isLoading ? CircularProgressIndicator() 
+            return model.isLoading ? Center(child: CircularProgressIndicator()) 
               : ListView(
                 children: <Widget>[
                   _buildStoryTitle(model.story),

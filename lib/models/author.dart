@@ -16,8 +16,10 @@ class Author {
     this.imageUrl
   });
 
+  
+
   String get activitySummary {
-    return 'פירסם ${stories.length} דפים, וגרף 30* פירגונים'; // TODO: get cheers count from json @dor
+    return 'פירסם ${stories.length} דפים'; // TODO: get cheers count from json @dor
   }
 
 }

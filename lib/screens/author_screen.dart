@@ -17,15 +17,16 @@ class _AuthorScreenState extends State<AuthorScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarWidget(context),
-      body: Provider.of<AuthorModel>(context).author == null ? CircularProgressIndicator() 
+      body: Provider.of<AuthorModel>(context).author == null ? Center(child: CircularProgressIndicator()) 
       : Padding(
         padding: EdgeInsets.only(right: 30.0, left: 30.0, top: 10.0),
         child: ListView(children: <Widget>[
         _buildAuthorDetails(),
-        SizedBox(height: 30.0,),
+        SizedBox(height: 10.0,),
         _buildAuthorStories(),
-        // SizedBox(height: 10.0,),
-        // buildAllRights()
+        SizedBox(height: 10.0,),
+        buildAllRights(),
+        SizedBox(height: 10.0,),
 
       ],)
     ));
@@ -49,12 +50,9 @@ class _AuthorScreenState extends State<AuthorScreen>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-      Text('כל הסיפורים של ${author.name}:', ),
+      // Text('כל הסיפורים של ${author.name}:', ),
       SizedBox(height: 10.0,),
-      Container(
-        height: MediaQuery.of(context).size.height - 215.0,
-        child: ListView(children: buildStoryPreviewList(author.stories, context))
-      ),
+      Column(children: buildStoryPreviewList(author.stories, context, authorName: false))
     ],);
 
 

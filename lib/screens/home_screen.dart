@@ -55,8 +55,6 @@ class _HomeScreenState extends State<HomeScreen>{
       children: <Widget>[
         stories.isEmpty ? CircularProgressIndicator() : 
         Container(
-          // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
-          height: stories.length * 131.0,
           child: Column(children: buildStoryPreviewList(stories, context))
         )
       ]);

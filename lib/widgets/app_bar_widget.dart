@@ -2,7 +2,7 @@ import 'package:daff_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-Widget buildAppBarWidget(BuildContext context){
+Widget buildAppBarWidget(BuildContext context ,{bool backButton = true}){
   return AppBar(
     backgroundColor: Colors.white,
     title: Row(
@@ -20,9 +20,9 @@ Widget buildAppBarWidget(BuildContext context){
       semanticsLabel: 'Acme Logo'
     ),
     actions: <Widget>[
-      IconButton(icon:Icon(Icons.arrow_forward),
+      backButton ? IconButton(icon:Icon(Icons.arrow_forward),
         onPressed:() => Navigator.pop(context, false),
-      )
+      ) : Text('')
     ],
     automaticallyImplyLeading: false,
   );

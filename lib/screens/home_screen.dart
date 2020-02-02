@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWidget(context),
+      appBar: buildAppBarWidget(context, backButton: false),
       body: Padding(
         padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0),
         child: ListView(

@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen>{
         padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0),
         child: ListView(
           children: <Widget>[
+            _buildTitle(),
+            SizedBox(height: 10.0,),
             _buildHitsList(),
             SizedBox(height: 10.0,),
             _buildEditorVotesList(),
@@ -48,11 +50,43 @@ class _HomeScreenState extends State<HomeScreen>{
     );
     }
 
+  Widget _buildTitle(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('השירים והסיפורים של הדף', style: h5),
+        Wrap(
+          spacing: 3.0,
+          children: <Widget>[
+            Text('עשינו שקלול של כמה דף חזק וכמה הוא חדש ויצאה הרשימה הזו.'),
+            GestureDetector(
+              onTap: () {
+                Provider.of<StoriesModel>(context, listen: false).initialize();
+                Navigator.of(context).pushNamed(StoriesScreen.routeName,);
+              },
+              child: Text('הצג בסדר כרונולוגי' , style: TextStyle(decoration: TextDecoration.underline)),
+            ),
+            Text(' | '),
+            GestureDetector(
+              onTap: () {
+                Provider.of<StoriesModel>(context, listen: false).initialize();
+                Navigator.of(context).pushNamed(StoriesScreen.routeName,);
+              },
+              child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),
+            ),
+            
+        ],)
+
+
+    ],);
+
+  }
   Widget _buildHitsList(){
     List<Story> stories = Provider.of<HomeModel>(context).hits;
         return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+
         stories.isEmpty ? CircularProgressIndicator() : 
         Container(
           child: Column(children: buildStoryPreviewList(stories, context))

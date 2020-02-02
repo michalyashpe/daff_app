@@ -30,7 +30,7 @@ class AuthorModel extends ChangeNotifier{
     ).then((http.Response response){
       Map<String, dynamic> authorData = json.decode(response.body);
       author = parseAuthorFromJson(authorData);
-      print(author.name);
+      // print(author.name);
       // story = parseStoryFromJson(storyData);
       isLoading = false;
       notifyListeners();

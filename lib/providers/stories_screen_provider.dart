@@ -14,24 +14,31 @@ class StoriesModel extends ChangeNotifier{
   int currentPage;
   String _tag ;
   bool isLoading = false;
+  bool _editorVotes = false;
   
   String get getTag {
     return _tag;
   }
-  void initialize({String tag = ''}){
+
+  bool get editorVotes {
+    return _editorVotes;
+  }
+  void initialize({String tag = '', bool editorVotes = false}){
     storiesCount = null;
     stories = List<Story>();
     if (tag != null) _tag = tag;
+    _editorVotes = editorVotes;
     fetchStoriesData();
   }
 
   void fetchStoriesData(){
+    String editorVotesQuery = _editorVotes ? 'editor_votes=true' : '';
     String tagQuery = (_tag != null && _tag != '') ? 'tag=$_tag' : '';
     print('fetching all stories...');
     isLoading = true;
     notifyListeners();
     http.get(
-      daffServerUrl + '/stories.json?$tagQuery',
+      daffServerUrl + '/stories.json?$tagQuery&$editorVotesQuery',
       headers: <String, String>{
         'Content-type': 'application/json',
         'authorization': basicAuth,

@@ -31,7 +31,7 @@ class HomeModel extends ChangeNotifier{
     ).then((http.Response response){
       print('got response');
       Map<String, dynamic> homeData = json.decode(response.body);
-      print(homeData.keys);
+      // print(homeData.keys);
 
       homeData['hits'].forEach((dynamic story){
         Story s = parseStoryFromJson(story);

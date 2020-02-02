@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen>{
             Text(' | '),
             GestureDetector(
               onTap: () {
-                Provider.of<StoriesModel>(context, listen: false).initialize();
+                Provider.of<StoriesModel>(context, listen: false).initialize(editorVotes: true);
                 Navigator.of(context).pushNamed(StoriesScreen.routeName,);
               },
               child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),

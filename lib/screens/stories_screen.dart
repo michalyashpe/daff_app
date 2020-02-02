@@ -22,7 +22,7 @@ class _StoriesScreenState extends State<StoriesScreen>{
             child: ListView(
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildTitle(model.getTag), 
+                _buildTitle(model.getTag, model.editorVotes), 
                 SizedBox(height: 10.0,),
                 Container(
                   child: model.isLoading ? Center(child: CircularProgressIndicator())
@@ -38,9 +38,11 @@ class _StoriesScreenState extends State<StoriesScreen>{
       });
   }
 
-  Widget _buildTitle(String tag){
-    return tag  != null && tag != '' ? 
-      _buildTagTitle(tag) : Text('כל הסיפורים והשירים', style: h5bold) ;
+  Widget _buildTitle(String tag, bool editorVotes){
+    return tag != null && tag != '' ? 
+      _buildTagTitle(tag) 
+      : editorVotes ? Text('בחירות העורך', style: h5bold)
+        : Text('כל הסיפורים והשירים', style: h5bold) ;
   }  
 
   Widget _buildTagTitle(String tag){

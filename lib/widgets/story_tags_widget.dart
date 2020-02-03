@@ -17,7 +17,7 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(tagName)
+        child: Text(tagName, style: TextStyle(fontSize: 13.5))
       )
     )
   ;

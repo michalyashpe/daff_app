@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('השירים והסיפורים של הדף', style: h5),
+        Text('השירים והסיפורים של הדף', style: h1),
         Wrap(
           spacing: 3.0,
           children: <Widget>[

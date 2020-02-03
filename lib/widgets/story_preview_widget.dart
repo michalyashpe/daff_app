@@ -70,11 +70,12 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
             spacing: 3.0,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              Text(story.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,), ), 
-              buildEditerPickMedalWidget(story), 
+              Text(story.title +",", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,), ), 
               authorName ? Text(story.author.name, 
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, ),
               ) : Text(''),
+              buildEditerPickMedalWidget(story), 
+
             ],
           )
         ),

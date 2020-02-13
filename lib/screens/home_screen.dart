@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       appBar: buildAppBarWidget(context, backButton: false),
       body: Padding(
-        padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0),
+        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
         child: ListView(
           children: <Widget>[
             _buildTitle(),
@@ -54,26 +54,28 @@ class _HomeScreenState extends State<HomeScreen>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('השירים והסיפורים של הדף', style: h1),
-        Wrap(
-          spacing: 3.0,
+        Text('השירים והסיפורים של הדף', style: TextStyle(fontSize: 22.0, )),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('עשינו שקלול של כמה דף חזק וכמה הוא חדש ויצאה הרשימה הזו.'),
-            GestureDetector(
-              onTap: () {
-                Provider.of<StoriesModel>(context, listen: false).initialize();
-                Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-              },
-              child: Text('הצג בסדר כרונולוגי' , style: TextStyle(decoration: TextDecoration.underline)),
-            ),
-            Text(' | '),
-            GestureDetector(
-              onTap: () {
-                Provider.of<StoriesModel>(context, listen: false).initialize(editorVotes: true);
-                Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-              },
-              child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),
-            ),
+            Text('עשינו שקלול של החדשים והאהובים ביותר.'),
+            Row(children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Provider.of<StoriesModel>(context, listen: false).initialize();
+                  Navigator.of(context).pushNamed(StoriesScreen.routeName,);
+                },
+                child: Text('הצג בסדר כרונולוגי' , style: TextStyle(decoration: TextDecoration.underline)),
+              ),
+              Text(' | '),
+              GestureDetector(
+                onTap: () {
+                  Provider.of<StoriesModel>(context, listen: false).initialize(editorVotes: true);
+                  Navigator.of(context).pushNamed(StoriesScreen.routeName,);
+                },
+                child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),
+              ),
+            ],)
             
         ],)
 
@@ -173,8 +175,8 @@ class _HomeScreenState extends State<HomeScreen>{
             Navigator.of(context).pushNamed(StoryScreen.routeName,);
           },
         child: Row(children: <Widget>[
-          Text('$index. ${story.title}, ', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
-          Text(story.author.name),
+          Text('$index. ${story.title.trimRight()}, ', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+          Text(story.author.name, style:  TextStyle(fontSize: 17.0)),
           buildEditerPickMedalWidget(story)
         ],)
       ,));

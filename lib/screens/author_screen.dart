@@ -19,7 +19,7 @@ class _AuthorScreenState extends State<AuthorScreen>{
       appBar: buildAppBarWidget(context),
       body: Provider.of<AuthorModel>(context).author == null ? Center(child: CircularProgressIndicator()) 
       : Padding(
-        padding: EdgeInsets.only(right: 30.0, left: 30.0, top: 10.0),
+        padding: EdgeInsets.only(right: 8.0, left: 8.0, top: 10.0),
         child: ListView(children: <Widget>[
         _buildAuthorDetails(),
         SizedBox(height: 10.0,),

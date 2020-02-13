@@ -67,6 +67,7 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
       children: <Widget>[
         Expanded(
           child: Wrap(
+            runSpacing: 4.0,
             spacing: 3.0,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
@@ -75,7 +76,6 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, ),
               ) : Text(''),
               buildEditerPickMedalWidget(story), 
-
             ],
           )
         ),

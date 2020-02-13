@@ -17,7 +17,7 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(tagName, style: TextStyle(fontSize: 13.5))
+        child: Text(tagName, style: TextStyle(fontSize: 13.5)) //TODO: 13.5 for home screen, 18.0 for story screen
       )
     )
   ;
@@ -25,7 +25,7 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
   });
   return Wrap(
     spacing: 5.0,
-    runSpacing: 5.0,
+    runSpacing: 8.0,
     children: tagsList
   );
 }

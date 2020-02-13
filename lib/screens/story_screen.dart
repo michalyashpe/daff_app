@@ -25,20 +25,20 @@ class _StoryScreenState extends State<StoryScreen>{
     return Scaffold(
       appBar: buildAppBarWidget(context),
       body: Padding(
-        padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
+        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 15.0),
         child: Consumer<StoryModel>(
           builder: (BuildContext context,  StoryModel model, Widget child) {
             return model.isLoading ? Center(child: CircularProgressIndicator()) 
               : ListView(
                 children: <Widget>[
                   _buildStoryTitle(model.story),
-                  SizedBox(height: 15.0,),
+                  SizedBox(height: 10.0,),
                   _buildProfileBox(model.story),
                   SizedBox(height: 15.0,),
                   _buildContent(model.story),
-                  SizedBox(height: 10.0,),
+                  SizedBox(height: 40.0,),
                   buildStoryTagsWidget(model.story.tags, context),
-                  SizedBox(height: 10.0,),
+                  SizedBox(height: 40.0,),
                   _buildRatingBox(model.story),
                   // SizedBox(height: 20.0,),
                   // _buildMoreStories(context),
@@ -58,7 +58,7 @@ class _StoryScreenState extends State<StoryScreen>{
     return Column(children: <Widget>[
       Row(children: <Widget>[
         Text(story.title, 
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)
+          style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
         ),
         SizedBox(width: 5.0,),
         buildEditerPickMedalWidget(story),
@@ -71,17 +71,18 @@ class _StoryScreenState extends State<StoryScreen>{
       buildAvatarImage(story.author.imageUrl),
       SizedBox(width: 10.0,), 
       Column(
+        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
-            child: Text(story.author.name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+            child: Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
             onTap: (){
               Provider.of<AuthorModel>(context, listen: false).initialize(story.author.id);
               Navigator.of(context).pushNamed(AuthorScreen.routeName);
             }
           ),
           Text(story.readingDurationString + " | " + story.dateFormatted, 
-            style: TextStyle(fontSize: 12.0, color: Colors.grey[600]))
+            style: TextStyle(fontSize: 16.0, color: Colors.grey[600]))
         ],
       )
 
@@ -93,14 +94,14 @@ class _StoryScreenState extends State<StoryScreen>{
   Widget _buildContent(Story story) {
     return Html(
       data: story.contents,
-      defaultTextStyle: TextStyle(fontFamily: 'serif',),
+      defaultTextStyle: TextStyle(fontFamily: 'serif'),
       customTextAlign: (node) {
         return TextAlign.right;
       },
       customTextStyle: ( node, TextStyle baseStyle) {
         //  if (node is dom.Element) {}
         return baseStyle.merge(GoogleFonts.alef())
-          .merge(TextStyle(fontSize: 18.0, height: 1.2));
+          .merge(TextStyle(fontSize: 22.0, height: 1.3,));
       },
     );
   }
@@ -110,12 +111,13 @@ class _StoryScreenState extends State<StoryScreen>{
       Row(children: <Widget>[
         Icon(Icons.favorite),
         SizedBox(width: 5.0,),
-        Flexible(child: Text(story.cheersSummary, maxLines: 4,))
+        Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
       ],),
+      SizedBox(height: 10.0),
       Row(children: <Widget>[
         Icon(Icons.remove_red_eye),
         SizedBox(width: 5.0,),
-        Text(story.readCountString,)
+        Text(story.readCountString, style: TextStyle(fontSize: 20.0))
       ],)
 
     ],);

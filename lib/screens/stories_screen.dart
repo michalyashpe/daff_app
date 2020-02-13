@@ -50,19 +50,20 @@ class _StoriesScreenState extends State<StoriesScreen>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-      Row(children: <Widget>[
-        GestureDetector(
-          child: Text("הַכֹּל", style: h5bold),
-          onTap: () => Provider.of<StoriesModel>(context, listen: false).initialize()
-        ),
-        Text(' >> '),
-        Text(tag, style: h5bold)
-      ],),
-      count == null ? Text('') : Text(
-        count.toString()
-        + ' סיפורים ושירים (כרונולוגי)'
-        ,style: TextStyle(fontSize: 20.0)
-      )
+        Text(tag, style: h5bold),
+      // Row(children: <Widget>[
+      //   GestureDetector(
+      //     child: Text("הַכֹּל", style: h5bold),
+      //     onTap: () => Provider.of<StoriesModel>(context, listen: false).initialize()
+      //   ),
+      //   Text(' >> '),
+      //   Text(tag, style: h5bold)
+      // ],),
+      // count == null ? Text('') : Text(
+      //   count.toString()
+      //   + ' סיפורים ושירים (כרונולוגי)'
+      //   ,style: TextStyle(fontSize: 20.0)
+      // )
 
     ],);
 

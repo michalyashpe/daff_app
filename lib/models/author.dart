@@ -19,7 +19,7 @@ class Author {
   
 
   String get activitySummary {
-    return 'פירסם ${stories.length} דפים'; // TODO: get cheers count from json @dor
+    return 'פירסם ${stories.length} דפים'; 
   }
 
 }

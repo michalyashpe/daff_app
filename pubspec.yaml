@@ -56,6 +56,9 @@ flutter:
   assets:
    - assets/logo.svg
    - assets/medal.png
+   - assets/icons/eye1.svg
+   - assets/icons/facebook.svg
+   - assets/icons/heart.svg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

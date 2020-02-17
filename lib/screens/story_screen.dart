@@ -6,9 +6,11 @@ import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
+import 'package:daff_app/widgets/icon.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -56,12 +58,12 @@ class _StoryScreenState extends State<StoryScreen>{
 
   Widget _buildStoryTitle(Story story){
     return Column(children: <Widget>[
-      Row(children: <Widget>[
+      Wrap(children: <Widget>[
         Text(story.title, 
           style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
         ),
         SizedBox(width: 5.0,),
-        buildEditerPickMedalWidget(story),
+        buildEditerPickMedalWidget(story, bigSize: true),
       ],),
     ],);
   }
@@ -109,13 +111,13 @@ class _StoryScreenState extends State<StoryScreen>{
   Widget _buildRatingBox(Story story){
     return Column(children: <Widget>[
       Row(children: <Widget>[
-        Icon(Icons.favorite),
+        buildIcon('assets/icons/heart.svg'),
         SizedBox(width: 5.0,),
         Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
       ],),
       SizedBox(height: 10.0),
       Row(children: <Widget>[
-        Icon(Icons.remove_red_eye),
+        buildIcon('assets/icons/eye1.svg'),
         SizedBox(width: 5.0,),
         Text(story.readCountString, style: TextStyle(fontSize: 20.0))
       ],)

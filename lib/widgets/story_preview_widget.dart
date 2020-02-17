@@ -1,3 +1,4 @@
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/story_screen.dart';
@@ -63,25 +64,33 @@ Widget _buildStoryImage(Story story, BuildContext context){
 Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
   return Container( 
     child: Column(
+
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
-          child: Wrap(
-            runSpacing: 4.0,
-            spacing: 3.0,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: <Widget>[
-              Text(story.title +",", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,), ), 
-              authorName ? Text(story.author.name, 
-                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, ),
-              ) : Text(''),
-              buildEditerPickMedalWidget(story), 
-            ],
-          )
+          child: RichText(
+            text: TextSpan(
+              children: <InlineSpan> [
+                TextSpan(
+                  text: story.title.trim() + (!story.editorPick ? ', ':''), 
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0 , color: Colors.black),
+                ), 
+                WidgetSpan(child: buildEditerPickMedalWidget(story), ),
+                authorName 
+                  ? TextSpan(text: story.author.name, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.black),
+              )   : TextSpan(text: ''),
+              ]
+            ))
         ),
+        // SizedBox(height: storyPreviewLineHeight/2.0),
         Text(story.readingDurationString),
-        buildStoryTagsWidget(story.tags, context, tagView: tagView),
-        Text(story.dateFormatted)
+        story.tags.length > 0 ? Column(children: <Widget>[
+          SizedBox(height: storyPreviewLineHeight),
+          buildStoryTagsWidget(story.tags, context, tagView: tagView),
+        ],): Text(''),
+        SizedBox(height: storyPreviewLineHeight),
+        Text(story.dateFormatted),
+        SizedBox(height: storyPreviewLineHeight),
     ],
     )
   );

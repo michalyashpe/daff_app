@@ -1,3 +1,4 @@
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
   });
   return Wrap(
     spacing: 5.0,
-    runSpacing: 8.0,
+    runSpacing: storyPreviewLineHeight,
     children: tagsList
   );
 }

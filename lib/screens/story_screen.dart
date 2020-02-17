@@ -10,7 +10,6 @@ import 'package:daff_app/widgets/icon.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -57,8 +56,12 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
   Widget _buildStoryTitle(Story story){
-    return Column(children: <Widget>[
-      Wrap(children: <Widget>[
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+      Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
         Text(story.title, 
           style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
         ),

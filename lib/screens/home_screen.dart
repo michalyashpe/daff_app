@@ -1,12 +1,10 @@
 // import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
-import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -33,13 +31,11 @@ class _HomeScreenState extends State<HomeScreen>{
             _buildTitle(),
             SizedBox(height: 10.0,),
             _buildHitsList(),
-            SizedBox(height: 10.0,),
-            _buildEditorVotesList(),
-            SizedBox(height: 10.0,),
-            _buildRecentStoriesList(),
-            SizedBox(height: 10.0,),
-            buildAllRights()
 
+
+            // _buildEditorVotesList(),
+            // _buildRecentStoriesList(),
+            // buildAllRights()
             // _buildMostReadStoriesThisWeek(),
             // _buildMostCheeredStoriesThisMonth(),
             // _buildThisWeekStories(),
@@ -84,84 +80,90 @@ class _HomeScreenState extends State<HomeScreen>{
 
   }
   Widget _buildHitsList(){
-    List<Story> stories = Provider.of<HomeModel>(context).hits;
-        return Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-
-        stories.isEmpty ? CircularProgressIndicator() : 
-        Container(
-          child: Column(children: buildStoryPreviewList(stories, context))
+        Provider.of<HomeModel>(context).isLoading 
+          ? CircularProgressIndicator() 
+          : Container(
+              height: MediaQuery.of(context).size.height - 190.0,
+              child: ListView.builder(
+                itemCount: Provider.of<HomeModel>(context).hits.length,
+                itemBuilder: (BuildContext context, int storyIndex){
+                  Story story =  Provider.of<HomeModel>(context).hits[storyIndex];
+                  return buildStoryPreviewWidget(story, context );
+                },
+              )
         )
       ]);
   }
 
 
-  Widget _buildEditorVotesList(){
-    List<Story> stories = Provider.of<HomeModel>(context).editorVotes;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('בחירות העורך האחרונות', style: h5),
-        SizedBox(height: 10.0,),
-        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-    ],);
-  }
+  // Widget _buildEditorVotesList(){
+  //   List<Story> stories = Provider.of<HomeModel>(context).editorVotes;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text('בחירות העורך האחרונות', style: h5),
+  //       SizedBox(height: 10.0,),
+  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+  //   ],);
+  // }
 
-  Widget _buildRecentStoriesList(){
-        List<Story> stories = Provider.of<HomeModel>(context).recentStories;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('הסיפורים והשירים האחרונים', style: h5),
-        SizedBox(height: 10.0,),
-        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-    ],);
-  }
+  // Widget _buildRecentStoriesList(){
+  //       List<Story> stories = Provider.of<HomeModel>(context).recentStories;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text('הסיפורים והשירים האחרונים', style: h5),
+  //       SizedBox(height: 10.0,),
+  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+  //   ],);
+  // }
 
-  Widget _buildMostReadStoriesThisWeek(){
-    List<Story> stories = Provider.of<HomeModel>(context).mostReadStoriesThisWeek;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('הדפים הנקראים ביותר השבוע', style: h5),
-        SizedBox(height: 10.0,),
-        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-    ],);
-  }
+  // Widget _buildMostReadStoriesThisWeek(){
+  //   List<Story> stories = Provider.of<HomeModel>(context).mostReadStoriesThisWeek;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text('הדפים הנקראים ביותר השבוע', style: h5),
+  //       SizedBox(height: 10.0,),
+  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+  //   ],);
+  // }
 
-  Widget _buildMostCheeredStoriesThisMonth(){
-    List<Story> stories = Provider.of<HomeModel>(context).mostCheeredStoriesThisMonth;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('הדפים המפורגנים ביותר החודש', style: h5),
-        SizedBox(height: 10.0,),
-        stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-    ],);
-  }
+  // Widget _buildMostCheeredStoriesThisMonth(){
+  //   List<Story> stories = Provider.of<HomeModel>(context).mostCheeredStoriesThisMonth;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text('הדפים המפורגנים ביותר החודש', style: h5),
+  //       SizedBox(height: 10.0,),
+  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
+  //   ],);
+  // }
 
-  Widget _buildThisWeekStories(){
-    List<Story> stories = Provider.of<HomeModel>(context).thisWeekStories;
-    int thisWeekAuthorsCount = Provider.of<HomeModel>(context).thisWeekAuthorsCount;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        thisWeekAuthorsCount == null || stories.isEmpty ? 
-          Text('סיפורים ושירים מהשבוע האחרון', style: h5) 
-          : Wrap(children: <Widget>[
-              Text('${stories.length} סיפורים ושירים מהשבוע האחרון' , style: h5 ),
-              Text('($thisWeekAuthorsCount כותבים)' , style: h5grey ),
-          ],),
-        stories.isEmpty ? CircularProgressIndicator() : 
-        Container(
-          // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
-          height: stories.length * 140.0 ,
-          child: Column(children: buildStoryPreviewList(stories, context))
-        )
-        ],
-    );
-  }
+  // Widget _buildThisWeekStories(){
+  //   List<Story> stories = Provider.of<HomeModel>(context).thisWeekStories;
+  //   int thisWeekAuthorsCount = Provider.of<HomeModel>(context).thisWeekAuthorsCount;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       thisWeekAuthorsCount == null || stories.isEmpty ? 
+  //         Text('סיפורים ושירים מהשבוע האחרון', style: h5) 
+  //         : Wrap(children: <Widget>[
+  //             Text('${stories.length} סיפורים ושירים מהשבוע האחרון' , style: h5 ),
+  //             Text('($thisWeekAuthorsCount כותבים)' , style: h5grey ),
+  //         ],),
+  //       stories.isEmpty ? CircularProgressIndicator() : 
+  //       Container(
+  //         // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
+  //         height: stories.length * 140.0 ,
+  //         child: Column(children: buildStoryPreviewList(stories, context))
+  //       )
+  //       ],
+  //   );
+  // }
 
 
   Widget buildNumberedStoriesList(List<Story> stories){
@@ -188,13 +190,13 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
 
-  Widget _buildAllStoriesLink() {
-    return FlatButton(
-      onPressed: () {
-        Provider.of<StoriesModel>(context, listen: false).initialize();
-        Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-      },
-      child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
-    );
-  }
+  // Widget _buildAllStoriesLink() {
+  //   return FlatButton(
+  //     onPressed: () {
+  //       Provider.of<StoriesModel>(context, listen: false).initialize();
+  //       Navigator.of(context).pushNamed(StoriesScreen.routeName,);
+  //     },
+  //     child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
+  //   );
+  // }
 }

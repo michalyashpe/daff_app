@@ -24,14 +24,10 @@ class _HomeScreenState extends State<HomeScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarWidget(context, backButton: false),
-      body: Padding(
+      body: Container(
+        // height: 400.0,
         padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
-        child: ListView(
-          children: <Widget>[
-            _buildTitle(),
-            SizedBox(height: 10.0,),
-            _buildHitsList(),
-
+        child: _buildHitsList(),
 
             // _buildEditorVotesList(),
             // _buildRecentStoriesList(),
@@ -40,12 +36,25 @@ class _HomeScreenState extends State<HomeScreen>{
             // _buildMostCheeredStoriesThisMonth(),
             // _buildThisWeekStories(),
             // _buildAllStoriesLink(),
-        ],)
       )
         
     );
     }
 
+
+  Widget _buildHitsList(){
+    return Provider.of<HomeModel>(context).isLoading 
+      ? CircularProgressIndicator() 
+      :  ListView.builder(
+            itemCount: Provider.of<HomeModel>(context).hits.length +1,
+            itemBuilder: (BuildContext context, int index){
+              if (index == 0)
+                return _buildTitle();
+              Story story =  Provider.of<HomeModel>(context).hits[index-1];
+              return buildStoryPreviewWidget(story, context);
+            },
+      );
+  }
   Widget _buildTitle(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +80,8 @@ class _HomeScreenState extends State<HomeScreen>{
                 },
                 child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),
               ),
-            ],)
+            ],),
+            SizedBox(height: 10.0,)
             
         ],)
 
@@ -79,24 +89,8 @@ class _HomeScreenState extends State<HomeScreen>{
     ],);
 
   }
-  Widget _buildHitsList(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Provider.of<HomeModel>(context).isLoading 
-          ? CircularProgressIndicator() 
-          : Container(
-              height: MediaQuery.of(context).size.height - 190.0,
-              child: ListView.builder(
-                itemCount: Provider.of<HomeModel>(context).hits.length,
-                itemBuilder: (BuildContext context, int storyIndex){
-                  Story story =  Provider.of<HomeModel>(context).hits[storyIndex];
-                  return buildStoryPreviewWidget(story, context );
-                },
-              )
-        )
-      ]);
-  }
+  
+
 
 
   // Widget _buildEditorVotesList(){

@@ -9,12 +9,11 @@ import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home_screen';
-  // final User user;
-  // HomeScreen(this.user);
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -25,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       appBar: buildAppBarWidget(context, backButton: false),
       body: Container(
-        // height: 400.0,
         padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
         child: _buildHitsList(),
 
@@ -43,17 +41,30 @@ class _HomeScreenState extends State<HomeScreen>{
 
 
   Widget _buildHitsList(){
-    return Provider.of<HomeModel>(context).isLoading 
-      ? CircularProgressIndicator() 
-      :  ListView.builder(
-            itemCount: Provider.of<HomeModel>(context).hits.length +1,
-            itemBuilder: (BuildContext context, int index){
-              if (index == 0)
-                return _buildTitle();
+    if (Provider.of<HomeModel>(context).isLoading){
+      return Center(child: CircularProgressIndicator());// buildStoryPreviewLoaderWidget(context);
+    } else {
+      return AnimationLimiter(
+        child: ListView.builder(
+          itemCount: Provider.of<HomeModel>(context).hits.length +1,
+          itemBuilder: (BuildContext context, int index){
+            if (index == 0)
+              return _buildTitle();
               Story story =  Provider.of<HomeModel>(context).hits[index-1];
-              return buildStoryPreviewWidget(story, context);
-            },
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 375),
+                child: SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: buildStoryPreviewWidget(story, context),
+                )
+              )
+            );
+          }
+        )
       );
+    }
   }
   Widget _buildTitle(){
     return Column(

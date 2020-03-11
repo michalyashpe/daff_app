@@ -1,9 +1,11 @@
 import 'package:daff_app/helpers/style.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_screen_provider.dart';
 import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:provider/provider.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -16,25 +18,34 @@ class _StoriesScreenState extends State<StoriesScreen>{
     return Consumer<StoriesModel>(
       builder: (BuildContext context,  StoriesModel model, Widget child) {
         return Scaffold(
-          appBar: buildAppBarWidget(context),
-          body: Padding(
-            padding: EdgeInsets.only(right: 30.0, left: 30.0, top: 10.0),
-            child: ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: _buildTitle(model.getTag, model.editorVotes),
+            actions: <Widget>[
+              IconButton(icon:Icon(Icons.arrow_forward),
+                onPressed:() => Navigator.pop(context, false),
+              )
+            ],
+            automaticallyImplyLeading: false,
+          ),
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(right: 5.0, left: 5.0),
+            child: Column(
               children: <Widget>[
-                _buildTitle(model.getTag, model.editorVotes), 
-                SizedBox(height: 10.0,),
-                Container(
+                Expanded(
                   child: model.isLoading ? Center(child: CircularProgressIndicator())
-                  : Column(children: buildStoryPreviewList(model.stories, context, tagView: true))
-                ),
-                SizedBox(height: 10.0,),
-                buildAllRights(),
-                SizedBox(height: 10.0,),
-              ],)
+                  : PagewiseListView(
+                    pageSize: model.storiesPerPage,
+                    itemBuilder: (context, Story story, index) {
+                      return buildStoryPreviewWidget(story, context);
+                    },
+                    pageFuture: (pageIndex) => model.fetchStoriesData(pageIndex + 1)
+                  )
+                // buildAllRights(),
 
-          )
-        );
+          )]
+        )));
       });
   }
 
@@ -42,7 +53,7 @@ class _StoriesScreenState extends State<StoriesScreen>{
     return tag != null && tag != '' ? 
       _buildTagTitle(tag) 
       : editorVotes ? Text('בחירות העורך', style: h5bold)
-        : Text('כל הסיפורים והשירים', style: h5bold) ;
+        : Text('כל הסיפורים והשירים', style: appBarTitle) ;
   }  
 
   Widget _buildTagTitle(String tag){

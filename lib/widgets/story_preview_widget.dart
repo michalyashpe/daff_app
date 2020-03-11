@@ -23,7 +23,6 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
       color: Colors.grey[100],
     ),
-    // constraints: BoxConstraints(maxHeight: 250.0),
     padding: EdgeInsets.all(5.0),
     child: GestureDetector(
       onTap: () {
@@ -34,7 +33,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
       children: <Widget>[
         Expanded(
           flex: 2,
-          child: _buildStoryImage(story, context)
+          child: _buildStoryImage(story.imageUrl, context)
         ),
         SizedBox(width: 10.0,),
         Expanded(
@@ -45,7 +44,29 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
   ],))));
 }
 
-Widget _buildStoryImage(Story story, BuildContext context){
+Widget buildStoryPreviewLoaderWidget(BuildContext context){
+  return Container( 
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      color: Colors.grey[100],
+    ),
+    padding: EdgeInsets.all(5.0),
+    child: IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: _buildStoryImage('story', context)
+          ),
+          SizedBox(width: 10.0,),
+          Expanded(
+            flex: 3,
+            child: Text('story info')//_buildStoryInfo(story, context, tagView: tagView, authorName: authorName)
+          )
+        ],)
+));
+}
+Widget _buildStoryImage(String imageUrl, BuildContext context){
   return  Container(
     decoration: BoxDecoration(
       color: Colors.grey[100],
@@ -53,7 +74,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
       image: DecorationImage(
         fit: BoxFit.cover,
         image: NetworkImage(
-            story.imageUrl,
+            imageUrl,
           ),)
     ),
     child: null

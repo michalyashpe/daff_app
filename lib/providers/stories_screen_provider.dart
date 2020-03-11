@@ -11,7 +11,6 @@ class StoriesModel extends ChangeNotifier{
   int storiesCount ;
   int pagesCount ;
   int storiesPerPage;
-  int currentPage;
   String _tag ;
   bool isLoading = false;
   bool _editorVotes = false;
@@ -28,35 +27,50 @@ class StoriesModel extends ChangeNotifier{
     stories = List<Story>();
     if (tag != null) _tag = tag;
     _editorVotes = editorVotes;
-    fetchStoriesData();
+    fetchStoriesData(0);
   }
 
-  void fetchStoriesData(){
+  // Future<List<Story>> fetchNextPage(int pageIndex){
+  //   // currentPage ++;
+  //   return fetchStoriesData(pageIndex);
+  // }
+
+  Future<List<Story>> fetchStoriesData(int page) async {
+    print('fetchStoriesData.... from page $page');
+    stories = List<Story>();
     String editorVotesQuery = _editorVotes ? 'editor_votes=true' : '';
     String tagQuery = (_tag != null && _tag != '') ? 'tag=$_tag' : '';
-    print('/stories.json?$tagQuery&$editorVotesQuery');
 
     print('fetching all stories...');
+    print('     from $daffServerUrl/stories.json?page=$page&$tagQuery&$editorVotesQuery');
     isLoading = true;
-    notifyListeners();
-    http.get(
-      daffServerUrl + '/stories.json?$tagQuery&$editorVotesQuery',
+    var response = await http.get(
+      daffServerUrl + '/stories.json?page=$page&$tagQuery&$editorVotesQuery',
       headers: <String, String>{
         'Content-type': 'application/json',
         'authorization': basicAuth,
       },
-    ).then((http.Response response){
-      Map<String, dynamic> storiesData = json.decode(response.body);
-      storiesCount = storiesData['total_count'];
-      pagesCount = storiesData['total_pages'];
-      storiesPerPage = storiesData['per_page'];
-      currentPage = storiesData['page'];
-      storiesData['stories'].forEach((storyData) {
-        Story story = parseStoryFromJson(storyData);
-        stories.add(story);
-      });
-      isLoading = false;
-      notifyListeners();
+    );
+
+    Map<String, dynamic> storiesData = json.decode(response.body);
+    storiesCount = storiesData['total_count'];
+    pagesCount = storiesData['total_pages'];
+    storiesPerPage = storiesData['per_page'];
+    // currentPage = storiesData['page'];
+    stories = List<Story>();
+    storiesData['stories'].forEach((storyData) {
+      Story story = parseStoryFromJson(storyData);
+      stories.add(story);
     });
+    isLoading = false;
+    notifyListeners();
+    print('storiesCount $storiesCount');
+    print('pagesCount $pagesCount');
+    print('storiesPerPage $storiesPerPage');
+    print('currentPage storiesCount ${stories.length}');
+    if (_tag != null && _tag  != '') print('tag: $_tag');
+    
+    return stories;
+
   }
 }

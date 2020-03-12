@@ -78,7 +78,6 @@ class StoriesModel extends ChangeNotifier{
     });
     isLoading = false;
     notifyListeners();
-    print("~~~~~");
     print('storiesCount $storiesCount');
     print('pagesCount $pagesCount');
     print('storiesPerPage $storiesPerPage');

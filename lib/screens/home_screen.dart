@@ -19,6 +19,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
   
   @override
+  void initState() {
+    Provider.of<StoriesModel>(context, listen: false).initialize(hits: true);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarWidget(context, backButton: false),
@@ -40,39 +45,23 @@ class _HomeScreenState extends State<HomeScreen>{
 
 
   Widget _buildHitsList(){
-
-      return PagewiseListView(
-        pageSize: Provider.of<StoriesModel>(context).storiesPerPage,
-        itemBuilder: (context, Story story, index) {
-          return Column(children: <Widget>[
-            Visibility(child: _buildTitle(), visible: index == 0),
-            buildStoryPreviewWidget(story, context)
-
-          ],);
-        },
-        pageFuture: (pageIndex) => Provider.of<StoriesModel>(context).fetchStoriesData(pageIndex + 1)
-      );
-      // return AnimationLimiter(
-      //   child: ListView.builder(
-      //     itemCount: Provider.of<HomeModel>(context).hits.length +1,
-      //     itemBuilder: (BuildContext context, int index){
-      //       if (index == 0)
-      //         return _buildTitle();
-      //         Story story =  Provider.of<HomeModel>(context).hits[index-1];
-      //         return AnimationConfiguration.staggeredList(
-      //           position: index,
-      //           duration: const Duration(milliseconds: 375),
-      //           child: SlideAnimation(
-      //             verticalOffset: 50.0,
-      //             child: FadeInAnimation(
-      //               child: buildStoryPreviewWidget(story, context),
-      //           )
-      //         )
-      //       );
-      //     }
-      //   )
-      // );
+    return Consumer<StoriesModel>(
+      builder: (BuildContext context,  StoriesModel model, Widget child) {
+        return  model.isLoading 
+          ? Center(child: CircularProgressIndicator()) 
+          : PagewiseListView(
+            pageSize: Provider.of<StoriesModel>(context).storiesPerPage,
+            itemBuilder: (context, Story story, index) {
+              return Column(children: <Widget>[
+                Visibility(child: _buildTitle(), visible: index == 0),
+                buildStoryPreviewWidget(story, context)
+              ],);
+            },
+            pageFuture: (pageIndex) => Provider.of<StoriesModel>(context).fetchStoriesData(pageIndex + 1)
+          );
+   });
   }
+
   Widget _buildTitle(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

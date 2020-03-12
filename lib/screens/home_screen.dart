@@ -1,7 +1,6 @@
 // import 'package:daff_app/authentication_model.dart';
-import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/stories_screen_provider.dart';
+import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
@@ -9,7 +8,7 @@ import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,30 +40,38 @@ class _HomeScreenState extends State<HomeScreen>{
 
 
   Widget _buildHitsList(){
-    if (Provider.of<HomeModel>(context).isLoading){
-      return Center(child: CircularProgressIndicator());// buildStoryPreviewLoaderWidget(context);
-    } else {
-      return AnimationLimiter(
-        child: ListView.builder(
-          itemCount: Provider.of<HomeModel>(context).hits.length +1,
-          itemBuilder: (BuildContext context, int index){
-            if (index == 0)
-              return _buildTitle();
-              Story story =  Provider.of<HomeModel>(context).hits[index-1];
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: buildStoryPreviewWidget(story, context),
-                )
-              )
-            );
-          }
-        )
+
+      return PagewiseListView(
+        pageSize: Provider.of<StoriesModel>(context).storiesPerPage,
+        itemBuilder: (context, Story story, index) {
+          return Column(children: <Widget>[
+            Visibility(child: _buildTitle(), visible: index == 0),
+            buildStoryPreviewWidget(story, context)
+
+          ],);
+        },
+        pageFuture: (pageIndex) => Provider.of<StoriesModel>(context).fetchStoriesData(pageIndex + 1)
       );
-    }
+      // return AnimationLimiter(
+      //   child: ListView.builder(
+      //     itemCount: Provider.of<HomeModel>(context).hits.length +1,
+      //     itemBuilder: (BuildContext context, int index){
+      //       if (index == 0)
+      //         return _buildTitle();
+      //         Story story =  Provider.of<HomeModel>(context).hits[index-1];
+      //         return AnimationConfiguration.staggeredList(
+      //           position: index,
+      //           duration: const Duration(milliseconds: 375),
+      //           child: SlideAnimation(
+      //             verticalOffset: 50.0,
+      //             child: FadeInAnimation(
+      //               child: buildStoryPreviewWidget(story, context),
+      //           )
+      //         )
+      //       );
+      //     }
+      //   )
+      // );
   }
   Widget _buildTitle(){
     return Column(

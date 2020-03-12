@@ -1,5 +1,5 @@
 import 'package:daff_app/helpers/style.dart';
-import 'package:daff_app/providers/stories_screen_provider.dart';
+import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

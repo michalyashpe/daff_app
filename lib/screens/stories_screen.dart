@@ -1,6 +1,6 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/stories_screen_provider.dart';
+import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';

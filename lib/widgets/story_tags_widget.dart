@@ -1,16 +1,13 @@
 import 'package:daff_app/helpers/style.dart';
-import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagView = false}){
   List<Widget> tagsList = List<Widget>();
   tags.forEach((String tagName) {
     Widget tag = GestureDetector(
       onTap: () {
-        Provider.of<StoriesModel>(context, listen: false).initialize(tag: tagName);
-        if (!tagView) Navigator.of(context).pushNamed(StoriesScreen.routeName);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen(tagName, 'tag=$tagName')));
       },
       child: Container(
         decoration: BoxDecoration(

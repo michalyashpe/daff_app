@@ -8,58 +8,32 @@ import 'package:http/http.dart' as http;
 
 class StoriesModel extends ChangeNotifier{
 
-  List<Story> stories;
+  // List<Story> stories;
   int storiesCount ;
   int pagesCount ;
-  int storiesPerPage;
-  String storiesUrl;
+  int storiesPerPage = 30;
+  // String urlQuery;
 
-  Map<String, dynamic> storiesUrlData = {
-    'tag': '',
-    'editorVotes': false,
-    'hits': false,
-  };
 
   bool isLoading = false;
   
-  String get getTag {
-    return storiesUrlData['tag'];
-  }
-
-  bool get editorVotes {
-    return storiesUrlData['editorVotes'];
-  }
-  void initialize({String tag = '', bool editorVotes = false, bool hits = false}){
-    storiesCount = null;
-    stories = List<Story>();
-    storiesUrlData['tag'] = tag;
-    storiesUrlData['editorVotes'] = editorVotes;
-    storiesUrlData['hits'] = hits;
-    setStoriesUrl();
-    fetchStoriesData(1);
+  void initialize(String query){
+    // storiesCount = null;
+    // stories = List<Story>();
+    // urlQuery = query;
+    // fetchStoriesData(1);
 
   }
 
-  // Future<List<Story>> fetchNextPage(int pageIndex){
-  //   // currentPage ++;
-  //   return fetchStoriesData(pageIndex);
-  // }
-
-  void setStoriesUrl(){
-    String editorVotesQuery = storiesUrlData['editorVotes']  ? 'editor_votes=true' : '';
-    String tagQuery = (storiesUrlData['tag'] != null && storiesUrlData['tag'] != '') ? 'tag=$storiesUrlData["tag"]' : '';
-    String hitsQuery = storiesUrlData['hits']  ? 'hits=true' : '';
-    storiesUrl = '$daffServerUrl/stories.json?$tagQuery&$editorVotesQuery$hitsQuery';
-
-    print('fetching all stories...');
-    print('     from $storiesUrl');
-  }
-  Future<List<Story>> fetchStoriesData(int page) async {
-    print('fetchStoriesData.... from page $page');
-    stories = List<Story>();
+  Future<List<Story>> fetchStoriesData(int page, String query) async {
+    print(page);
+    print('fetchStoriesData.... ');
+    print('   $daffServerUrl/stories.json?$query&page=$page');
+    print('   from page $page');
+    List<Story> stories = List<Story>();
     isLoading = true;
     var response = await http.get(
-      '$storiesUrl&page=$page',
+      '$daffServerUrl/stories.json?$query&page=$page',
       headers: <String, String>{
         'Content-type': 'application/json',
         'authorization': basicAuth,
@@ -69,7 +43,7 @@ class StoriesModel extends ChangeNotifier{
     Map<String, dynamic> storiesData = json.decode(response.body);
     storiesCount = storiesData['total_count'];
     pagesCount = storiesData['total_pages'];
-    storiesPerPage = storiesData['per_page'];
+    // storiesPerPage = storiesData['per_page'];
     // currentPage = storiesData['page'];
     stories = List<Story>();
     storiesData['stories'].forEach((storyData) {

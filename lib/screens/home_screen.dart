@@ -4,11 +4,12 @@ import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
-import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,26 +19,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
   
-  @override
-  void initState() {
-    Provider.of<StoriesModel>(context, listen: false).initialize(hits: true);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Provider.of<StoriesModel>(context, listen: false).initialize('hits=true');
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWidget(context, backButton: false),
+      drawer: _buildDrawer(),
+      appBar: AppBar(
+        // title: Text('בית: השירים והסיפורים של הדף', ),
+        title: Text('בית'),
+        backgroundColor: Colors.white,
+      ),
       body: Container(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _buildHitsList(),
-
-            // _buildEditorVotesList(),
-            // _buildRecentStoriesList(),
             // buildAllRights()
-            // _buildMostReadStoriesThisWeek(),
-            // _buildMostCheeredStoriesThisMonth(),
-            // _buildThisWeekStories(),
-            // _buildAllStoriesLink(),
+     
       )
         
     );
@@ -47,125 +47,20 @@ class _HomeScreenState extends State<HomeScreen>{
   Widget _buildHitsList(){
     return Consumer<StoriesModel>(
       builder: (BuildContext context,  StoriesModel model, Widget child) {
-        return  model.isLoading 
+        return model.isLoading 
           ? Center(child: CircularProgressIndicator()) 
           : PagewiseListView(
             pageSize: Provider.of<StoriesModel>(context).storiesPerPage,
             itemBuilder: (context, Story story, index) {
               return Column(children: <Widget>[
-                Visibility(child: _buildTitle(), visible: index == 0),
+                // Visibility(child: _buildTitle(), visible: index == 0),
                 buildStoryPreviewWidget(story, context)
               ],);
             },
-            pageFuture: (pageIndex) => Provider.of<StoriesModel>(context).fetchStoriesData(pageIndex + 1)
+            pageFuture: (pageIndex) => Provider.of<StoriesModel>(context).fetchStoriesData(pageIndex + 1, 'hits=true')
           );
    });
   }
-
-  Widget _buildTitle(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('השירים והסיפורים של הדף', style: TextStyle(fontSize: 22.0, )),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('עשינו שקלול של החדשים והאהובים ביותר.'),
-            Row(children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Provider.of<StoriesModel>(context, listen: false).initialize();
-                  Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-                },
-                child: Text('הצג בסדר כרונולוגי' , style: TextStyle(decoration: TextDecoration.underline)),
-              ),
-              Text(' | '),
-              GestureDetector(
-                onTap: () {
-                  Provider.of<StoriesModel>(context, listen: false).initialize(editorVotes: true);
-                  Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-                },
-                child: Text('בחירות העורך', style: TextStyle(decoration: TextDecoration.underline)),
-              ),
-            ],),
-            SizedBox(height: 10.0,)
-            
-        ],)
-
-
-    ],);
-
-  }
-  
-
-
-
-  // Widget _buildEditorVotesList(){
-  //   List<Story> stories = Provider.of<HomeModel>(context).editorVotes;
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text('בחירות העורך האחרונות', style: h5),
-  //       SizedBox(height: 10.0,),
-  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-  //   ],);
-  // }
-
-  // Widget _buildRecentStoriesList(){
-  //       List<Story> stories = Provider.of<HomeModel>(context).recentStories;
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text('הסיפורים והשירים האחרונים', style: h5),
-  //       SizedBox(height: 10.0,),
-  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-  //   ],);
-  // }
-
-  // Widget _buildMostReadStoriesThisWeek(){
-  //   List<Story> stories = Provider.of<HomeModel>(context).mostReadStoriesThisWeek;
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text('הדפים הנקראים ביותר השבוע', style: h5),
-  //       SizedBox(height: 10.0,),
-  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-  //   ],);
-  // }
-
-  // Widget _buildMostCheeredStoriesThisMonth(){
-  //   List<Story> stories = Provider.of<HomeModel>(context).mostCheeredStoriesThisMonth;
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text('הדפים המפורגנים ביותר החודש', style: h5),
-  //       SizedBox(height: 10.0,),
-  //       stories.isEmpty ? CircularProgressIndicator() : (buildNumberedStoriesList(stories.take(3).toList()))
-  //   ],);
-  // }
-
-  // Widget _buildThisWeekStories(){
-  //   List<Story> stories = Provider.of<HomeModel>(context).thisWeekStories;
-  //   int thisWeekAuthorsCount = Provider.of<HomeModel>(context).thisWeekAuthorsCount;
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       thisWeekAuthorsCount == null || stories.isEmpty ? 
-  //         Text('סיפורים ושירים מהשבוע האחרון', style: h5) 
-  //         : Wrap(children: <Widget>[
-  //             Text('${stories.length} סיפורים ושירים מהשבוע האחרון' , style: h5 ),
-  //             Text('($thisWeekAuthorsCount כותבים)' , style: h5grey ),
-  //         ],),
-  //       stories.isEmpty ? CircularProgressIndicator() : 
-  //       Container(
-  //         // constraints: BoxConstraints(maxHeight: stories.length * 120.0),
-  //         height: stories.length * 140.0 ,
-  //         child: Column(children: buildStoryPreviewList(stories, context))
-  //       )
-  //       ],
-  //   );
-  // }
-
 
   Widget buildNumberedStoriesList(List<Story> stories){
     List<Widget> storiesList = List<Widget>();
@@ -191,13 +86,49 @@ class _HomeScreenState extends State<HomeScreen>{
   }
 
 
-  // Widget _buildAllStoriesLink() {
-  //   return FlatButton(
-  //     onPressed: () {
-  //       Provider.of<StoriesModel>(context, listen: false).initialize();
-  //       Navigator.of(context).pushNamed(StoriesScreen.routeName,);
-  //     },
-  //     child: Text('לכל הסיפורים והשירים...', style: TextStyle(fontSize: 25.0)),
-  //   );
-  // }
+
+  Widget _buildDrawer(){
+    return Drawer(
+        child:  ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'assets/logo.svg',
+                    width: 45.0,
+                    semanticsLabel: 'Acme Logo'
+                  ),
+                  SizedBox(width: 10.0,),
+                  Text('הַדַּף', style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
+                ]
+              ),
+            ),
+            ListTile(
+              title: Text('בחירות העורך'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('בחירות העורך', 'editor_votes=true')));
+              },
+            ),
+            ListTile(
+              title: Text('כל הסיפורים בסדר כרונולוגי'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('כל הסיפורים', '')));
+              },
+            ),
+            ListTile(
+              title: Text('סיפורים מוקלטים'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        
+      );
+  }
 }

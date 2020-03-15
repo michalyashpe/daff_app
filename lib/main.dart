@@ -6,7 +6,6 @@ import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/home_screen.dart';
-import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 // import 'package:daff_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +33,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
-    homeModel = HomeModel();
-    homeModel.initialize();
+    // homeModel = HomeModel();
+    // homeModel.initialize();
     
   }
 
@@ -77,7 +76,6 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
-        StoriesScreen.routeName: (ctx) => StoriesScreen(),
         StoryScreen.routeName: (ctx) => StoryScreen(),
         AuthorScreen.routeName: (ctx) => AuthorScreen(),
       },

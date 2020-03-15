@@ -17,7 +17,7 @@ class HomeModel extends ChangeNotifier{
   bool isLoading = false;
 
   void initialize(){
-    fetchHomeData();
+    // fetchHomeData();
   }
 
   void fetchHomeData(){

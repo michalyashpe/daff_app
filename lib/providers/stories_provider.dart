@@ -8,10 +8,11 @@ import 'package:http/http.dart' as http;
 
 class StoriesModel extends ChangeNotifier{
 
-  // List<Story> stories;
+  List<Story> stories;
   int storiesCount ;
   int pagesCount ;
   int storiesPerPage = 30;
+  int currentPage = 1;
   // String urlQuery;
 
 
@@ -19,10 +20,15 @@ class StoriesModel extends ChangeNotifier{
   
   void initialize(String query){
     // storiesCount = null;
-    // stories = List<Story>();
+    stories = List<Story>();
     // urlQuery = query;
-    // fetchStoriesData(1);
+    fetchStoriesData(1, query);
 
+  }
+
+  void fetchNextPage(String query){
+    currentPage ++;
+    fetchStoriesData(currentPage, query);
   }
 
   Future<List<Story>> fetchStoriesData(int page, String query) async {
@@ -30,7 +36,6 @@ class StoriesModel extends ChangeNotifier{
     print('fetchStoriesData.... ');
     print('   $daffServerUrl/stories.json?$query&page=$page');
     print('   from page $page');
-    List<Story> stories = List<Story>();
     isLoading = true;
     var response = await http.get(
       '$daffServerUrl/stories.json?$query&page=$page',
@@ -45,7 +50,6 @@ class StoriesModel extends ChangeNotifier{
     pagesCount = storiesData['total_pages'];
     // storiesPerPage = storiesData['per_page'];
     // currentPage = storiesData['page'];
-    stories = List<Story>();
     storiesData['stories'].forEach((storyData) {
       Story story = parseStoryFromJson(storyData);
       stories.add(story);

@@ -24,36 +24,79 @@ class _StoryScreenState extends State<StoryScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarWidget(context),
-      body: Padding(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 15.0),
-        child: Consumer<StoryModel>(
-          builder: (BuildContext context,  StoryModel model, Widget child) {
-            return model.isLoading ? Center(child: CircularProgressIndicator()) 
-              : ListView(
-                children: <Widget>[
-                  _buildStoryTitle(model.story),
-                  SizedBox(height: 10.0,),
-                  _buildProfileBox(model.story),
-                  SizedBox(height: 15.0,),
-                  _buildContent(model.story),
-                  SizedBox(height: 40.0,),
-                  buildStoryTagsWidget(model.story.tags, context),
-                  SizedBox(height: 40.0,),
-                  _buildRatingBox(model.story),
-                  // SizedBox(height: 20.0,),
-                  // _buildMoreStories(context),
-                  SizedBox(height: 10.0,),
-                  buildAllRights(),
-                  SizedBox(height: 10.0,),
-
+      body: Consumer<StoryModel>(
+        builder: (BuildContext context,  StoryModel model, Widget child) {
+          return model.isLoading ? Center(child: CircularProgressIndicator())
+          : CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              floating: true,
+              pinned: false,
+              snap: true,
+              title: Text(model.story.title),
+              backgroundColor: Theme.of(context).backgroundColor,
+              actions: <Widget>[
+                IconButton(icon:Icon(Icons.arrow_forward),
+                  onPressed:() => Navigator.pop(context, false),
+                ) 
+              ],
+              // flexibleSpace: FlexibleSpaceBar(
+              //     centerTitle: true,
+              //     title: Text(model.story.title,
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontSize: 16.0,
+              //         )),
+              //     background: Image.network(
+              //       model.story.imageUrl,
+              //       fit: BoxFit.cover,
+              //     )
+              //   ),
+            ),
+            
+            SliverList(
+              delegate: SliverChildListDelegate([
+                // _buildStoryTitle(model.story),
+                SizedBox(height: 10.0,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: _buildProfileBox(model.story)
+                ),
+                SizedBox(height: 15.0,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: _buildContent(model.story),
+                ),
                 
-              ],);
-          }
-      ))
-        
-    );
+                SizedBox(height: 40.0,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: buildStoryTagsWidget(model.story.tags, context),
+                ),
+                
+                SizedBox(height: 40.0,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: _buildRatingBox(model.story),
+                ),
+                
+                // SizedBox(height: 20.0,),
+                // _buildMoreStories(context),
+                SizedBox(height: 10.0,),
+                buildAllRights(),
+                SizedBox(height: 10.0,),
+              ])
+          )]
+        );
+      }
+    ));
   }
+      
+      
+      
+     
+
 
   Widget _buildStoryTitle(Story story){
     return Column(

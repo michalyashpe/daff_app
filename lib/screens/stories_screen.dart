@@ -67,14 +67,15 @@ class _StoriesScreenState extends State<StoriesScreen>{
 
                     model.fetchNextPage(widget.urlQuery).then((List<Story> newStories) => newStories.forEach((Story s) => stories.add(s)));
                   }  
-                  return model.isLoading 
-                  ? buildStoryPreviewLoaderWidget(context)
+                  return model.isLoading ? 
+                    buildStoryPreviewLoaderWidget(context)
                   : Column(children: <Widget>[
                     // Text(index.toString()),
+                    // buildStoryPreviewLoaderWidget(context)
                     buildStoryPreviewWidget(stories[index], context)
                     ],);
                 },
-                childCount: stories.length
+                childCount: model.isLoading ? 4 : stories.length
               )
             )
         ]

@@ -12,30 +12,27 @@ class StoriesModel extends ChangeNotifier{
   int storiesCount ;
   int pagesCount ;
   int storiesPerPage = 30;
-  int currentPage = 1;
-  // String urlQuery;
+  int currentPage;
+  String urlQuery;
 
 
   bool isLoading = false;
   
-  void initialize(String query){
-    // storiesCount = null;
-    stories = List<Story>();
-    // urlQuery = query;
-    fetchStoriesData(1, query);
 
-  }
 
-  void fetchNextPage(String query){
+  Future<List<Story>> fetchNextPage(String query, {bool initialize = false}) {
+    if (initialize) {
+      currentPage = 0;
+      storiesCount = 0;
+    }
+      
     currentPage ++;
-    fetchStoriesData(currentPage, query);
+    return fetchStoriesData(currentPage, query);
   }
 
   Future<List<Story>> fetchStoriesData(int page, String query) async {
     print(page);
-    print('fetchStoriesData.... ');
-    print('   $daffServerUrl/stories.json?$query&page=$page');
-    print('   from page $page');
+    print('fetchStoriesData.... from  $daffServerUrl/stories.json?$query&page=$page');
     isLoading = true;
     var response = await http.get(
       '$daffServerUrl/stories.json?$query&page=$page',
@@ -50,6 +47,7 @@ class StoriesModel extends ChangeNotifier{
     pagesCount = storiesData['total_pages'];
     // storiesPerPage = storiesData['per_page'];
     // currentPage = storiesData['page'];
+    stories = List<Story>();
     storiesData['stories'].forEach((storyData) {
       Story story = parseStoryFromJson(storyData);
       stories.add(story);

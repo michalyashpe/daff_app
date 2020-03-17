@@ -1,3 +1,4 @@
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -14,6 +15,8 @@ class StoriesScreen extends StatefulWidget {
 }
 
 class _StoriesScreenState extends State<StoriesScreen>{
+  List<Story> stories = List<Story>();
+
   bool homepage;
   @override
   void initState() { 
@@ -22,9 +25,10 @@ class _StoriesScreenState extends State<StoriesScreen>{
     print('query:' + widget.urlQuery);
 
     homepage = widget.title == 'בית';
-    print('homepage: $homepage');
-
-    Provider.of<StoriesModel>(context, listen: false).initialize(widget.urlQuery);
+    Provider.of<StoriesModel>(context, listen: false).fetchNextPage(widget.urlQuery, initialize:  true)
+      .then((List<Story> newStories) {
+        newStories.forEach((Story s) => stories.add(s));
+      });
     super.initState();
   }
 
@@ -59,18 +63,18 @@ class _StoriesScreenState extends State<StoriesScreen>{
                     print("current index: $index");
                     print('current page: ' + model.currentPage.toString());
                     print('stories left to scroll: ${model.storiesPerPage * model.currentPage - index}');
-                    print('total stories fetched: ${model.stories.length}');
+                    print('total stories fetched: ${stories.length}');
 
-                    model.fetchNextPage(widget.urlQuery);
+                    model.fetchNextPage(widget.urlQuery).then((List<Story> newStories) => newStories.forEach((Story s) => stories.add(s)));
                   }  
                   return model.isLoading 
                   ? buildStoryPreviewLoaderWidget(context)
                   : Column(children: <Widget>[
                     // Text(index.toString()),
-                    buildStoryPreviewWidget(model.stories[index], context)
+                    buildStoryPreviewWidget(stories[index], context)
                     ],);
                 },
-                childCount: model.storiesCount
+                childCount: stories.length
               )
             )
         ]

@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
   @override
   void initState() { 
-    Provider.of<StoriesModel>(context, listen: false).initialize('home=true');
+    // Provider.of<StoriesModel>(context, listen: false).initialize('home=true');
     super.initState();
   }
 

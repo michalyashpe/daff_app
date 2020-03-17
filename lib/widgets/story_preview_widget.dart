@@ -6,6 +6,7 @@ import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 
 List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context, {bool tagView = false, authorName = true}){
@@ -44,28 +45,6 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
   ],))));
 }
 
-Widget buildStoryPreviewLoaderWidget(BuildContext context){
-  return Container( 
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-      color: Colors.grey[100],
-    ),
-    padding: EdgeInsets.all(5.0),
-    child: IntrinsicHeight(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: _buildStoryImage('story', context)
-          ),
-          SizedBox(width: 10.0,),
-          Expanded(
-            flex: 3,
-            child: Text('story info')//_buildStoryInfo(story, context, tagView: tagView, authorName: authorName)
-          )
-        ],)
-));
-}
 Widget _buildStoryImage(String imageUrl, BuildContext context){
   return  Container(
     decoration: BoxDecoration(
@@ -115,4 +94,52 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
     ],
     )
   );
+}
+
+
+Widget buildStoryPreviewLoaderWidget(BuildContext context){
+  return Container( 
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      color: Colors.grey[100],
+    ),
+    padding: EdgeInsets.all(5.0),
+    child: IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: _buildShimmeringBox(height: 100.0)
+          ),
+          SizedBox(width: 5.0,),
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildShimmeringBox(height: 20.0),
+                SizedBox(height: 5.0,),
+                _buildShimmeringBox(height: 20.0),
+                SizedBox(height: 5.0,),
+                _buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width/4),
+              ],
+            )
+          ),
+        ],)
+));
+}
+
+Widget _buildShimmeringBox({double height, double width}){
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[200],
+    highlightColor: Colors.grey[100],
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      height: height,
+      width: width,
+  ),
+);
 }

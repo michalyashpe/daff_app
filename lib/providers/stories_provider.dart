@@ -20,15 +20,6 @@ class StoriesModel extends ChangeNotifier{
   
 
 
-  Future<List<Story>> fetchNextPage(String query, {bool initialize = false}) {
-    if (initialize) {
-      currentPage = 0;
-      storiesCount = 0;
-    }
-      
-    currentPage ++;
-    return fetchStoriesData(currentPage, query);
-  }
 
   Future<List<Story>> fetchStoriesData(int page, String query) async {
     print(page);

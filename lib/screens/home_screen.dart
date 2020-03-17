@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>{
                           print('stories left to scroll: ${model.storiesPerPage * model.currentPage - index}');
                           print('total stories fetched: ${model.stories.length}');
 
-                          model.fetchNextPage('home=true');
+                          // model.fetchNextPage('home=true');
                         }  
                         return Column(children: <Widget>[
                           Text(index.toString()),

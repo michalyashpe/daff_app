@@ -16,6 +16,7 @@ class StoriesScreen extends StatefulWidget {
 
 class _StoriesScreenState extends State<StoriesScreen>{
   List<Story> stories = List<Story>();
+  int currentPage = 1;
 
   bool homepage;
   @override
@@ -25,7 +26,7 @@ class _StoriesScreenState extends State<StoriesScreen>{
     print('query:' + widget.urlQuery);
 
     homepage = widget.title == 'בית';
-    Provider.of<StoriesModel>(context, listen: false).fetchNextPage(widget.urlQuery, initialize:  true)
+    Provider.of<StoriesModel>(context, listen: false).fetchStoriesData(currentPage, widget.urlQuery)
       .then((List<Story> newStories) {
         newStories.forEach((Story s) => stories.add(s));
       });
@@ -58,19 +59,19 @@ class _StoriesScreenState extends State<StoriesScreen>{
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  if (!model.isLoading && index == model.storiesPerPage * model.currentPage - 15) {
+                  if (!model.isLoading && index == model.storiesPerPage * currentPage - 15) {
                     print("------------------");
                     print("current index: $index");
                     print('current page: ' + model.currentPage.toString());
-                    print('stories left to scroll: ${model.storiesPerPage * model.currentPage - index}');
+                    print('stories left to scroll: ${model.storiesPerPage * currentPage - index}');
                     print('total stories fetched: ${stories.length}');
-
-                    model.fetchNextPage(widget.urlQuery).then((List<Story> newStories) => newStories.forEach((Story s) => stories.add(s)));
+                    currentPage ++;
+                    model..fetchStoriesData(currentPage, widget.urlQuery).then((List<Story> newStories) => newStories.forEach((Story s) => stories.add(s)));
                   }  
                   return model.isLoading ? 
                     buildStoryPreviewLoaderWidget(context)
                   : Column(children: <Widget>[
-                    // Text(index.toString()),
+                    Text(index.toString()),
                     // buildStoryPreviewLoaderWidget(context)
                     buildStoryPreviewWidget(stories[index], context)
                     ],);

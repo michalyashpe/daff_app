@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="daff_app"
+        android:label="הַדַּף"
         android:icon="@mipmap/launcher_icon"
         >
         <activity

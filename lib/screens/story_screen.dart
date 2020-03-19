@@ -30,10 +30,11 @@ class _StoryScreenState extends State<StoryScreen>{
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,
+              iconTheme: IconThemeData(color: Colors.grey),
               floating: true,
               pinned: false,
               snap: true,
-              title: Text(model.story.title),
+              title: Text(model.story.title, style: TextStyle(fontWeight: FontWeight.bold)),
               backgroundColor: Theme.of(context).backgroundColor,
               actions: <Widget>[
                 IconButton(icon:Icon(Icons.arrow_forward),

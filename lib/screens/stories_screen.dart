@@ -44,10 +44,11 @@ class _StoriesScreenState extends State<StoriesScreen>{
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: homepage,
+              iconTheme: IconThemeData(color: Colors.grey),
               floating: true,
               pinned: false,
               snap: true,
-              title: Text(widget.title),
+              title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
               backgroundColor: Theme.of(context).backgroundColor,
               actions: !homepage ? <Widget>[
                 IconButton(icon:Icon(Icons.arrow_forward),
@@ -71,8 +72,7 @@ class _StoriesScreenState extends State<StoriesScreen>{
                   return model.isLoading ? 
                     buildStoryPreviewLoaderWidget(context)
                   : Column(children: <Widget>[
-                    Text(index.toString()),
-                    // buildStoryPreviewLoaderWidget(context)
+                    // Text(index.toString()),
                     buildStoryPreviewWidget(stories[index], context)
                     ],);
                 },

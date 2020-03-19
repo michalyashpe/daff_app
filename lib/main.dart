@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:daff_app/helpers/dsn.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sentry/sentry.dart';
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
@@ -88,6 +89,10 @@ class _MyAppState extends State<MyApp> {
   StoriesModel storiesModel ;
 
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+    ));
+
     super.initState();
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();

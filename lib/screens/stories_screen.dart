@@ -49,13 +49,10 @@ class _StoriesScreenState extends State<StoriesScreen>{
               pinned: false,
               snap: true,
               title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
-              backgroundColor: Theme.of(context).backgroundColor,
-              actions: !homepage ? <Widget>[
-                IconButton(icon:Icon(Icons.arrow_forward),
+              leading: !homepage ? IconButton(icon:Icon(Icons.arrow_back),
                   onPressed:() => Navigator.pop(context, false),
-                )
-              ]:null,
-
+                ): null,
+              backgroundColor: Theme.of(context).backgroundColor,
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(

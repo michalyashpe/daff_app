@@ -38,11 +38,9 @@ class _StoryScreenState extends State<StoryScreen>{
               snap: true,
               title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
               backgroundColor: Theme.of(context).backgroundColor,
-              actions: <Widget>[
-                IconButton(icon:Icon(Icons.arrow_forward),
-                  onPressed:() => Navigator.pop(context, false),
-                ) 
-              ],
+              leading: IconButton(icon:Icon(Icons.arrow_back),
+                onPressed:() => Navigator.pop(context, false),
+              ),
             ),
             
             SliverList(

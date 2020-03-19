@@ -22,6 +22,22 @@ class Author {
     return 'פירסם ${stories.length} דפים'; 
   }
 
+  int get cheersCount {
+    return 50; //TODO: get this from the server
+    // if (stories == null) return 0;
+    // int totalCheers = 0;
+    // print(stories.first.cheersCount);
+    // stories.forEach((Story s) => totalCheers += s.cheersCount);
+    // return totalCheers;
+  }
+
+  int get readsCount {
+    if (stories == null) return 0;
+    int readsCount = 0;
+    stories.forEach((Story s) => readsCount += s.readCount);
+    return readsCount;
+  }
+
 }
 
 

@@ -107,10 +107,7 @@ class _StoryScreenState extends State<StoryScreen>{
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
       GestureDetector(
-        onTap: () {
-          Provider.of<AuthorModel>(context, listen: false).initialize(story.author.id);
-          Navigator.of(context).pushNamed(AuthorScreen.routeName);
-        },
+        onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
         child: buildAvatarImage(story, loading: loading)
       ),
       SizedBox(width: 10.0,), 
@@ -122,10 +119,7 @@ class _StoryScreenState extends State<StoryScreen>{
             child: loading 
               ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
               : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-            onTap: (){
-              Provider.of<AuthorModel>(context, listen: false).initialize(story.author.id);
-              Navigator.of(context).pushNamed(AuthorScreen.routeName);
-            }
+            onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
           ),
           loading 
             ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.4) 

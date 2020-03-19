@@ -20,7 +20,7 @@ class AuthorModel extends ChangeNotifier{
   void fetchAuthorData(int id){
     print('fetching author data...');
     isLoading = true;
-    notifyListeners();
+    // notifyListeners();
     http.get(
       daffServerUrl + '/authors/$id.json',
       headers: <String, String>{

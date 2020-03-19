@@ -1,4 +1,5 @@
 lib/helpers/.daff_api.dart
+lib/helpers/dsn.dart
 
 # Miscellaneous
 *.class

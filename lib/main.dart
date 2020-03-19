@@ -15,7 +15,6 @@ import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/home_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
-import 'package:daff_app/screens/story_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -136,7 +135,6 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
-        StoryScreen.routeName: (ctx) => StoryScreen(),
         AuthorScreen.routeName: (ctx) => AuthorScreen(),
       },
     ));

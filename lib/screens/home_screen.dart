@@ -2,7 +2,6 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
-import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -77,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>{
         child: GestureDetector(
           onTap: () {
             Provider.of<StoryModel>(context, listen: false).initialize(story.id);
-            Navigator.of(context).pushNamed(StoryScreen.routeName,);
+            // Navigator.of(context).pushNamed(StoryScreen.routeName,);
           },
         child: Row(children: <Widget>[
           Text('$index. ${story.title.trimRight()}, ', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),

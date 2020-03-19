@@ -3,10 +3,10 @@ import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
+import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 
 List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context, {bool tagView = false, authorName = true}){
@@ -28,7 +28,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
     child: GestureDetector(
       onTap: () {
         Provider.of<StoryModel>(context, listen: false).initialize(story.id);
-        Navigator.of(context).pushNamed(StoryScreen.routeName,);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(story.title)));
       },
       child: IntrinsicHeight(child: Row(
       children: <Widget>[
@@ -109,19 +109,16 @@ Widget buildStoryPreviewLoaderWidget(BuildContext context){
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: _buildShimmeringBox(height: 100.0)
+            child: buildShimmeringBox(height: 100.0)
           ),
-          SizedBox(width: 5.0,),
           Expanded(
             flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildShimmeringBox(height: 20.0),
-                SizedBox(height: 5.0,),
-                _buildShimmeringBox(height: 20.0),
-                SizedBox(height: 5.0,),
-                _buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width/4),
+                buildShimmeringBox(height: 20.0),
+                buildShimmeringBox(height: 20.0),
+                buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width/4),
               ],
             )
           ),
@@ -129,17 +126,3 @@ Widget buildStoryPreviewLoaderWidget(BuildContext context){
 ));
 }
 
-Widget _buildShimmeringBox({double height, double width}){
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[200],
-    highlightColor: Colors.grey[100],
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-      ),
-      height: height,
-      width: width,
-  ),
-);
-}

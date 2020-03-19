@@ -1,5 +1,6 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/screens/stories_screen.dart';
+import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:flutter/material.dart';
 
 Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagView = false}){
@@ -26,4 +27,20 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
     runSpacing: storyPreviewLineHeight,
     children: tagsList
   );
+}
+
+Widget buildStoryTagsWidgetLoader(){
+  double height = 15.0;
+  double width = 50.0;
+    return Wrap(
+    spacing: 5.0,
+    runSpacing: storyPreviewLineHeight,
+    children: <Widget>[
+      buildShimmeringBox(width: width, height: height),
+      buildShimmeringBox(width: width, height: height),
+      buildShimmeringBox(width: width, height: height),
+    ],
+    
+  );
+  
 }

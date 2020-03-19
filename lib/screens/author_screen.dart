@@ -35,7 +35,7 @@ class _AuthorScreenState extends State<AuthorScreen>{
   Widget _buildAuthorDetails(){
     Author author = Provider.of<AuthorModel>(context).author;
     return Row(children: <Widget>[
-      buildAvatarImage(author.stories.first.author.imageUrl),  //TODO: get this directly from author page json @dor
+      buildAvatarImage(author.stories.first),  //TODO: get this directly from author page json @dor
       SizedBox(width: 15.0),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,

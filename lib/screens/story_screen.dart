@@ -108,7 +108,13 @@ class _StoryScreenState extends State<StoryScreen>{
 
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
-      buildAvatarImage(story.author.imageUrl, loading: loading),
+      GestureDetector(
+        onTap: () {
+          Provider.of<AuthorModel>(context, listen: false).initialize(story.author.id);
+          Navigator.of(context).pushNamed(AuthorScreen.routeName);
+        },
+        child: buildAvatarImage(story, loading: loading)
+      ),
       SizedBox(width: 10.0,), 
       Column(
         

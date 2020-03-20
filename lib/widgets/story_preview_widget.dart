@@ -9,15 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-List<Widget> buildStoryPreviewList(List<Story> stories, BuildContext context, {bool tagView = false, authorName = true}){
-  List<Widget> storyPreviewList = List<Widget>(); 
-  stories.forEach((Story story){
-    storyPreviewList.add(buildStoryPreviewWidget(story, context, tagView: tagView, authorName: authorName ));
-    storyPreviewList.add(SizedBox(height: 15.0,));
-  });
-  return storyPreviewList;
-}
-
 Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
   return Container( 
     decoration: BoxDecoration(
@@ -72,18 +63,15 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
             text: TextSpan(
               children: <InlineSpan> [
                 TextSpan(
-                  text: story.title.trim() + (!story.editorPick ? ', ':''), 
+                  text: story.title.trim(), 
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0 , color: Colors.black),
                 ), 
                 WidgetSpan(child: buildEditerPickMedalWidget(story), ),
-                authorName 
-                  ? TextSpan(text: story.author.name, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.black),
-              )   : TextSpan(text: ''),
               ]
             ))
         ),
         // SizedBox(height: storyPreviewLineHeight/2.0),
-        Text(story.readingDurationString),
+        Text(authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString),
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
           buildStoryTagsWidget(story.tags, context, tagView: tagView),

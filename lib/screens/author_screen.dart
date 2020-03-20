@@ -1,8 +1,9 @@
 import 'package:daff_app/models/author.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/widgets/all_rights_widget.dart';
-import 'package:daff_app/widgets/app_bar_widget.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
+import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,7 @@ class _AuthorScreenState extends State<AuthorScreen>{
     return Scaffold(
       body: Consumer<AuthorModel>(
         builder: (BuildContext context,  AuthorModel model, Widget child) {
-          return model.isLoading ? Center(child: CircularProgressIndicator() )
-          : CustomScrollView(
+          return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,
@@ -45,9 +45,15 @@ class _AuthorScreenState extends State<AuthorScreen>{
             SliverList( 
               delegate: SliverChildListDelegate([
                 SizedBox(height: 10.0,),
-                _buildAuthorDetails(),
+                _buildAuthorDetails(model.author, model.isLoading),//model.isLoading),
                 SizedBox(height: 10.0,),
-                _buildAuthorStories(),
+                model.isLoading ? 
+                  Column(children: <Widget>[
+                    buildStoryPreviewLoaderWidget(context),
+                    buildStoryPreviewLoaderWidget(context),
+                    buildStoryPreviewLoaderWidget(context)
+                  ])
+                  : _buildAuthorStories(model.author, model.isLoading),
                 SizedBox(height: 10.0,),
                 buildAllRights(),
                 SizedBox(height: 10.0,),
@@ -57,19 +63,43 @@ class _AuthorScreenState extends State<AuthorScreen>{
         }));
   }
 
-  Widget _buildAuthorDetails(){
-    Author author = Provider.of<AuthorModel>(context).author;
+  Widget _buildAuthorDetails(Author author, bool loading){
+    return Padding(
+      padding: EdgeInsets.only(right: 5.0),
+      child: Row(children: <Widget>[
+        SizedBox(height: 30.0,),
+        loading ? 
+          buildShimmeringCircle(40.0)
+          : buildAvatarImage(author.stories.first),  //TODO: get this directly from author page json @dor
+        SizedBox(width: 20.0),
+        loading ? 
+          _buildAuthorStastLoader()
+          : _buildAuthorStats(author, loading)
+      
+      ],
+    ));
+  }
+
+  Widget _buildAuthorStastLoader(){
+    double width = 30.0;
+    Widget stats =  Column(children: <Widget>[
+      buildShimmeringBox(height: 20.0, width: width),
+      SizedBox(height: 5.0,),
+      buildShimmeringBox(height: 20.0, width: width)
+    ],);
     return Row(children: <Widget>[
-      SizedBox(height: 30.0,),
-      buildAvatarImage(author.stories.first),  //TODO: get this directly from author page json @dor
-      SizedBox(width: 20.0),
-      _buildAuthorStats(author)
-     
+      stats, stats, stats
     ],);
   }
 
-  Widget _buildAuthorStats(Author author){
-    return Row(children: <Widget>[
+  Widget _buildAuthorStats(Author author , bool loading){
+    return loading ? 
+    Column(children: <Widget>[
+      buildStoryPreviewLoaderWidget(context),
+      buildStoryPreviewLoaderWidget(context),
+      buildStoryPreviewLoaderWidget(context)
+    ])
+    : Row(children: <Widget>[
       Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -99,14 +129,18 @@ class _AuthorScreenState extends State<AuthorScreen>{
 
     ],);
   }
-  Widget _buildAuthorStories(){
-    Author author = Provider.of<AuthorModel>(context).author;
+  Widget _buildAuthorStories(Author author, bool loading){
+    
+    List<Widget> storyPreviewList = List<Widget>(); 
+    author.stories.forEach((Story story){
+      storyPreviewList.add(buildStoryPreviewWidget(story, context, authorName: false));
+      storyPreviewList.add(SizedBox(height: 15.0,));
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-      // Text('כל הסיפורים של ${author.name}:', ),
-      SizedBox(height: 10.0,),
-      Column(children: buildStoryPreviewList(author.stories, context, authorName: false))
+      Column(children: storyPreviewList)
     ],);
 
 

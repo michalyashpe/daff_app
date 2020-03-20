@@ -28,3 +28,10 @@ Widget buildShimmeringParagraph(BuildContext context){
       buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width* 0.4 ),
   ],);
 }
+
+Widget buildShimmeringCircle(double radius){
+  return ClipOval(
+    child: buildShimmeringBox(height: radius*2, width: radius*2)
+  );
+
+}

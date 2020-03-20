@@ -1,5 +1,4 @@
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/widgets/all_rights_widget.dart';
@@ -106,18 +105,20 @@ class _StoryScreenState extends State<StoryScreen>{
 
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
-      GestureDetector(
-        onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-        child: buildAvatarImage(story, loading: loading)
-      ),
+      loading ? 
+        buildShimmeringCircle(40.0)
+        : GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+          child: buildAvatarImage(story)
+        ),
       SizedBox(width: 10.0,), 
       Column(
         
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
-            child: loading 
-              ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+            child: loading ?
+              buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
               : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
             onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
           ),
@@ -162,16 +163,16 @@ class _StoryScreenState extends State<StoryScreen>{
       Row(children: <Widget>[
         buildIcon('assets/icons/heart.svg'),
         SizedBox(width: 5.0,),
-        loading 
-          ? buildShimmeringBox(width: 200.0, height: 40.0)
+        loading ?
+          buildShimmeringBox(width: 200.0, height: 40.0)
           : Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
       ],),
       SizedBox(height: 10.0),
       Row(children: <Widget>[
         buildIcon('assets/icons/eye1.svg'),
         SizedBox(width: 5.0,),
-        loading 
-          ? buildShimmeringBox(width: 200.0, height: 40.0)
+        loading ?
+          buildShimmeringBox(width: 200.0, height: 40.0)
           : Text(story.readCountString, style: TextStyle(fontSize: 20.0))
       ],)
 

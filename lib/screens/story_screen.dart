@@ -20,14 +20,14 @@ class StoryScreen extends StatefulWidget{
 }
 
 class _StoryScreenState extends State<StoryScreen>{
-
+  bool showPlayer = false;
   @override
   Widget build(BuildContext context) {
-    
-    return Scaffold(
-      body: Consumer<StoryModel>(
-        builder: (BuildContext context,  StoryModel model, Widget child) {
-          return CustomScrollView(
+    return Consumer<StoryModel>(
+      builder: (BuildContext context,  StoryModel model, Widget child) {
+        return Scaffold(
+          bottomSheet: showPlayer ? buildAudioPlayer(model.story) : Text(''),
+          body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,
@@ -40,6 +40,15 @@ class _StoryScreenState extends State<StoryScreen>{
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
+              actions: !model.isLoading && model.story.recorded ? 
+                <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.volume_up),
+                    onPressed: () => setState((){
+                      showPlayer = true;
+                    }),
+                  )
+              ] : <Widget>[]
             ),
             
             SliverList(
@@ -77,9 +86,9 @@ class _StoryScreenState extends State<StoryScreen>{
                 // SizedBox(height: 10.0,),
               ])
           )]
-        );
+         ) );
       }
-    ));
+    );
   }
       
       
@@ -182,3 +191,31 @@ class _StoryScreenState extends State<StoryScreen>{
  
 }
 
+Widget buildAudioPlayer(Story story){
+  return Container(
+    color: Colors.black,
+    height: 50.0,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+       story.imageUrl != null && story.imageUrl != '' ? 
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.all(7.0),
+          child: Image.network(story.imageUrl) //buildAvatarImage(story)
+        ): null,
+        Expanded( child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+          Text(story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
+          Text(story.author.name, style: TextStyle(color: Colors.white)),  
+        ],)),
+        IconButton(
+          onPressed: () => print('play audio............'),
+          icon: Icon(Icons.play_circle_outline, color: Colors.white),
+        ),
+    
+    ],)
+  );
+}

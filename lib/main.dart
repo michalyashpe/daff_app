@@ -125,21 +125,18 @@ class _MyAppState extends State<MyApp> {
       const Locale('he'), // Hebrew
     ],
     locale: Locale("he", "HE") ,
-
-
-
-      title: 'Daff Rocking App',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        textTheme: GoogleFonts.alefTextTheme(Theme.of(context).textTheme,),
-      ),
-      home: Directionality( // add this
-        textDirection: TextDirection.rtl, // set this property 
-        child: SplashScreen()
-      ),
-      routes: {
-        HomeScreen.routeName: (ctx) => HomeScreen(),
-      },
-    ));
+    title: 'Daff Rocking App',
+    theme: ThemeData(
+      primarySwatch: Colors.grey,
+      textTheme: GoogleFonts.alefTextTheme(Theme.of(context).textTheme,),
+    ),
+    home: Directionality( // add this
+      textDirection: TextDirection.rtl, // set this property 
+      child: SplashScreen(),
+    ),
+    routes: {
+      HomeScreen.routeName: (ctx) => HomeScreen(),
+    },
+  ));
   }
 }

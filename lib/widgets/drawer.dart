@@ -47,6 +47,7 @@ Widget buildDrawer(BuildContext context){
             title: Text('סיפורים מוקלטים'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('סיפורים מוקלטים', 'with_audio=true')));
             },
           ),
         ],

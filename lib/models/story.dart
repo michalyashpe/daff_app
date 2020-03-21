@@ -15,6 +15,7 @@ class Story {
   int readCount = 0;
   int cheersCount = 0;
   String imageUrl;
+  String audioUrl;
   bool editorPick = false;
   List<String> tags = List<String>();
   List<Story> moreStories = List<Story>();
@@ -33,6 +34,7 @@ class Story {
     this.cheersCount,
     this.editorPick,
     this.imageUrl,
+    this.audioUrl = 'https://ik.imagekit.io/g3jrzlo0a//rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBclFJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ac2f5e5842d68d2eb78a81accc06a4bb461645fe/blob.mp4', 
     this.tags,
     this.moreStories,
     this.cheerers
@@ -41,6 +43,10 @@ class Story {
 
   String get readingDurationString {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
+  }
+
+  bool get recorded {
+    return audioUrl != null && audioUrl != '';
   }
 
   String get dateFormatted {

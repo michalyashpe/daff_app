@@ -59,8 +59,15 @@ class Story {
   
   String get cheersSummary {
     if (cheersCount == 0) return 'היה הראשון לפרגן';
-    String names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
-    return '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
+    String summary = '';
+    String names = '';
+    if (cheerers.length > 0 ) {
+      names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
+      summary = '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
+    } else 
+      summary = '$cheersCount פירגונים';
+    
+    return summary;
   }
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';

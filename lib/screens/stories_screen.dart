@@ -3,6 +3,7 @@ import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -37,7 +38,6 @@ class _StoriesScreenState extends State<StoriesScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: buildDrawer(context),
       body: Consumer<StoriesModel>(
         builder: (BuildContext context,  StoriesModel model, Widget child) {
         return CustomScrollView(
@@ -82,4 +82,40 @@ class _StoriesScreenState extends State<StoriesScreen>{
     );
   
   }
+}
+
+Widget buildErrorButtons(){
+  return  Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new RaisedButton(
+              child: new Text('Dart exception'),
+              elevation: 1.0,
+              onPressed: () {
+                throw new StateError('This is a Dart exception.');
+              },
+            ),
+            new RaisedButton(
+              child: new Text('async Dart exception'),
+              elevation: 1.0,
+              onPressed: () async {
+                foo() async {
+                  throw new StateError('This is an async Dart exception.');
+                }
+                bar() async {
+                  await foo();
+                }
+                await bar();
+              },
+            ),
+            new RaisedButton(
+              child: new Text('Java exception'),
+              elevation: 1.0,
+              onPressed: () async {
+                final channel = const MethodChannel('crashy-custom-channel');
+                await channel.invokeMethod('blah');
+              },
+            ),
+          ],
+        );
 }

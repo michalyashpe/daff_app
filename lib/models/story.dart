@@ -46,7 +46,7 @@ class Story {
   String get dateFormatted {
     List<String> hebrewMonthNames = ['ינואר', 'פברואר', 'מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
     return date.year == DateTime.now().year ? 
-       '${date.day} ל${hebrewMonthNames[date.month]}'
+       '${date.day} ל${hebrewMonthNames[date.month-1]}'
        :
        '${date.day} ל${hebrewMonthNames[date.month-1]} ${date.year}';
   }

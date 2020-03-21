@@ -3,6 +3,7 @@ library crashy;
 import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
+import 'package:daff_app/screens/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,6 @@ import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/home_screen.dart';
-import 'package:daff_app/screens/stories_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Directionality( // add this
         textDirection: TextDirection.rtl, // set this property 
-        child: StoriesScreen('בית', 'hits=true'),//LoginScreen(firebaseAPI),
+        child: SplashScreen()
       ),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),

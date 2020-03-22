@@ -170,7 +170,9 @@ class _StoryScreenState extends State<StoryScreen>{
   Widget _buildRatingBox(Story story, {bool loading = false}){
     return Column(children: <Widget>[
       Row(children: <Widget>[
-        buildIcon('assets/icons/heart.svg'),
+        loading ?
+          buildShimmeringCircle(20.0) 
+          : buildIcon('assets/icons/heart.svg'),
         SizedBox(width: 5.0,),
         loading ?
           buildShimmeringBox(width: 200.0, height: 40.0)
@@ -178,7 +180,9 @@ class _StoryScreenState extends State<StoryScreen>{
       ],),
       SizedBox(height: 10.0),
       Row(children: <Widget>[
-        buildIcon('assets/icons/eye1.svg'),
+        loading ?
+          buildShimmeringCircle(20.0)
+        : buildIcon('assets/icons/eye1.svg'),
         SizedBox(width: 5.0,),
         loading ?
           buildShimmeringBox(width: 200.0, height: 40.0)

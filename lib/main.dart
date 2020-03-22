@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
 import 'package:daff_app/screens/splash_screen.dart';
+import 'package:daff_app/widgets/audio_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +69,8 @@ Future<Null> main() async {
   };
 
   runZoned<Future<Null>>(() async {
-    runApp(new MyApp());
+    // runApp(new MyApp());
+    runApp(MyAudioApp());
   }, onError: (error, stackTrace) async {
     await _reportError(error, stackTrace);
   });

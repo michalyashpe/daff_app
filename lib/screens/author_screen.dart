@@ -44,9 +44,9 @@ class _AuthorScreenState extends State<AuthorScreen>{
             
             SliverList( 
               delegate: SliverChildListDelegate([
-                SizedBox(height: 10.0,),
+                SizedBox(height: 20.0,),
                 _buildAuthorDetails(model.author, model.isLoading),//model.isLoading),
-                SizedBox(height: 10.0,),
+                SizedBox(height: 20.0,),
                 model.isLoading ? 
                   Column(children: <Widget>[
                     buildStoryPreviewLoaderWidget(context),
@@ -65,19 +65,19 @@ class _AuthorScreenState extends State<AuthorScreen>{
 
   Widget _buildAuthorDetails(Author author, bool loading){
     return Padding(
-      padding: EdgeInsets.only(right: 5.0),
-      child: Row(children: <Widget>[
-        SizedBox(height: 30.0,),
-        loading ? 
-          buildShimmeringCircle(40.0)
-          : buildAvatarImage(author.stories.first),  //TODO: get this directly from author page json @dor
-        SizedBox(width: 20.0),
-        loading ? 
-          _buildAuthorStastLoader()
-          : _buildAuthorStats(author, loading)
-      
-      ],
-    ));
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        Row(children: <Widget>[
+          loading ? buildShimmeringCircle(40.0) : buildAvatarImage(author.imageUrl),
+          SizedBox(width: 20.0),
+          loading ? _buildAuthorStastLoader() : _buildAuthorStats(author, loading),
+        ],),
+        SizedBox(height: 10.0,),
+        Text( loading ? '' : author.aboutMe, maxLines: 5, textAlign: TextAlign.right,)
+      ],)
+    );
   }
 
   Widget _buildAuthorStastLoader(){
@@ -100,33 +100,30 @@ class _AuthorScreenState extends State<AuthorScreen>{
       buildStoryPreviewLoaderWidget(context)
     ])
     : Row(children: <Widget>[
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(author.stories.length.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text('דפים')
-        ],
-      ),
-      SizedBox(width: 20.0,),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(author.cheersCount.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text('פירגונים')
-        ],
-      ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(author.storiesCount.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text('דפים')
+          ],
+        ),
+        SizedBox(width: 20.0,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(author.cheersCount.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text('פירגונים')
+          ],
+        ),
 
-      SizedBox(width: 20.0,),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(author.readsCount.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text('קריאות')
-        ],
-      ),
-
-
-
+        SizedBox(width: 20.0,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(author.readsCount.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text('קריאות')
+          ],
+        ),
     ],);
   }
   Widget _buildAuthorStories(Author author, bool loading){

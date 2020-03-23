@@ -118,7 +118,7 @@ class _StoryScreenState extends State<StoryScreen>{
         buildShimmeringCircle(40.0)
         : GestureDetector(
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-          child: buildAvatarImage(story)
+          child: buildAvatarImage(story.author.imageUrl)
         ),
       SizedBox(width: 10.0,), 
       Column(

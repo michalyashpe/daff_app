@@ -38,6 +38,7 @@ class _StoriesScreenState extends State<StoriesScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: buildDrawer(context),
       body: Consumer<StoriesModel>(
         builder: (BuildContext context,  StoriesModel model, Widget child) {
         return CustomScrollView(

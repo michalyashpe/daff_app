@@ -75,7 +75,11 @@ class _AuthorScreenState extends State<AuthorScreen>{
           loading ? _buildAuthorStastLoader() : _buildAuthorStats(author, loading),
         ],),
         SizedBox(height: 10.0,),
-        Text( loading ? '' : author.aboutMe, maxLines: 5, textAlign: TextAlign.right,)
+        Text( 
+          !loading && author.aboutMe != null ? author.aboutMe : '', 
+          maxLines: 5, 
+          textAlign: TextAlign.right,
+        )
       ],)
     );
   }

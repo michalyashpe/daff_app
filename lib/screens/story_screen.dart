@@ -41,7 +41,7 @@ class _StoryScreenState extends State<StoryScreen>{
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
-              actions: !model.isLoading && model.story.recorded ? 
+              actions: !model.isLoading && model.story.hasAudio ? 
                 <Widget>[
                   IconButton(
                     icon: Icon(Icons.volume_up),

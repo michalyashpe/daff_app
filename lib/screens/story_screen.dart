@@ -1,8 +1,8 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
-import 'package:daff_app/widgets/all_rights_widget.dart';
-import 'package:daff_app/widgets/audio_player.dart';
+// import 'package:daff_app/widgets/all_rights_widget.dart';
+// import 'package:daff_app/widgets/audio_player.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/icon.dart';

@@ -111,7 +111,7 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
                         ],
                       ),
                     if (mediaItem?.title != null) Text(mediaItem.title),
-                    if (basicState == BasicPlaybackState.none) ...[
+                    if (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ...[
                       audioPlayerButton(),
                     ] else
                       Row(

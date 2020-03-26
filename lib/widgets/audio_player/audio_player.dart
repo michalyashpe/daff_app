@@ -1,12 +1,12 @@
 import 'dart:math';
 
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 import 'package:daff_app/widgets/audio_player/screen_state.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'controls.dart';
@@ -14,6 +14,8 @@ import 'controls.dart';
 
 
 class AudioPlayerApp extends StatefulWidget {
+  final Story story;
+  AudioPlayerApp(this.story);
   @override
   _AudioPlayerAppState createState() => new _AudioPlayerAppState();
 }
@@ -24,7 +26,6 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
   @override
   void initState() {
     super.initState();
-    print('hi');
     WidgetsBinding.instance.addObserver(this);
     connect();
   }
@@ -55,101 +56,23 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
   }
 
   void disconnect() {
+    print('disconnecting');
     AudioService.disconnect();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('hihi');
-    // return Center(child:Text('hi'));
-    return new MaterialApp(
+    
+    return MaterialApp( 
       home: WillPopScope(
         onWillPop: () {
           disconnect();
           return Future.value(true);
         },
-        child: new Scaffold(
-          appBar: new AppBar(
-            title: const Text('Audio Service Demo'),
-          ),
-          body: new Center(
-            child: StreamBuilder<ScreenState>(
-              stream: Rx.combineLatest3<List<MediaItem>, MediaItem,
-                      PlaybackState, ScreenState>(
-                  AudioService.queueStream,
-                  AudioService.currentMediaItemStream,
-                  AudioService.playbackStateStream,
-                  (queue, mediaItem, playbackState) =>
-                      ScreenState(queue, mediaItem, playbackState)),
-              builder: (context, snapshot) {
-                final screenState = snapshot.data;
-                final queue = screenState?.queue;
-                final mediaItem = screenState?.mediaItem;
-                final state = screenState?.playbackState;
-                final basicState = state?.basicState ?? BasicPlaybackState.none;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (queue != null && queue.isNotEmpty)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.skip_previous),
-                            iconSize: 64.0,
-                            onPressed: mediaItem == queue.first
-                                ? null
-                                : AudioService.skipToPrevious,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.skip_next),
-                            iconSize: 64.0,
-                            onPressed: mediaItem == queue.last
-                                ? null
-                                : AudioService.skipToNext,
-                          ),
-                        ],
-                      ),
-                    if (mediaItem?.title != null) Text(mediaItem.title),
-                    if (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ...[
-                      audioPlayerButton(),
-                    ] else
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (basicState == BasicPlaybackState.playing)
-                            pauseButton()
-                          else if (basicState == BasicPlaybackState.paused)
-                            playButton()
-                          else if (basicState == BasicPlaybackState.buffering ||
-                              basicState == BasicPlaybackState.skippingToNext ||
-                              basicState ==
-                                  BasicPlaybackState.skippingToPrevious)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: 64.0,
-                                height: 64.0,
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                          stopButton(),
-                        ],
-                      ),
-                    if (basicState != BasicPlaybackState.none &&
-                        basicState != BasicPlaybackState.stopped) ...[
-                      positionIndicator(mediaItem, state),
-                      Text("State: " +
-                          "$basicState".replaceAll(RegExp(r'^.*\.'), '')),
-                    ]
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    );
+        // child: buildAudioPlayer(widget.story)
+        child: originalAudioPlayer()
+        
+      ));
   }
 
 
@@ -193,7 +116,111 @@ Widget positionIndicator(MediaItem mediaItem, PlaybackState state) {
       },
     );
   }
+
+
+
+
+Widget originalAudioPlayer(){
+  return new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Audio Service Demo'),
+          ),
+          body: new Center(
+            child: StreamBuilder<ScreenState>(
+              stream: Rx.combineLatest3<List<MediaItem>, MediaItem,
+                      PlaybackState, ScreenState>(
+                  AudioService.queueStream,
+                  AudioService.currentMediaItemStream,
+                  AudioService.playbackStateStream,
+                  (queue, mediaItem, playbackState) =>
+                      ScreenState(queue, mediaItem, playbackState)),
+              builder: (context, snapshot) {
+                final screenState = snapshot.data;
+                final queue = screenState?.queue;
+                final mediaItem = screenState?.mediaItem;
+                final state = screenState?.playbackState;
+                final basicState = state?.basicState ?? BasicPlaybackState.none;
+                print("---------------");
+                print('screenState: $screenState');
+                print('queue: $queue');
+                print('mediaItem: $mediaItem');
+                print('state: $state');
+                print('basicState: $basicState');
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (queue != null && queue.isNotEmpty)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('1'),
+
+                          IconButton(
+                            icon: Icon(Icons.skip_previous),
+                            iconSize: 64.0,
+                            onPressed: mediaItem == queue.first
+                                ? null
+                                : AudioService.skipToPrevious,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.skip_next),
+                            iconSize: 64.0,
+                            onPressed: mediaItem == queue.last
+                                ? null
+                                : AudioService.skipToNext,
+                          ),
+                        ],
+                      ),
+                    if (mediaItem?.title != null) Text(mediaItem.title),
+                    if (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ...[
+                      audioPlayerButton(),
+                    ] else
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('2'),
+                          if (basicState == BasicPlaybackState.playing)
+                            pauseButton()
+                          else if (basicState == BasicPlaybackState.paused)
+                            playButton()
+                          else if (basicState == BasicPlaybackState.buffering ||
+                              basicState == BasicPlaybackState.skippingToNext ||
+                              basicState == BasicPlaybackState.skippingToPrevious)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 64.0,
+                                height: 64.0,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          stopButton(),
+                        ],
+                      ),
+                    if (basicState != BasicPlaybackState.none &&
+                        basicState != BasicPlaybackState.stopped) ...[
+                      positionIndicator(mediaItem, state),
+                      Text("State: " +
+                          "$basicState".replaceAll(RegExp(r'^.*\.'), '')),
+                    ]
+                  ],
+                );
+              },
+            ),
+          ),
+        );
 }
+
+
+
+
+
+
+  void _audioPlayerTaskEntrypoint() async {
+    AudioServiceBackground.run(() => AudioPlayerTask(widget.story));
+  }
+
+
 
   RaisedButton audioPlayerButton() => startButton(
         'AudioPlayer',
@@ -209,6 +236,38 @@ Widget positionIndicator(MediaItem mediaItem, PlaybackState state) {
       );
 
 
-void _audioPlayerTaskEntrypoint() async {
-  AudioServiceBackground.run(() => AudioPlayerTask());
+
+
 }
+
+
+
+Widget buildAudioPlayer(Story story){
+  return Container(
+    color: Colors.black,
+    height: 50.0,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+       story.imageUrl != null && story.imageUrl != '' ? 
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.all(7.0),
+          child: Image.network(story.imageUrl) //buildAvatarImage(story)
+        ): null,
+        Expanded( child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+          Text(story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
+          Text(story.author.name, style: TextStyle(color: Colors.white)),  
+        ],)),
+        IconButton(
+          onPressed: () => print('play audio............'),
+          icon: Icon(Icons.play_circle_outline, color: Colors.white),
+        ),
+    
+    ],)
+  );
+}
+

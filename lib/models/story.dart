@@ -50,7 +50,7 @@ class Story {
 
   MediaItem get mediaItem {
      MediaItem mediaItem = MediaItem(
-      id: "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
+      id: audioUrl,
       album: title,
       title: title,
       artist: author.name,

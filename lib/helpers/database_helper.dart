@@ -19,6 +19,7 @@ class DatabaseHelper {
   static final columnArtist = 'artist';
   static final columnDuration = 'duration';
   static final columnArtUri = 'artUri';
+  static final columnAudioUri = 'audioUri';
   
 
   // make this a singleton class
@@ -36,8 +37,14 @@ class DatabaseHelper {
   
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
+    // Get a location using getDatabasesPath
+
+// Delete the database
+
+
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
+    // await deleteDatabase(path); //------>>>>>>>>>>>>>>>>>>>>>>>>>>>>REMOVE!!!!
     return await openDatabase(path,
         version: _databaseVersion,
         onCreate: _onCreate);
@@ -45,17 +52,19 @@ class DatabaseHelper {
 
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
+    print('creating database...');
     await db.execute('''
-          CREATE TABLE $table (
-            $columnId INTEGER PRIMARY KEY,
-            $columnAlbum TEXT NOT NULL,
-            $columnTitle TEXT NOT NULL
-            $columnArtist TEXT NOT NULL
-            $columnDuration INTEGER NOT NULL
-            $columnArtUri TEXT NOT NULL
-            
-          )
-          ''');
+      CREATE TABLE $table (
+        $columnId INTEGER PRIMARY KEY,
+        $columnAlbum TEXT NOT NULL,
+        $columnTitle TEXT NOT NULL,
+        $columnArtist TEXT NOT NULL,
+        $columnDuration INTEGER NOT NULL,
+        $columnArtUri TEXT NOT NULL,
+        $columnAudioUri TEXT NOT NULL
+        
+      )
+      ''');
   }
   
   // Helper methods

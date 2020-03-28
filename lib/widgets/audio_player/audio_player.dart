@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:daff_app/helpers/queue_helper.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 import 'package:daff_app/widgets/audio_player/screen_state.dart';
@@ -13,18 +14,20 @@ import 'controls.dart';
 
 
 class AudioPlayerApp extends StatefulWidget {
-  final Story story;
-  AudioPlayerApp(this.story);
+  final MediaItem mediaItem;
+  AudioPlayerApp(this.mediaItem);
   @override
   _AudioPlayerAppState createState() => new _AudioPlayerAppState();
 }
 
 class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObserver {
   final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
+  QueueHelper queueHelper = QueueHelper();
 
   @override
   void initState() {
     super.initState();
+    queueHelper.initalize();
     // widget.queueModel.insert(widget.story.mediaItem);
     WidgetsBinding.instance.addObserver(this);
     connect();
@@ -62,7 +65,10 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
 
   @override
   Widget build(BuildContext context) {
-    
+    print('--------------------');
+    print('queue:');
+    // queueHelper.insert(widget.mediaItem);
+    print(queueHelper.queue);
     return MaterialApp( 
       home: WillPopScope(
         onWillPop: () {
@@ -173,7 +179,7 @@ Widget originalAudioPlayer(){
                   ),
                 if (mediaItem?.title != null) Text(mediaItem.title),
                 if (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ...[
-                  audioPlayerButton(),
+                  audioPlayerButton(widget.mediaItem)
                 ] else
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -220,16 +226,16 @@ Widget originalAudioPlayer(){
 
 
 void _audioPlayerTaskEntrypoint() async {
-  // AudioServiceBackground.run(() => AudioPlayerTask(story));
   AudioServiceBackground.run(() => AudioPlayerTask());
 }
 
 
 
-RaisedButton audioPlayerButton() => startButton(
+RaisedButton audioPlayerButton(MediaItem mediaItem) => startButton(
   'AudioPlayer',
   () {
-    print('hi');
+    QueueHelper queueHelper = QueueHelper();
+    queueHelper.insert(mediaItem);
     AudioService.start(
       backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
       androidNotificationChannelName: 'Audio Service Demo',

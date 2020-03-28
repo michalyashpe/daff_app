@@ -29,7 +29,7 @@ class _StoryScreenState extends State<StoryScreen>{
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          bottomSheet: showPlayer ? AudioPlayerApp(model.story) : Text(''),
+          bottomSheet: showPlayer ? AudioPlayerApp(model.story.mediaItem) : Text(''),
           body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -47,7 +47,7 @@ class _StoryScreenState extends State<StoryScreen>{
                 <Widget>[
                   IconButton(
                     icon: Icon(Icons.volume_up),
-                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AudioPlayerApp(model.story)))
+                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AudioPlayerApp(model.story.mediaItem)))
                     // onPressed: () => setState((){
                     //   showPlayer = true;
                     // }),

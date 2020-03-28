@@ -9,10 +9,16 @@ import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerTask extends BackgroundAudioTask {
   final QueueHelper queueHelper = QueueHelper();
-  
-  List<MediaItem>  get _queue {
-    return queueHelper.queue;
+
+  List<MediaItem> _queue;
+
+  Future<void> _initializeQueue() async {
+    if (_queue != null) return
+    _queue = List<MediaItem>();
+    await queueHelper.fetchQueue();
+    _queue = queueHelper.queue;
   } 
+
   int _queueIndex = -1;
   AudioPlayer _audioPlayer = new AudioPlayer();
   Completer _completer = Completer();
@@ -48,6 +54,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStart() async {
+    await _initializeQueue();
     var playerStateSubscription = _audioPlayer.playbackStateStream
         .where((state) => state == AudioPlaybackState.completed)
         .listen((state) {

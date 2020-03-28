@@ -5,27 +5,30 @@ import 'package:flutter/material.dart';
 
 
 
-RaisedButton startButton(String label, VoidCallback onPressed) =>
-      RaisedButton(
-        child: Text(label),
-        onPressed: onPressed,
-      );
+  IconButton startButton(VoidCallback onPressed) =>
+    IconButton(
+      onPressed: onPressed,
+      icon: Icon(Icons.play_circle_outline, color: Colors.white)
+    );
+
+
+      
 
   IconButton playButton() => IconButton(
-        icon: Icon(Icons.play_arrow),
-        iconSize: 64.0,
+        icon: Icon(Icons.play_circle_outline, color: Colors.white),
+        // iconSize: 64.0,
         onPressed: AudioService.play,
       );
 
   IconButton pauseButton() => IconButton(
-        icon: Icon(Icons.pause),
-        iconSize: 64.0,
+        icon: Icon(Icons.pause_circle_outline, color: Colors.white),
+        // iconSize: 64.0,
         onPressed: AudioService.pause,
       );
 
   IconButton stopButton() => IconButton(
-        icon: Icon(Icons.stop),
-        iconSize: 64.0,
+        icon: Icon(Icons.stop, color: Colors.white),
+        // iconSize: 64.0,
         onPressed: AudioService.stop,
       );
 

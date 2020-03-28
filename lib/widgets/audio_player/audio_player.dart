@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:daff_app/helpers/queue_helper.dart';
-import 'package:daff_app/models/story.dart';
 import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 import 'package:daff_app/widgets/audio_player/screen_state.dart';
 import 'package:flutter/material.dart';
@@ -63,22 +62,69 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
     AudioService.disconnect();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    print('--------------------');
-    print('queue:');
-    // queueHelper.insert(widget.mediaItem);
     print(queueHelper.queue);
-    return MaterialApp( 
-      home: WillPopScope(
-        onWillPop: () {
-          disconnect();
-          return Future.value(true);
-        },
-        // child: buildAudioPlayer(widget.story)
-        child: originalAudioPlayer()
-        
-      ));
+    return WillPopScope(
+      onWillPop: () {
+        disconnect();
+        return Future.value(true);
+      },
+      child: Container(
+        color: Colors.black87,
+        height: 50.0,
+        child: StreamBuilder<ScreenState>(
+          stream: Rx.combineLatest3<List<MediaItem>, MediaItem, PlaybackState, ScreenState>(
+              AudioService.queueStream,
+              AudioService.currentMediaItemStream,
+              AudioService.playbackStateStream,
+              (queue, mediaItem, playbackState) => ScreenState(queue, mediaItem, playbackState)),
+          
+          builder: (context, snapshot) {
+            final screenState = snapshot.data;
+            final queue = screenState?.queue;
+            final mediaItem = screenState?.mediaItem;
+            final state = screenState?.playbackState;
+            final basicState = state?.basicState ?? BasicPlaybackState.none;
+            
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                widget.mediaItem.artUri != null && widget.mediaItem.artUri != '' ? 
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.all(7.0),
+                    child: Image.network(widget.mediaItem.artUri) //buildAvatarImage(story)
+                  ) : null,
+                Expanded( child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                  Text(widget.mediaItem.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  Text(widget.mediaItem.artist, style: TextStyle(color: Colors.white)),  
+                ],)),
+
+                Text('1'),
+                (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ? 
+                  firstPlayButton(widget.mediaItem) 
+                  : basicState == BasicPlaybackState.buffering ||
+                    basicState == BasicPlaybackState.skippingToNext ||
+                    basicState == BasicPlaybackState.skippingToPrevious ?
+                    CircularProgressIndicator() 
+                    : (basicState == BasicPlaybackState.playing) ?
+                      pauseButton() 
+                      : (basicState == BasicPlaybackState.paused) ?
+                      playButton() : Text('?'),
+                  
+                // stopButton()
+              ],
+              );
+            })
+          )
+          
+    );
   }
 
 
@@ -179,7 +225,7 @@ Widget originalAudioPlayer(){
                   ),
                 if (mediaItem?.title != null) Text(mediaItem.title),
                 if (basicState == BasicPlaybackState.none || basicState == BasicPlaybackState.stopped) ...[
-                  audioPlayerButton(widget.mediaItem)
+                  // audioPlayerButton(widget.mediaItem)
                 ] else
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -217,6 +263,7 @@ Widget originalAudioPlayer(){
     );
   }
 
+  
 
 
 
@@ -230,55 +277,43 @@ void _audioPlayerTaskEntrypoint() async {
 }
 
 
-
-RaisedButton audioPlayerButton(MediaItem mediaItem) => startButton(
-  'AudioPlayer',
+IconButton firstPlayButton(MediaItem mediaItem) => startButton(
   () {
-    QueueHelper queueHelper = QueueHelper();
-    queueHelper.insert(mediaItem);
-    AudioService.start(
-      backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
-      androidNotificationChannelName: 'Audio Service Demo',
-      notificationColor: 0xFF2196f3,
-      androidNotificationIcon: 'mipmap/ic_launcher',
-      enableQueue: false,
-    );
-  },
-);
+      QueueHelper queueHelper = QueueHelper();
+      queueHelper.deleteAll();
+      queueHelper.insert(mediaItem);
+      print('starting player...');
+      AudioService.start(
+        backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
+        androidNotificationChannelName: 'הדף',
+        notificationColor: 0xFF2196f3,
+        androidNotificationIcon: 'mipmap/ic_launcher',
 
-
-
-
-
-
-
-
-Widget buildAudioPlayer(Story story){
-  return Container(
-    color: Colors.black,
-    height: 50.0,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-       story.imageUrl != null && story.imageUrl != '' ? 
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(7.0),
-          child: Image.network(story.imageUrl) //buildAvatarImage(story)
-        ): null,
-        Expanded( child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-          Text(story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text(story.author.name, style: TextStyle(color: Colors.white)),  
-        ],)),
-        IconButton(
-          onPressed: () => print('play audio............'),
-          icon: Icon(Icons.play_circle_outline, color: Colors.white),
-        ),
-    
-    ],)
+        // androidNotificationIcon: 'assets/ic_launcher.png',
+        enableQueue: true,
+      );
+    }
   );
-}
+
+
+// RaisedButton audioPlayerButton(MediaItem mediaItem) => startButton(
+//   'AudioPlayer',
+//   () {
+//     QueueHelper queueHelper = QueueHelper();
+//     queueHelper.insert(mediaItem);
+//     AudioService.start(
+//       backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
+//       androidNotificationChannelName: 'Audio Service Demo',
+//       notificationColor: 0xFF2196f3,
+//       androidNotificationIcon: 'mipmap/ic_launcher',
+//       enableQueue: false,
+//     );
+//   },
+// );
+
+
+
+
+
+
 

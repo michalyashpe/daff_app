@@ -47,10 +47,9 @@ class _StoryScreenState extends State<StoryScreen>{
                 <Widget>[
                   IconButton(
                     icon: Icon(Icons.volume_up),
-                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AudioPlayerApp(model.story.mediaItem)))
-                    // onPressed: () => setState((){
-                    //   showPlayer = true;
-                    // }),
+                    onPressed: () => setState((){
+                      showPlayer = !showPlayer;
+                    }),
                   )
               ] : <Widget>[]
             ),

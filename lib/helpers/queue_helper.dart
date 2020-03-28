@@ -68,6 +68,11 @@ class QueueHelper{
     print('deleted $rowsDeleted row(s): row $id');
   }
 
+  void deleteAll() async {
+    final allRows = await dbHelper.queryAllRows();
+    allRows.forEach((row) => dbHelper.delete(row['_id']));
+  }
+
 
 
   Map<String, dynamic> getRow(MediaItem mediaItem){

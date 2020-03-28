@@ -37,7 +37,7 @@ dependencies:
   sentry: '>=3.0.0 <4.0.0'
   transparent_image: ^1.0.0
 
-
+  sqflite: ^1.2.0
   path_provider: ^1.5.1
   just_audio: ^0.0.6
   rxdart: ^0.23.1

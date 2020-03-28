@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
 import 'package:daff_app/screens/splash_screen.dart';
-import 'package:daff_app/widgets/audio_player/audio_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,6 +97,7 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
     storiesModel = StoriesModel();
+
     // homeModel = HomeModel();
     // homeModel.initialize();
     

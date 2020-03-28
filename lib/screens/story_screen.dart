@@ -1,10 +1,11 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
+import 'package:daff_app/widgets/audio_player/audio_player.dart';
 // import 'package:daff_app/widgets/all_rights_widget.dart';
 // import 'package:daff_app/widgets/audio_player.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
-import 'package:daff_app/widgets/editor_pick_widget.dart';
+// import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/icon.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
@@ -21,13 +22,14 @@ class StoryScreen extends StatefulWidget{
 }
 
 class _StoryScreenState extends State<StoryScreen>{
+
   bool showPlayer = false;
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          bottomSheet: showPlayer ? buildAudioPlayer(model.story) : Text(''),
+          bottomSheet: showPlayer ? AudioPlayerApp(model.story) : Text(''),
           body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -45,9 +47,10 @@ class _StoryScreenState extends State<StoryScreen>{
                 <Widget>[
                   IconButton(
                     icon: Icon(Icons.volume_up),
-                    onPressed: () => setState((){
-                      showPlayer = true;
-                    }),
+                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AudioPlayerApp(model.story)))
+                    // onPressed: () => setState((){
+                    //   showPlayer = true;
+                    // }),
                   )
               ] : <Widget>[]
             ),
@@ -56,6 +59,7 @@ class _StoryScreenState extends State<StoryScreen>{
               delegate: SliverChildListDelegate([
                 // _buildStoryTitle(model.story),
                 SizedBox(height: 10.0,),
+                // buildDBbuttons(),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                   child: _buildProfileBox(model.story, loading: model.isLoading)
@@ -97,21 +101,21 @@ class _StoryScreenState extends State<StoryScreen>{
      
 
 
-  Widget _buildStoryTitle(Story story){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-      Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-        Text(story.title, 
-          style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
-        ),
-        SizedBox(width: 5.0,),
-        buildEditerPickMedalWidget(story, bigSize: true),
-      ],),
-    ],);
-  }
+  // Widget _buildStoryTitle(Story story){
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //     Wrap(
+  //       crossAxisAlignment: WrapCrossAlignment.center,
+  //       children: <Widget>[
+  //       Text(story.title, 
+  //         style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
+  //       ),
+  //       SizedBox(width: 5.0,),
+  //       buildEditerPickMedalWidget(story, bigSize: true),
+  //     ],),
+  //   ],);
+  // }
 
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
@@ -194,34 +198,45 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
  
+
+
+// Widget buildDBbuttons(){
+  // return  Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           RaisedButton(
+  //             child: Text('insert', style: TextStyle(fontSize: 20),),
+  //             onPressed: () {_insert();},
+  //           ),
+  //           RaisedButton(
+  //             child: Text('query', style: TextStyle(fontSize: 20),),
+  //             onPressed: () {_query();},
+  //           ),
+  //           RaisedButton(
+  //             child: Text('update', style: TextStyle(fontSize: 20),),
+  //             onPressed: () {_update();},
+  //           ),
+  //           RaisedButton(
+  //             child: Text('delete', style: TextStyle(fontSize: 20),),
+  //             onPressed: () {_delete();},
+  //           ),
+  //         ],
+  //       );
+// }
+
+
+
+
 }
 
 
-Widget buildAudioPlayer(Story story){
-  return Container(
-    color: Colors.black,
-    height: 50.0,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-       story.imageUrl != null && story.imageUrl != '' ? 
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(7.0),
-          child: Image.network(story.imageUrl) //buildAvatarImage(story)
-        ): null,
-        Expanded( child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-          Text(story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
-          Text(story.author.name, style: TextStyle(color: Colors.white)),  
-        ],)),
-        IconButton(
-          onPressed: () => print('play audio............'),
-          icon: Icon(Icons.play_circle_outline, color: Colors.white),
-        ),
-    
-    ],)
-  );
-}
+
+
+
+
+
+
+
+
+
+

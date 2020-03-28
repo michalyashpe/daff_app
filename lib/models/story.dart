@@ -1,6 +1,7 @@
 
 
 
+import 'package:audio_service/audio_service.dart';
 import 'package:daff_app/models/author.dart';
 
 class Story {
@@ -47,7 +48,17 @@ class Story {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
   }
 
-
+  MediaItem get mediaItem {
+     MediaItem mediaItem = MediaItem(
+      id: "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
+      album: title,
+      title: title,
+      artist: author.name,
+      duration: 5739820,
+      artUri: imageUrl != null ? imageUrl : "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
+    );
+    return mediaItem;
+  }
 
   String get dateFormatted {
     List<String> hebrewMonthNames = ['ינואר', 'פברואר', 'מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];

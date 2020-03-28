@@ -2,31 +2,17 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:daff_app/helpers/queue_helper.dart';
 import 'package:daff_app/widgets/audio_player/controls.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerTask extends BackgroundAudioTask {
-  final _queue = <MediaItem>[
-    MediaItem(
-      id: "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
-      album: "Science Friday",
-      title: "A Salute To Head-Scratching Science",
-      artist: "Science Friday and WNYC Studios",
-      duration: 5739820,
-      artUri:
-          "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-    ),
-    MediaItem(
-      id: "https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3",
-      album: "Science Friday",
-      title: "From Cat Rheology To Operatic Incompetence",
-      artist: "Science Friday and WNYC Studios",
-      duration: 2856950,
-      artUri:
-          "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-    ),
-  ];
+  final QueueHelper queueHelper = QueueHelper();
+  
+  List<MediaItem>  get _queue {
+    return queueHelper.queue;
+  } 
   int _queueIndex = -1;
   AudioPlayer _audioPlayer = new AudioPlayer();
   Completer _completer = Completer();
@@ -78,6 +64,8 @@ class AudioPlayerTask extends BackgroundAudioTask {
     });
 
     AudioServiceBackground.setQueue(_queue);
+    print('±±±±±±±±±±±±±±±±± set queue');
+    print(_queue);
     await onSkipToNext();
     await _completer.future;
     playerStateSubscription.cancel();

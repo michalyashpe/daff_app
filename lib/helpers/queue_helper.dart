@@ -7,8 +7,13 @@ class QueueHelper{
   List<MediaItem> _queue;
 
   Future<void> initalize() async {
-    if (_queue != null) return;
+    // if (_queue != null) return;
     await fetchQueue();
+  }
+
+  Future<void> refreshQueue() async{
+    await fetchQueue();
+    return;
   }
 
    Future<void> fetchQueue() async {
@@ -26,6 +31,9 @@ class QueueHelper{
       );
       _queue.add(newMediaItem);
     }); 
+    
+    print('updated queue:');
+    queue.forEach((q) => print(q.title));
     return;
   }
 
@@ -37,16 +45,14 @@ class QueueHelper{
   
 
   void insert(MediaItem mediaItem) async {
-    print('inserting mediaItem');
-    query();
-    // print('queue.length: ${queue.length}');
-    // row to insert
-    
+    print('adding to queue: ${mediaItem.title}');
     final id = await dbHelper.insert(getRow(mediaItem));
-    fetchQueue();
-    print('inserted row id: $id');
-    // print('queue.length: ${queue.length}');
-    query();
+    await fetchQueue();
+  }
+
+  void replace(MediaItem mediaItem){
+    deleteAll();
+    insert(mediaItem);
   }
 
 
@@ -61,16 +67,19 @@ class QueueHelper{
     print('updated $rowsAffected row(s)');
   }
 
-  void delete() async {
-    // Assuming that the number of rows is the id for the last row.
-    final id = await dbHelper.queryRowCount();
-    final rowsDeleted = await dbHelper.delete(id);
-    print('deleted $rowsDeleted row(s): row $id');
-  }
+  // void delete() async {
+  //   // Assuming that the number of rows is the id for the last row.
+  //   final id = await dbHelper.queryRowCount();
+  //   final rowsDeleted = await dbHelper.delete(id);
+  //   print('deleted $rowsDeleted row(s): row $id');
+  // }
 
   void deleteAll() async {
     final allRows = await dbHelper.queryAllRows();
-    allRows.forEach((row) => dbHelper.delete(row['_id']));
+    print('db rows length: ${allRows.length}');
+    allRows.forEach((row) {
+      dbHelper.delete(row['_id']);
+    });
   }
 
 

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 
 
+
+
   IconButton startButton(VoidCallback onPressed) =>
     IconButton(
       onPressed: onPressed,
@@ -12,23 +14,32 @@ import 'package:flutter/material.dart';
     );
 
 
-      
+  Widget playerLoader(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      child: SizedBox(
+        height: 15.0, 
+        width: 15.0 ,
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+          strokeWidth: 2.0,
+        )
+      )
+    );
+  }    
 
   IconButton playButton() => IconButton(
         icon: Icon(Icons.play_circle_outline, color: Colors.white),
-        // iconSize: 64.0,
         onPressed: AudioService.play,
       );
 
   IconButton pauseButton() => IconButton(
         icon: Icon(Icons.pause_circle_outline, color: Colors.white),
-        // iconSize: 64.0,
         onPressed: AudioService.pause,
       );
 
   IconButton stopButton() => IconButton(
         icon: Icon(Icons.stop, color: Colors.white),
-        // iconSize: 64.0,
         onPressed: AudioService.stop,
       );
 

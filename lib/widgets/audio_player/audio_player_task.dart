@@ -13,10 +13,17 @@ class AudioPlayerTask extends BackgroundAudioTask {
   List<MediaItem> _queue;
 
   Future<void> _initializeQueue() async {
-    if (_queue != null) return
-    _queue = List<MediaItem>();
+    // if (_queue != null) return
+    
     await queueHelper.fetchQueue();
-    _queue = queueHelper.queue;
+    if (_queue != queueHelper.queue) {
+      _queue = List<MediaItem>();
+      _queue = queueHelper.queue;
+      // if (AudioServiceBackground.state.basicState == BasicPlaybackState.playing){
+      //   print('trying to stop the previous story to listen to the new one');
+      //   onStop();
+      // }
+    }
   } 
 
   int _queueIndex = -1;
@@ -70,9 +77,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       }
     });
 
-    AudioServiceBackground.setQueue(_queue);
-    print('±±±±±±±±±±±±±±±±± set queue');
-    print(_queue);
+    await AudioServiceBackground.setQueue(_queue);
+    print('AudioServiceBackground: set new queue:');
+    _queue.forEach(((q)=> q.title));
     await onSkipToNext();
     await _completer.future;
     playerStateSubscription.cancel();

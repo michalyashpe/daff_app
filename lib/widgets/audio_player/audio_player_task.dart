@@ -181,17 +181,17 @@ class AudioPlayerTask extends BackgroundAudioTask {
   List<MediaControl> getControls(BasicPlaybackState state) {
     if (_playing) {
       return [
-        skipToPreviousControl,
+        // skipToPreviousControl,
         pauseControl,
         stopControl,
-        skipToNextControl
+        // skipToNextControl
       ];
     } else {
       return [
-        skipToPreviousControl,
+        // skipToPreviousControl,
         playControl,
         stopControl,
-        skipToNextControl
+        // skipToNextControl
       ];
     }
   }

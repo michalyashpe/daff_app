@@ -58,7 +58,7 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
 
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
+        Flexible(
           child: RichText(
             text: TextSpan(
               children: <InlineSpan> [
@@ -70,15 +70,18 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
               ]
             ))
         ),
-        // SizedBox(height: storyPreviewLineHeight/2.0),
-        Row(
+        Flexible(child: Wrap(
+          spacing: 0.0,
           children: <Widget>[
-            Text(authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString),
+            Text(
+              authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString,
+              maxLines: 2, 
+            ),
             SizedBox(width: 5.0,),
             story.hasAudio ? 
               Icon(Icons.volume_up, color: Colors.grey[700], size: 12.0,) 
               : Text('')
-        ],),
+        ],)),
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
           buildStoryTagsWidget(story.tags, context, tagView: tagView),

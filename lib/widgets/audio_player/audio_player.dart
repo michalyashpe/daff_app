@@ -96,7 +96,7 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
+                  onTap: () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
                   child: Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(7.0),
@@ -105,7 +105,7 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
                 ),
                 Expanded( 
                   child: GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
+                    onTap: () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,

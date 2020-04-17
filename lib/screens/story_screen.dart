@@ -1,8 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/providers/audio_player_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/widgets/audio_player/audio_player.dart';
+import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 // import 'package:daff_app/widgets/all_rights_widget.dart';
 // import 'package:daff_app/widgets/audio_player.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
@@ -25,12 +27,19 @@ class StoryScreen extends StatefulWidget{
 class _StoryScreenState extends State<StoryScreen>{
 
   bool showPlayer = false;
+  bool storyAdded = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
+
+        void _audioPlayerTaskEntrypoint() {
+          AudioServiceBackground.run(() => AudioPlayerTask());
+        }
         return Scaffold(
-          bottomSheet: showPlayer ? AudioPlayerApp(model.story.mediaItem) : Text(''),
+          bottomSheet: showPlayer || AudioService.playbackState?.basicState == BasicPlaybackState.playing ? AudioPlayerApp() : Text(''),
           body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -48,9 +57,41 @@ class _StoryScreenState extends State<StoryScreen>{
                 <Widget>[
                   IconButton(
                     icon: Icon(Icons.volume_up),
-                    onPressed: () => setState((){
-                      showPlayer = !showPlayer;
-                    }),
+                    onPressed: () async {
+                        print('hello');
+                        AudioService.start(
+
+                          resumeOnClick: true,
+                          androidNotificationOngoing: true,
+                          androidStopForegroundOnPause: true,
+                          backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
+                          androidNotificationChannelName: 'הדף',
+                          notificationColor: 0xFF2196f3,
+                          androidNotificationIcon: 'mipmap/launcher_icon',
+                          enableQueue: true
+                        );
+                          // storyAdded = true;
+                      Map<String, dynamic> parameters = {
+                        'mediaID': model.story.mediaItem.id,
+                        'mediaTitle': model.story.mediaItem.title,
+                        'channelID': model.story.mediaItem.artist,
+                        'duration': model.story.mediaItem.duration,
+                        'thumbnailURI': model.story.mediaItem.artUri
+                      };
+                      print('hi');
+                      //  await AudioService.customAction('playMedia', parameters);
+                       await AudioService.addQueueItem(model.story.mediaItem);
+                       print('ciao');
+                      setState((){
+                        showPlayer = !showPlayer;
+                      });
+                    }
+                  ),
+                   IconButton(
+                    icon: Icon(Icons.volume_mute),
+                    onPressed: () async {
+                        // AudioService.addQueueItem(model.story.mediaItem);
+                    }
                   )
               ] : <Widget>[]
             ),

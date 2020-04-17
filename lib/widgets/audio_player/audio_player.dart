@@ -1,45 +1,38 @@
-import 'dart:math';
-
-import 'package:daff_app/helpers/queue_helper.dart';
+// import 'dart:math';
+// import 'package:daff_app/screens/story_audio_player_screen.dart';
+import 'package:daff_app/providers/audio_player_provider.dart';
 import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 import 'package:daff_app/widgets/audio_player/screen_state.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:audio_service/audio_service.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'controls.dart';
 
-
-
 class AudioPlayerApp extends StatefulWidget {
-  final MediaItem mediaItem;
-  AudioPlayerApp(this.mediaItem);
+  // final MediaItem newMediaItem;
+  // AudioPlayerApp(this.newMediaItem);
   @override
   _AudioPlayerAppState createState() => new _AudioPlayerAppState();
 }
 
 class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObserver {
-  final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
-  QueueHelper queueHelper = QueueHelper();
+  // final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
+
 
   @override
   void initState() {
     super.initState();
-    queueHelper.initalize();
     WidgetsBinding.instance.addObserver(this);
-
-    queueHelper.replace(widget.mediaItem);
-    queueHelper.refreshQueue();
-
-
-
-    connect();
+    print('-------audio player init state-----');
+    // connect();
   }
 
   @override
   void dispose() {
-    disconnect();
+    // disconnect('dispose');
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -48,23 +41,14 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        connect();
+        Provider.of<AudioPlayerProvider>(context, listen: false).connect();
         break;
       case AppLifecycleState.paused:
-        disconnect();
+        Provider.of<AudioPlayerProvider>(context, listen: false).disconnect('AppLifecycleState.paused');
         break;
       default:
         break;
     }
-  }
-
-  void connect() async {
-    await AudioService.connect();
-  }
-
-  void disconnect() {
-    print('disconnecting');
-    AudioService.disconnect();
   }
 
 
@@ -72,113 +56,128 @@ class _AudioPlayerAppState extends State<AudioPlayerApp> with WidgetsBindingObse
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        disconnect();
-        return Future.value(true);
-      },
-      child: Container(
-        color: Colors.black87,
-        height: 50.0,
-        child: StreamBuilder<ScreenState>(
-          stream: Rx.combineLatest3<List<MediaItem>, MediaItem, PlaybackState, ScreenState>(
-              AudioService.queueStream,
-              AudioService.currentMediaItemStream,
-              AudioService.playbackStateStream,
-              (queue, mediaItem, playbackState) => ScreenState(queue, mediaItem, playbackState)),
-          
-          builder: (context, snapshot) {
-            final screenState = snapshot.data;
-            final queue = screenState?.queue;
-            final mediaItem = screenState?.mediaItem;
-            final state = screenState?.playbackState;
-            final basicState = state?.basicState ?? BasicPlaybackState.none;
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.all(7.0),
-                      child: Image.network(mediaItem.artUri)
-                    ),
-                ),
-                Expanded( 
-                  child: GestureDetector(
-                    onTap: () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(mediaItem.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
-                        Text(mediaItem.artist, style: TextStyle(color: Colors.white)),  
-                      ],
-                    )
-                  )
-                ),
-               
-                  
-                      : basicState == BasicPlaybackState.buffering ||
-                        basicState == BasicPlaybackState.skippingToNext ||
-                        basicState == BasicPlaybackState.skippingToPrevious ?
-                        playerLoader()
-                        : (basicState == BasicPlaybackState.playing) ?
-                          pauseButton() 
-                          : (basicState == BasicPlaybackState.paused) ?
-                          playButton() : Text('?')
-                  
-              ],
-              );
-            })
-          )
-          
+        onWillPop: () {
+          // disconnect('WillPopScope');
+          return Future.value(true);
+        },
+        child: Consumer<AudioPlayerProvider>(
+        builder: (BuildContext context,  AudioPlayerProvider audioPlayerProvider, Widget child) {
+          return Container(
+            color: Colors.black87,
+            height: 50.0,
+            child: StreamBuilder<ScreenState>(
+                stream: Rx.combineLatest3<List<MediaItem>, MediaItem,
+                        PlaybackState, ScreenState>(
+                    AudioService.queueStream,
+                    AudioService.currentMediaItemStream,
+                    AudioService.playbackStateStream,
+                    (queue, mediaItem, playbackState) =>
+                        ScreenState(queue, mediaItem, playbackState)),
+                builder: (context, snapshot) {
+                  final screenState = snapshot.data;
+                  final queue = screenState?.queue;
+                  final mediaItem = screenState?.mediaItem ; 
+                  final state = screenState?.playbackState;
+                  final basicState =
+                      state?.basicState ?? BasicPlaybackState.none;
+                  print(AudioService.connected);
+                  if (screenState != null) screenState.printScreenState();
+                  return mediaItem == null ? Row(children: <Widget>[Text('no MediaItem', style: TextStyle(color: Colors.white))]) : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap:
+                            () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
+                        child: Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(7.0),
+                            child: Image.network(mediaItem.artUri)),
+                      ),
+                      Expanded(
+                          child: GestureDetector(
+                              onTap:
+                                  () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => StoryAudioPlayerScreen(mediaItem))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(mediaItem.title,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold)),
+                                  Text(mediaItem.artist,
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ))),
+
+                      // Text('hi', style: TextStyle(color: Colors.white))
+                      Provider.of<AudioPlayerProvider>(context).loading
+                          ? Text('AudioPlayerProvider loading')
+                          // playerLoader()
+                          : (basicState == BasicPlaybackState.none ||
+                                  basicState == BasicPlaybackState.stopped)
+                              ? playButton()
+                              // : (basicState == BasicPlaybackState.playing || basicState == BasicPlaybackState.paused) && widget.newMediaItem == null ?
+                              //   firstPlayButton(stop: true)
+                              : basicState == BasicPlaybackState.buffering ||
+                                      basicState ==
+                                          BasicPlaybackState.skippingToNext ||
+                                      basicState ==
+                                          BasicPlaybackState.skippingToPrevious
+                                  ? playerLoader()
+                                  : (basicState == BasicPlaybackState.playing)
+                                      ? stopButton()
+                                      // pauseButton()
+                                      // : (basicState == BasicPlaybackState.paused)  ?
+                                      // firstPlayButton(stop: true)
+                                      // playButton()
+                                      : Text('?')
+                    ],
+                  );
+                }));
+      })
     );
   }
 
-
-
-
-Widget positionIndicator(MediaItem mediaItem, PlaybackState state) {
-    double seekPos;
-    return StreamBuilder(
-      stream: Rx.combineLatest2<double, double, double>(
-          _dragPositionSubject.stream,
-          Stream.periodic(Duration(milliseconds: 200)),
-          (dragPosition, _) => dragPosition),
-      builder: (context, snapshot) {
-        double position = snapshot.data ?? state.currentPosition.toDouble();
-        double duration = mediaItem?.duration?.toDouble();
-        return Column(
-          children: [
-            if (duration != null)
-              Slider(
-                min: 0.0,
-                max: duration,
-                value: seekPos ?? max(0.0, min(position, duration)),
-                onChanged: (value) {
-                  _dragPositionSubject.add(value);
-                },
-                onChangeEnd: (value) {
-                  AudioService.seekTo(value.toInt());
-                  // Due to a delay in platform channel communication, there is
-                  // a brief moment after releasing the Slider thumb before the
-                  // new position is broadcast from the platform side. This
-                  // hack is to hold onto seekPos until the next state update
-                  // comes through.
-                  // TODO: Improve this code.
-                  seekPos = value;
-                  _dragPositionSubject.add(null);
-                },
-              ),
-            Text("${(state.currentPosition / 1000).toStringAsFixed(3)}"),
-          ],
-        );
-      },
-    );
-  }
-
-
-
+  // Widget positionIndicator(MediaItem mediaItem, PlaybackState state) {
+  //   double seekPos;
+  //   return StreamBuilder(
+  //     stream: Rx.combineLatest2<double, double, double>(
+  //         _dragPositionSubject.stream,
+  //         Stream.periodic(Duration(milliseconds: 200)),
+  //         (dragPosition, _) => dragPosition),
+  //     builder: (context, snapshot) {
+  //       double position = snapshot.data ?? state.currentPosition.toDouble();
+  //       double duration = mediaItem?.duration?.toDouble();
+  //       return Column(
+  //         children: [
+  //           if (duration != null)
+  //             Slider(
+  //               min: 0.0,
+  //               max: duration,
+  //               value: seekPos ?? max(0.0, min(position, duration)),
+  //               onChanged: (value) {
+  //                 _dragPositionSubject.add(value);
+  //               },
+  //               onChangeEnd: (value) {
+  //                 AudioService.seekTo(value.toInt());
+  //                 // Due to a delay in platform channel communication, there is
+  //                 // a brief moment after releasing the Slider thumb before the
+  //                 // new position is broadcast from the platform side. This
+  //                 // hack is to hold onto seekPos until the next state update
+  //                 // comes through.
+  //                 // TODO: Improve this code.
+  //                 seekPos = value;
+  //                 _dragPositionSubject.add(null);
+  //               },
+  //             ),
+  //           Text("${(state.currentPosition / 1000).toStringAsFixed(3)}"),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
 // Widget originalAudioPlayer(){
 //   return new Scaffold(
@@ -271,45 +270,23 @@ Widget positionIndicator(MediaItem mediaItem, PlaybackState state) {
 //     );
 //   }
 
-  
-
-
-
 }
-
-
-
 
 void _audioPlayerTaskEntrypoint() async {
   AudioServiceBackground.run(() => AudioPlayerTask());
 }
 
-
-IconButton firstPlayButton(MediaItem mediaItem, {bool stop = false}) {
-    return startButton(
-      () {
-        print('starting player...');
-        if(stop)
-          AudioService.stop();
-        AudioService.start(
-          backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
-          androidNotificationChannelName: 'הדף',
-          notificationColor: 0xFF2196f3,
-          // androidNotificationIcon: 'mipmap/ic_launcher',
-          androidNotificationIcon: 'mipmap/launcher_icon',
-          enableQueue: true,
-        );
-      }
+IconButton firstPlayButton({bool stop = false}) {
+  return startButton(() {
+    print('starting player...');
+    if (stop) AudioService.stop();
+    AudioService.start(
+      backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
+      androidNotificationChannelName: 'הדף',
+      notificationColor: 0xFF2196f3,
+      // androidNotificationIcon: 'mipmap/ic_launcher',
+      androidNotificationIcon: 'mipmap/launcher_icon',
+      enableQueue: true,
     );
-
+  });
 }
-
-
-
-
-
-
-
-
-
-

@@ -3,7 +3,9 @@ library crashy;
 import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
+import 'package:daff_app/providers/audio_player_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
+import 'package:daff_app/widgets/audio_player/audio_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +15,6 @@ import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
-import 'package:daff_app/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -85,6 +86,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   FirebaseAPI firebaseAPI;
   StoriesModel storiesModel ;
+  AudioPlayerProvider audioPlayerProvider;
+  
 
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -95,6 +98,10 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
     storiesModel = StoriesModel();
+    audioPlayerProvider = AudioPlayerProvider();
+    // queueHelper.initalize();
+    // audioPlayerProvider.deleteAll();
+    
 
     // homeModel = HomeModel();
     // homeModel.initialize();
@@ -110,6 +117,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => AuthenticationModel()),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => StoryModel()),
+        ChangeNotifierProvider(create: (_) => audioPlayerProvider),
         ChangeNotifierProvider(create: (_) =>  storiesModel),
         ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],

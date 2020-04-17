@@ -1,5 +1,4 @@
 
-import 'package:daff_app/helpers/queue_helper.dart';
 import 'package:flutter/material.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -7,12 +6,10 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen>{
-  QueueHelper queueHelper = QueueHelper();
 
   @override
   void initState() {
     super.initState();
-    queueHelper.initalize();
     print('-------audio player init state-----');
   }
 

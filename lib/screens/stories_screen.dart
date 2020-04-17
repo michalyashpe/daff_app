@@ -1,5 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_provider.dart';
+import 'package:daff_app/widgets/audio_player/audio_player.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,8 @@ class _StoriesScreenState extends State<StoriesScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: AudioService.playbackState?.basicState == BasicPlaybackState.playing ? AudioPlayerApp() : Text(''),
+      // bottomSheet: Provider.of<QueueHelper>(context, listen: false).isPlaying ? AudioPlayerApp(null) : Text(''),
       drawer: buildDrawer(context),
       body: Consumer<StoriesModel>(
         builder: (BuildContext context,  StoriesModel model, Widget child) {

@@ -23,8 +23,8 @@ class SplashScreenState extends State<SplashScreen> {
   Future<Timer> delaySplashScreen() async {
     return Timer(
       Duration(milliseconds: 1500), 
-      () async => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')))
-    );
+      () async => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true'))));
+      // () async => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => StoriesScreen('בית זמני', 'with_audio=true'))));
   }
 
   @override

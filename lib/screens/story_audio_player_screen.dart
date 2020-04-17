@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:daff_app/helpers/queue_helper.dart';
 import 'package:daff_app/screens/playlist_screen.dart';
 import 'package:daff_app/widgets/audio_player/audio_player_task.dart';
 import 'package:daff_app/widgets/audio_player/controls.dart';
@@ -21,18 +20,16 @@ class StoryAudioPlayerScreen extends StatefulWidget {
 
 class _StoryAudioPlayerScreenState extends State<StoryAudioPlayerScreen> with WidgetsBindingObserver {
   final BehaviorSubject<double> _dragPositionSubject = BehaviorSubject.seeded(null);
-  QueueHelper queueHelper = QueueHelper();
 
   @override
   void initState() {
     super.initState();
-    queueHelper.initalize();
     WidgetsBinding.instance.addObserver(this);
     if (widget.newMediaItem != null && widget.newMediaItem != AudioService.currentMediaItem)
       
       // AudioService.addQueueItem(widget.newMediaItem);
-      queueHelper.replace(widget.newMediaItem);
-    queueHelper.refreshQueue();
+      // queueHelper.replace(widget.newMediaItem);
+    // queueHelper.refreshQueue();
     print('-------audio player init state-----');
 
 
@@ -42,7 +39,7 @@ class _StoryAudioPlayerScreenState extends State<StoryAudioPlayerScreen> with Wi
 
   @override
   void dispose() {
-    disconnect();
+    disconnect('dispose');
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -54,7 +51,7 @@ class _StoryAudioPlayerScreenState extends State<StoryAudioPlayerScreen> with Wi
         connect();
         break;
       case AppLifecycleState.paused:
-        disconnect();
+        disconnect('AppLifecycleState.paused');
         break;
       default:
         break;
@@ -65,8 +62,8 @@ class _StoryAudioPlayerScreenState extends State<StoryAudioPlayerScreen> with Wi
     await AudioService.connect();
   }
 
-  void disconnect() {
-    print('disconnecting');
+  void disconnect(String fromWhere) {
+    print('disconnecting $fromWhere');
     AudioService.disconnect();
   }
 
@@ -76,7 +73,7 @@ class _StoryAudioPlayerScreenState extends State<StoryAudioPlayerScreen> with Wi
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        disconnect();
+        disconnect('willPopScope');
         return Future.value(true);
       },
       child: Scaffold(

@@ -45,6 +45,10 @@ class _StoryScreenState extends State<StoryScreen>{
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
+              actions: <Widget>[
+                _offsetPopup(model.story)
+                // IconButton(ic/on: Icon(Icons.donut_small))
+              ],
             ),
             
             SliverList(
@@ -87,6 +91,75 @@ class _StoryScreenState extends State<StoryScreen>{
      
 
 
+  Widget _offsetPopup(Story story) => PopupMenuButton<int>(
+    onSelected: (result) {
+      if (result == 1) showAlertDialog(context, story);
+      // setState(() { _selection = result; }); 
+    },
+    itemBuilder: (context) => [
+      PopupMenuItem(
+        value: 1,
+        child: Text('דיווח על תוכן לא הולם',),
+      ),
+     
+    ],
+    icon: Icon(Icons.more_vert),
+    offset: Offset(0, 60),
+  );
+
+
+showAlertDialog(BuildContext context, Story story) {
+  
+  AlertDialog resultDialog = AlertDialog(
+    
+    content: Text("הדיווח שלך על הסיפור ${story.title} התקבל במערכת, תודה על שיתוף הפעולה."),
+    actions: [
+      FlatButton(
+        child: Text("סגור"),
+        onPressed:  () =>  Navigator.of(context).pop(),
+      ),
+    ],
+  );
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text("ביטול"),
+    onPressed:  () =>  Navigator.of(context).pop(),
+  );
+  
+  
+  Widget continueButton = FlatButton(
+    child: Text("דיווח"),
+    onPressed:  () {
+      print('מדווח...');
+      Navigator.of(context).pop();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+        return resultDialog;
+      },
+  );
+      
+    }
+  );
+
+  AlertDialog questionDialog = AlertDialog(
+    content: Text("האם ברצונך לדווח על התוכן כלא הולם?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return questionDialog;
+    },
+  );
+}
 
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
@@ -138,7 +211,7 @@ class _StoryScreenState extends State<StoryScreen>{
       },
       customTextStyle: ( node, TextStyle baseStyle) {
         return baseStyle.merge(GoogleFonts.alef())
-          .merge(TextStyle(fontSize: 22.0, height: 1.3,));
+          .merge(TextStyle(fontSize: 20.0, height: 1.3,));
       },
     );
   }

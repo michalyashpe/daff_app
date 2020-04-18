@@ -1,7 +1,10 @@
- import 'package:daff_app/screens/stories_screen.dart';
+import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/screens/stories_screen.dart';
+import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 Widget buildDrawer(BuildContext context){
   return Drawer(
@@ -57,8 +60,18 @@ Widget buildDrawer(BuildContext context){
               Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('סיפורים מוקלטים', 'with_audio=true')));
             },
           ),
+          Divider(),
+          ListTile(
+            title: Text('תנאי השימוש והגנת הפרטיות'),
+            onTap: () {
+              Navigator.pop(context);
+              Provider.of<StoryModel>(context, listen: false).initialize(1959);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('תנאי השימוש והגנת הפרטיות')));
+            },
+          ),
         ],
       ),
+
       
     );
 }

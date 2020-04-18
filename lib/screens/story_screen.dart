@@ -27,7 +27,7 @@ class _StoryScreenState extends State<StoryScreen>{
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          bottomSheet: model.story.audioUrl != "" && model.story.audioUrl != null ? PlayerWidget(story: model.story) : Text(''),
+          bottomSheet: !model.isLoading && model.story.hasAudio ? PlayerWidget(story: model.story) : Text(''),
           body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(

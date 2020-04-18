@@ -36,20 +36,17 @@ class _StoryScreenState extends State<StoryScreen>{
               floating: true,
               pinned: false,
               snap: true,
-              title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 3.0,),
+                !model.isLoading ? buildEditerPickMedalWidget(model.story, size: 30.0) : Text('')
+              ],),
               backgroundColor: Theme.of(context).backgroundColor,
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
-              // actions: !model.isLoading && model.story.hasAudio ? 
-              //   <Widget>[
-              //     IconButton(
-              //       icon: Icon(Icons.volume_up),
-              //       onPressed: () => setState((){
-              //         showPlayer = true;
-              //       }),
-              //     )
-              // ] : <Widget>[]
             ),
             
             SliverList(
@@ -97,21 +94,6 @@ class _StoryScreenState extends State<StoryScreen>{
      
 
 
-  Widget _buildStoryTitle(Story story){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-      Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-        Text(story.title, 
-          style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)
-        ),
-        SizedBox(width: 5.0,),
-        buildEditerPickMedalWidget(story, bigSize: true),
-      ],),
-    ],);
-  }
 
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[

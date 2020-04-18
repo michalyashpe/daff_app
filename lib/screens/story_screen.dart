@@ -1,10 +1,8 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
-import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
-import 'package:daff_app/widgets/icon.dart';
 import 'package:daff_app/widgets/player_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
@@ -51,7 +49,6 @@ class _StoryScreenState extends State<StoryScreen>{
             
             SliverList(
               delegate: SliverChildListDelegate([
-                // _buildStoryTitle(model.story),
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -68,20 +65,16 @@ class _StoryScreenState extends State<StoryScreen>{
                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                   child: model.isLoading 
                     ? buildStoryTagsWidgetLoader()
-                    : buildStoryTagsWidget(model.story.tags, context),
+                    : buildStoryTagsWidget(model.story.tags, context,fontSize: 18.0),
                 ),
                 
-                SizedBox(height: 40.0,),
+                SizedBox(height: 10.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: _buildRatingBox(model.story, loading: model.isLoading),
                 ),
-                
-                // SizedBox(height: 20.0,),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
-                // buildAllRights(),
-                // SizedBox(height: 10.0,),
               ])
           )]
          ) );
@@ -151,28 +144,35 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
   Widget _buildRatingBox(Story story, {bool loading = false}){
-    return Column(children: <Widget>[
-      Row(children: <Widget>[
-        loading ?
-          buildShimmeringCircle(20.0) 
-          : buildIcon('assets/icons/heart.svg'),
-        SizedBox(width: 5.0,),
-        loading ?
-          buildShimmeringBox(width: 200.0, height: 40.0)
-          : Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
-      ],),
-      SizedBox(height: 10.0),
-      Row(children: <Widget>[
-        loading ?
-          buildShimmeringCircle(20.0)
-        : buildIcon('assets/icons/eye1.svg'),
-        SizedBox(width: 5.0,),
-        loading ?
-          buildShimmeringBox(width: 200.0, height: 40.0)
-          : Text(story.readCountString, style: TextStyle(fontSize: 20.0))
-      ],)
+    return loading ? buildShimmeringBox() 
+    : Row(children: <Widget>[
+        Text(
+          story.ratingSummary,
+          style: TextStyle(fontSize: 15.0, color: Colors.grey[700])
+        )
 
     ],);
+    // return Column(children: <Widget>[
+    //   Row(children: <Widget>[
+    //     loading ?
+    //       buildShimmeringCircle(20.0) 
+    //       : buildIcon('assets/icons/heart.svg',),
+    //     SizedBox(width: 5.0,),
+    //     loading ?
+    //       buildShimmeringBox(width: 200.0, height: 40.0)
+    //       : Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
+    //   ],),
+    //   SizedBox(height: 10.0),
+    //   Row(children: <Widget>[
+    //     loading ?
+    //       buildShimmeringCircle(20.0)
+    //     : buildIcon('assets/icons/eye1.svg'),
+    //     SizedBox(width: 5.0,),
+    //     loading ?
+    //       buildShimmeringBox(width: 200.0, height: 40.0)
+    //       : Text(story.readCountString, style: TextStyle(fontSize: 20.0))
+    //   ],)
+    // ],);
   }
 
  

@@ -69,8 +69,13 @@ class Story {
     
     return summary;
   }
+
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';
+  }
+  String get ratingSummary {
+    return 'הדף נקרא $readCount פעמים וקיבל $cheersCount פירגונים' ;
+      // "$readCountString וקיבל $cheersSummary" : readCountString;
   }
 }
 

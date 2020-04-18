@@ -3,7 +3,7 @@ import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:flutter/material.dart';
 
-Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagView = false}){
+Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagView = false, double fontSize = 13.5}){
   List<Widget> tagsList = List<Widget>();
   tags.forEach((String tagName) {
     Widget tag = GestureDetector(
@@ -16,7 +16,7 @@ Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagVi
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(tagName, style: TextStyle(fontSize: 13.5)) //TODO: 13.5 for home screen, 18.0 for story screen
+        child: Text(tagName, style: TextStyle(fontSize: fontSize)) 
       )
     )
   ;

@@ -73,7 +73,11 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     double height = 60.0;
     double sliderHeight = 4.0;
 
-    return Container(
+    return     MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child:
+    
+    Container(
     color: Colors.black,
     height: height + sliderHeight,
     child: Column(
@@ -94,7 +98,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             ): null,
             Expanded( child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
               Text(widget.story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
               Text(widget.story.author.name , style: TextStyle(color: Colors.white)),  
@@ -127,7 +131,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         ),
         
     ],)
-  );
+  ));
 
   }
 

@@ -21,13 +21,13 @@ class StoryScreen extends StatefulWidget{
 }
 
 class _StoryScreenState extends State<StoryScreen>{
-  bool showPlayer = false;
+  bool showPlayer = true;
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          bottomSheet: showPlayer ? PlayerWidget(story: model.story) : Text(''),
+          bottomSheet: model.story.audioUrl != "" && model.story.audioUrl != null ? PlayerWidget(story: model.story) : Text(''),
           body:  CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -41,15 +41,15 @@ class _StoryScreenState extends State<StoryScreen>{
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
-              actions: !model.isLoading && model.story.hasAudio ? 
-                <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.volume_up),
-                    onPressed: () => setState((){
-                      showPlayer = true;
-                    }),
-                  )
-              ] : <Widget>[]
+              // actions: !model.isLoading && model.story.hasAudio ? 
+              //   <Widget>[
+              //     IconButton(
+              //       icon: Icon(Icons.volume_up),
+              //       onPressed: () => setState((){
+              //         showPlayer = true;
+              //       }),
+              //     )
+              // ] : <Widget>[]
             ),
             
             SliverList(

@@ -38,6 +38,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
 
 Widget _buildStoryImage(String imageUrl, BuildContext context){
   return  Container(
+    // constraints: BoxConstraints(minHeight: .0),
     decoration: BoxDecoration(
       color: Colors.grey[100],
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -58,7 +59,7 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
 
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Flexible(
+        Container(
           child: RichText(
             text: TextSpan(
               children: <InlineSpan> [
@@ -70,11 +71,11 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
               ]
             ))
         ),
-        Flexible(child: Wrap(
-          spacing: 0.0,
+        Expanded(child: Wrap(
+          // spacing: 0.0,
           children: <Widget>[
             Text(
-              authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString,
+              authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString ,
               maxLines: 2, 
             ),
             SizedBox(width: 5.0,),

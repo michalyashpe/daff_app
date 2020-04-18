@@ -9,18 +9,25 @@ Widget buildDrawer(BuildContext context){
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SvgPicture.asset(
-                  'assets/logo.svg',
-                  width: 45.0,
-                  semanticsLabel: 'Acme Logo'
-                ),
-                SizedBox(width: 10.0,),
-                Text('הַדַּף', style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
-              ]
-            ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'assets/logo.svg',
+                    width: 45.0,
+                    semanticsLabel: 'Acme Logo'
+                  ),
+                  SizedBox(width: 10.0,),
+                  Text('הַדַּף', style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
+                ]
+              ),
+                  Text('במה ליצירה עצמאית', style: TextStyle(fontSize: 20.0))
+
+            ],)
           ),
           ListTile(
             title: Text('בחירות העורך'),

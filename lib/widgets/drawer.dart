@@ -35,6 +35,21 @@ Widget buildDrawer(BuildContext context){
                 ],)
               ),
               ListTile(
+                title: Text('הַסִּפּוּר שֶׁלָּנוּ'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<StoryModel>(context, listen: false).initialize(544);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('הַסִּפּוּר שֶׁלָּנוּ')));
+                },
+              ),
+              ListTile(
+                title: Text('עדכוני מערכת'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('עדכוני מערכת', 'tag=עדכון')));
+                },
+              ),
+              ListTile(
                 title: Text('בחירות העורך'),
                 onTap: () {
                   Navigator.pop(context);

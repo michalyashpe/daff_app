@@ -61,7 +61,7 @@ class Story {
     if (cheersCount == 0) return 'היה הראשון לפרגן';
     String summary = '';
     String names = '';
-    if (cheerers.length > 0 ) {
+    if (cheerers.length > 1 ) {
       names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
       summary = '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
     } else 

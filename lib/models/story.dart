@@ -43,7 +43,9 @@ class Story {
     this.cheerers,
     this.recommended
   });
-
+  bool get isSytemUpdate {
+    return tags.contains('עדכון') && tags.contains('מערכת');
+  }
 
   bool get isNew {
     Duration difference = DateTime.now().difference(date);

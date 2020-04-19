@@ -23,6 +23,7 @@ class Story {
   List<Author> cheerers = List<Author>();
   List<Story> recommended = List<Story>();
   String url;
+  bool ltr;
 
   Story({
     this.id,
@@ -43,7 +44,8 @@ class Story {
     this.moreStories,
     this.cheerers,
     this.recommended,
-    this.url
+    this.url,
+    this.ltr
   });
   bool get isSytemUpdate {
     return tags.contains('עדכון') && tags.contains('מערכת');
@@ -131,5 +133,6 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     hasAudio: story['has_published_audio'] != null ? story['has_published_audio'] : false,
     recommended: recommendedList,
     url: story['url'],
+    ltr: story['ltr'],
   );
 }

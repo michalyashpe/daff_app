@@ -258,7 +258,7 @@ class _StoryScreenState extends State<StoryScreen>{
             break;
           }
         }
-        return TextAlign.right;
+        return story.ltr ? TextAlign.left : TextAlign.right ;
       },
 
     );

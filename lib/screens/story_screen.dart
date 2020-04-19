@@ -56,7 +56,7 @@ class _StoryScreenState extends State<StoryScreen>{
                 !model.isLoading & model.story.isSytemUpdate ? 
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: padding),
-                    child: Text('עדכון מערכת', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
+                    child: Text('מערכת הדף', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
                   ) : SizedBox(height: 0.0),
                 
                 SizedBox(height: 20.0,),

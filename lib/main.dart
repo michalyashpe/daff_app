@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],
   child: MaterialApp(
-
+     debugShowCheckedModeBanner: false,
     localizationsDelegates: [
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,

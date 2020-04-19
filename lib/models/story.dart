@@ -21,6 +21,7 @@ class Story {
   List<String> tags = List<String>();
   List<Story> moreStories = List<Story>();
   List<Author> cheerers = List<Author>();
+  List<Story> recommended = List<Story>();
 
   Story({
     this.id,
@@ -39,7 +40,8 @@ class Story {
     this.hasAudio,
     this.tags,
     this.moreStories,
-    this.cheerers
+    this.cheerers,
+    this.recommended
   });
 
 
@@ -87,6 +89,14 @@ class Story {
 Story parseStoryFromJson(Map<String, dynamic> story){
   List<String> sTags = List<String>();
   story['tags'].forEach((tag) => sTags.add(tag.toString()));
+
+  List<Story> recommendedList = List<Story>();
+  if (story['recommended'] != null) {
+    story['recommended'].forEach((dynamic storyData) {
+      Story story = parseStoryFromJson(storyData);
+      recommendedList.add(story);
+    });
+  }
   return Story(
     id: story['id'],
     slug: story['slug'],
@@ -103,8 +113,7 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     cheersCount: story['cheers_count'],
     cheerers: story['cheerers'] != null ? parseCheerersFromJson(story['cheerers']) : null,
     audioUrl: story['published_audio'],
-    hasAudio: story['has_published_audio']
-    // comments: story['comments'],
-    // recommended: story['recommended'],
+    hasAudio: story['has_published_audio'],
+    recommended: recommendedList
   );
 }

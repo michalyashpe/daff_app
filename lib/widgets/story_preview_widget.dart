@@ -25,7 +25,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
       children: <Widget>[
         Expanded(
           flex: 2,
-          child: _buildStoryImage(story.imageUrl, context)
+          child: _buildStoryImage(story, context)
         ),
         SizedBox(width: 10.0,),
         Expanded(
@@ -36,16 +36,16 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
   ],))));
 }
 
-Widget _buildStoryImage(String imageUrl, BuildContext context){
-  return  Container(
-    // constraints: BoxConstraints(minHeight: .0),
+Widget _buildStoryImage(Story story, BuildContext context){
+  return  Stack(children: <Widget>[
+    Container(
     decoration: BoxDecoration(
       color: Colors.grey[100],
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
       image: DecorationImage(
         fit: BoxFit.cover,
         image: NetworkImage(
-            imageUrl,
+            story.imageUrl,
           ),)
     ),
     child: null

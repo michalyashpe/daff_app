@@ -5,6 +5,7 @@ import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/player_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
+import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -20,6 +21,7 @@ class StoryScreen extends StatefulWidget{
 
 class _StoryScreenState extends State<StoryScreen>{
   bool showPlayer = true;
+  double padding = 10.0;
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
@@ -48,23 +50,23 @@ class _StoryScreenState extends State<StoryScreen>{
               delegate: SliverChildListDelegate([
                 SizedBox(height: 15.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildTitle(model.story, loading: model.isLoading)
                 ),
                 SizedBox(height: 20.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildMiniProfileBox(model.story, loading: model.isLoading)
                 ),
                 SizedBox(height: 15.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildContent(model.story, loading: model.isLoading),
                 ),
                 
                 SizedBox(height: 40.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: model.isLoading 
                     ? buildStoryTagsWidgetLoader()
                     : buildStoryTagsWidget(model.story.tags, context,fontSize: 18.0),
@@ -72,21 +74,23 @@ class _StoryScreenState extends State<StoryScreen>{
                 
                 SizedBox(height: 10.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildRatingBox(model.story, loading: model.isLoading),
                 ),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
-                Divider(
-                  color: Colors.grey[200], 
-                  // height: 20.0
-                  thickness: 5.0,
-
-                ),
+                Divider(color: Colors.grey[200], thickness: 5.0,),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildProfileBox(model.story, loading: model.isLoading)
                 ),
+                SizedBox(height: 10.0,),
+                Divider(color: Colors.grey[200], thickness: 15.0,),
+                 Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: _buildRecommendedStories( model.story, loading: model.isLoading)
+                ),
+                
               ])
           )]
          ) );
@@ -94,24 +98,46 @@ class _StoryScreenState extends State<StoryScreen>{
     );
   }
       
-      
-      
-    Widget _buildTitle(Story story, {bool loading = false}) {
-      return loading ?
-        buildShimmeringBox(height: 40.0, width: MediaQuery.of(context).size.width * 0.7) 
-        : Wrap(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          Text(
-            story.title,
-            maxLines: 3,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0), 
-            // overflow: TextOverflow.fade,
-          ),
-          SizedBox(width: 3.0,),
-          buildEditerPickMedalWidget(story, size: 30.0) 
-        ],);
-    }
+  Widget _buildRecommendedStories(Story story, {bool loading = false}){
+    return Container( 
+      padding: EdgeInsets.symmetric(vertical: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        Text('מומלצים בשבילך:',
+          textAlign: TextAlign.right,
+          style: TextStyle(fontSize: 20.0, color: Colors.grey[700]),
+        ),
+        SizedBox(height: 5.0,),
+        Column(children: story.recommended.map((Story s) => buildStoryPreviewWidget(s, context)).toList(),),
+        SizedBox(height: 15.0,),
+    ],)
+    );
+  }
+
+
+
+
+
+
+
+
+  Widget _buildTitle(Story story, {bool loading = false}) {
+    return loading ?
+      buildShimmeringBox(height: 40.0, width: MediaQuery.of(context).size.width * 0.7) 
+      : Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+        Text(
+          story.title,
+          maxLines: 3,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0), 
+          // overflow: TextOverflow.fade,
+        ),
+        SizedBox(width: 3.0,),
+        buildEditerPickMedalWidget(story, size: 30.0),
+      ],);
+  }
 
 
  
@@ -138,33 +164,35 @@ class _StoryScreenState extends State<StoryScreen>{
 
   }
   Widget _buildProfileBox(Story story, {bool loading = false}){
-    return Row(children: <Widget>[
-      loading ? 
-        buildShimmeringCircle(40.0)
-        : GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-          child: buildAvatarImage(story.author.imageUrl)
-        ),
-      SizedBox(width: 15.0,), 
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          loading ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
-          : Text('נכתב על ידי',
-              style: TextStyle(color: Colors.grey[700], fontSize: 18.0),
-          
+          loading ? 
+            buildShimmeringCircle(40.0)
+            : GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+              child: buildAvatarImage(story.author.imageUrl)
             ),
-          GestureDetector(
-            child: loading ?
-              buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
-              : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-            onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
-          )
-        
-        ],
-      )
+            SizedBox(width: 15.0,), 
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                loading ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+                : Text('נכתב על ידי',
+                    style: TextStyle(color: Colors.grey[700], fontSize: 18.0),
+                  ),
+                GestureDetector(
+                  child: loading ?
+                    buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+                    : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
+                  onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
+                )
+              ],
+            )
 
-    ],);
+    ],));
   }
 
 

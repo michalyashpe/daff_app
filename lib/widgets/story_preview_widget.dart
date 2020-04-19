@@ -49,8 +49,25 @@ Widget _buildStoryImage(Story story, BuildContext context){
           ),)
     ),
     child: null
-    
-  );
+   
+  ),
+  Positioned(
+    bottom: 5.0,
+    left: 5.0,
+    child: story.hasAudio ? 
+      Icon(Icons.volume_up, color: Colors.white, size: 20.0,) 
+      : Text(''),
+  ),
+  Positioned(
+    top: 5.0,
+    left: 0.0,
+    child: story.isNew ? 
+      Container(
+        height: 20.0, width: 50.0, color: Colors.green[800], 
+        child: Text('חדש', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold ,color: Colors.white), textAlign: TextAlign.center,) 
+      ) : Text(''),
+  )
+  ],);
 }
 
 Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
@@ -71,19 +88,11 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
               ]
             ))
         ),
-        Expanded(child: Wrap(
-          spacing: 0.0,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: <Widget>[
-            Text(
+        Text(
               authorName ? '${story.readingDurationString} \u{00B7} ${story.author.name}' : story.readingDurationString ,
               maxLines: 2, 
             ),
-            SizedBox(width: 5.0,),
-            story.hasAudio ? 
-              Icon(Icons.volume_up, color: Colors.grey[700], size: 12.0,) 
-              : Text('')
-        ],)),
+      
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
           buildStoryTagsWidget(story.tags, context, tagView: tagView),

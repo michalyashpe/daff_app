@@ -45,6 +45,10 @@ class Story {
   });
 
 
+  bool get isNew {
+    Duration difference = DateTime.now().difference(date);
+    return difference.inHours <= 24;
+  }
   String get readingDurationString {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
   }

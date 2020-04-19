@@ -97,7 +97,7 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
       
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
-          buildStoryTagsWidget(story.tags.sublist(0,min(7,story.tags.length)).toList(), context, tagView: tagView),
+          buildStoryTagsWidget(story.tags.sublist(0,min(5,story.tags.length)).toList(), context, tagView: tagView),
         ],): Text(''),
         
         SizedBox(height: storyPreviewLineHeight),

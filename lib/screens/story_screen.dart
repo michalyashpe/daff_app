@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:html/dom.dart' as dom;
 
 class StoryScreen extends StatefulWidget{
   static const routeName = '/story_screen';
@@ -211,14 +212,47 @@ class _StoryScreenState extends State<StoryScreen>{
     ],)
     : Html(
       data: story.contents,
+      
       defaultTextStyle: TextStyle(fontFamily: 'serif'),
-      customTextAlign: (node) {
+
+      // customRender: (dom.Node node, List<Widget> children) {
+      //   print(node);
+      //   if (node is dom.Element) {
+      //     print(node.localName);
+      //     switch (node.localName) {
+      //       case "hr":
+      //         print('hihihi');
+      //         return Column(children: children);
+      //     }
+      //   }
+      //   return null;
+      // },
+      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+        double fontSize = 20.0;
+        Color color = Colors.black;
+        if (node is dom.Element) {
+          switch (node.localName) {
+            case "figcaption":
+              fontSize = 15.0;
+              color = Colors.grey[700];
+            break;
+            }
+          
+        }
+        return baseStyle.merge(GoogleFonts.alef())
+            .merge(TextStyle(fontSize: fontSize, height: 1.3, color: color,)); //for "figcaption" center + smaller font.  + for hr repleace with a widget
+      },
+      customTextAlign: (dom.Node node) {
+        if (node is dom.Element) {
+          switch (node.localName) {
+            case "figcaption":
+              return TextAlign.center;
+            break;
+          }
+        }
         return TextAlign.right;
       },
-      customTextStyle: ( node, TextStyle baseStyle) {
-        return baseStyle.merge(GoogleFonts.alef())
-          .merge(TextStyle(fontSize: 20.0, height: 1.3,));
-      },
+
     );
   }
 

@@ -34,29 +34,27 @@ class _StoryScreenState extends State<StoryScreen>{
               floating: true,
               pinned: false,
               snap: true,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(width: 3.0,),
-                !model.isLoading ? buildEditerPickMedalWidget(model.story, size: 30.0) : Text('')
-              ],),
               backgroundColor: Theme.of(context).backgroundColor,
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
               actions: <Widget>[
-                _offsetPopup(model.story)
+                _storyOptionsMenu(model.story)
                 // IconButton(ic/on: Icon(Icons.donut_small))
               ],
             ),
             
             SliverList(
               delegate: SliverChildListDelegate([
-                SizedBox(height: 10.0,),
+                SizedBox(height: 15.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0),
-                  child: _buildProfileBox(model.story, loading: model.isLoading)
+                  child: _buildTitle(model.story, loading: model.isLoading)
+                ),
+                SizedBox(height: 20.0,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: _buildMiniProfileBox(model.story, loading: model.isLoading)
                 ),
                 SizedBox(height: 15.0,),
                 Padding(
@@ -79,6 +77,16 @@ class _StoryScreenState extends State<StoryScreen>{
                 ),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
+                Divider(
+                  color: Colors.grey[200], 
+                  // height: 20.0
+                  thickness: 5.0,
+
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: _buildProfileBox(model.story, loading: model.isLoading)
+                ),
               ])
           )]
          ) );
@@ -88,79 +96,47 @@ class _StoryScreenState extends State<StoryScreen>{
       
       
       
-     
-
-
-  Widget _offsetPopup(Story story) => PopupMenuButton<int>(
-    onSelected: (result) {
-      if (result == 1) showAlertDialog(context, story);
-      // setState(() { _selection = result; }); 
-    },
-    itemBuilder: (context) => [
-      PopupMenuItem(
-        value: 1,
-        child: Text('דיווח על תוכן לא הולם',),
-      ),
-     
-    ],
-    icon: Icon(Icons.more_vert),
-    offset: Offset(0, 60),
-  );
-
-
-showAlertDialog(BuildContext context, Story story) {
-  
-  AlertDialog resultDialog = AlertDialog(
-    
-    content: Text("הדיווח שלך על הסיפור ${story.title} התקבל במערכת, תודה על שיתוף הפעולה."),
-    actions: [
-      FlatButton(
-        child: Text("סגור"),
-        onPressed:  () =>  Navigator.of(context).pop(),
-      ),
-    ],
-  );
-  // set up the buttons
-  Widget cancelButton = FlatButton(
-    child: Text("ביטול"),
-    onPressed:  () =>  Navigator.of(context).pop(),
-  );
-  
-  
-  Widget continueButton = FlatButton(
-    child: Text("דיווח"),
-    onPressed:  () {
-      print('מדווח...');
-      Navigator.of(context).pop();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-        return resultDialog;
-      },
-  );
-      
+    Widget _buildTitle(Story story, {bool loading = false}) {
+      return loading ?
+        buildShimmeringBox(height: 40.0, width: MediaQuery.of(context).size.width * 0.7) 
+        : Wrap(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          Text(
+            story.title,
+            maxLines: 3,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0), 
+            // overflow: TextOverflow.fade,
+          ),
+          SizedBox(width: 3.0,),
+          buildEditerPickMedalWidget(story, size: 30.0) 
+        ],);
     }
-  );
 
-  AlertDialog questionDialog = AlertDialog(
-    content: Text("האם ברצונך לדווח על התוכן כלא הולם?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
 
-  
+ 
+  Widget _buildMiniProfileBox(Story story, {bool loading = false}){
+    return Row(children: <Widget>[
+      loading ? 
+        buildShimmeringCircle(20.0)
+        : GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+          child: buildAvatarImage(story.author.imageUrl, height: 30.0)
+        ),
+        SizedBox(width: 10.0,),
+        loading ? 
+          buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+          : Row(children: <Widget>[
+              Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.normal)),
+              SizedBox(width: 10.0,),
+              Text(
+                story.dateFormatted + " \u{00B7} " +  story.readingDurationString,
+                style: TextStyle(fontSize: 18.0, color: Colors.grey[600])
+              )
+          ],)
+    ]);
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return questionDialog;
-    },
-  );
-}
-
+  }
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Row(children: <Widget>[
       loading ? 
@@ -169,21 +145,22 @@ showAlertDialog(BuildContext context, Story story) {
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
           child: buildAvatarImage(story.author.imageUrl)
         ),
-      SizedBox(width: 10.0,), 
+      SizedBox(width: 15.0,), 
       Column(
-        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          loading ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+          : Text('נכתב על ידי',
+              style: TextStyle(color: Colors.grey[700], fontSize: 18.0),
+          
+            ),
           GestureDetector(
             child: loading ?
               buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
               : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
             onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
-          ),
-          loading 
-            ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.4) 
-            : Text(story.readingDurationString + " | " + story.dateFormatted, 
-              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]))
+          )
+        
         ],
       )
 
@@ -249,4 +226,87 @@ showAlertDialog(BuildContext context, Story story) {
   }
 
  
+
+
+ Widget _storyOptionsMenu(Story story) => PopupMenuButton<int>(
+    onSelected: (result) {
+      if (result == 1) showAlertDialog(context, story);
+      // setState(() { _selection = result; }); 
+    },
+    itemBuilder: (context) => [
+      PopupMenuItem(
+        value: 1,
+        child: Text('דיווח על תוכן לא הולם',),
+      ),
+     
+    ],
+    icon: Icon(Icons.more_vert),
+    offset: Offset(0, 60),
+  );
+
+
+showAlertDialog(BuildContext context, Story story) {
+  
+  AlertDialog resultDialog = AlertDialog(
+    
+    content: Text("הדיווח שלך התקבל במערכת, תודה."),
+    actions: [
+      FlatButton(
+        child: Text("סגור"),
+        onPressed:  () =>  Navigator.of(context).pop(),
+      ),
+    ],
+  );
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text("ביטול"),
+    onPressed:  () =>  Navigator.of(context).pop(),
+  );
+  
+  
+  Widget continueButton = FlatButton(
+    child: Text("דיווח"),
+    onPressed:  () {
+      print('מדווח...');
+      Navigator.of(context).pop();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+        return resultDialog;
+      },
+  );
+      
+    }
+  );
+
+  AlertDialog questionDialog = AlertDialog(
+    content: Text("האם ברצונך לדווח על התוכן של הדף \"${story.title}\" כלא הולם?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return questionDialog;
+    },
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
 }

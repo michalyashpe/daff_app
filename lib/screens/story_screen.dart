@@ -12,6 +12,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:share/share.dart';
 
 class StoryScreen extends StatefulWidget{
   static const routeName = '/story_screen';
@@ -41,8 +42,7 @@ class _StoryScreenState extends State<StoryScreen>{
                 onPressed:() => Navigator.pop(context, false),
               ),
               actions: <Widget>[
-                _storyOptionsMenu(model.story)
-                // IconButton(ic/on: Icon(Icons.donut_small))
+                _storyOptionsMenu(model.story),
               ],
             ),
             
@@ -53,7 +53,7 @@ class _StoryScreenState extends State<StoryScreen>{
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildTitle(model.story, loading: model.isLoading)
                 ),
-                !model.isLoading & model.story.isSytemUpdate ? 
+                !model.isLoading && model.story.isSytemUpdate ? 
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: padding),
                     child: Text('מערכת הדף', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
@@ -150,24 +150,26 @@ class _StoryScreenState extends State<StoryScreen>{
 
  
   Widget _buildMiniProfileBox(Story story, {bool loading = false}){
-    return Row(children: <Widget>[
+    return 
       loading ? 
-        buildShimmeringCircle(20.0)
-        : GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-          child: buildAvatarImage(story.author.imageUrl, height: 30.0)
-        ),
-        SizedBox(width: 10.0,),
-        loading ? 
+        Row(children: <Widget>[
+        buildShimmeringCircle(20.0),
           buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
-          : Row(children: <Widget>[
-              Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.normal)),
-              SizedBox(width: 10.0,),
-              Text(
-                story.dateFormatted + " \u{00B7} " +  story.readingDurationString,
-                style: TextStyle(fontSize: 18.0, color: Colors.grey[600])
-              )
-          ],)
+        ],)
+      : Wrap(
+        spacing: 5.0,
+        // runSpacing: ,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+            child: buildAvatarImage(story.author.imageUrl, height: 30.0)
+          ),
+          Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.normal)),
+          Text(
+            story.dateFormatted + " \u{00B7} " +  story.readingDurationString,
+            style: TextStyle(fontSize: 18.0, color: Colors.grey[600])
+        )
     ]);
 
   }
@@ -300,14 +302,30 @@ class _StoryScreenState extends State<StoryScreen>{
  Widget _storyOptionsMenu(Story story) => PopupMenuButton<int>(
     onSelected: (result) {
       if (result == 1) showAlertDialog(context, story);
+      if (result == 2) {
+        final RenderBox box = context.findRenderObject();
+        Share.share(story.shareText,
+          subject: 'חשבתי שיעניין אותך לקרוא',
+          sharePositionOrigin:
+              box.localToGlobal(Offset.zero) &
+                  box.size);
+      }
       // setState(() { _selection = result; }); 
     },
     itemBuilder: (context) => [
+      
       PopupMenuItem(
+        value: 2,
+        child: Row(children: <Widget>[
+          // Icon(Icons.share),
+          Text(' שיתוף',),
+          
+          ],)
+      ),
+     PopupMenuItem(
         value: 1,
         child: Text('דיווח על תוכן לא הולם',),
       ),
-     
     ],
     icon: Icon(Icons.more_vert),
     offset: Offset(0, 60),

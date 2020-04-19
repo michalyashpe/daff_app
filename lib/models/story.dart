@@ -22,6 +22,7 @@ class Story {
   List<Story> moreStories = List<Story>();
   List<Author> cheerers = List<Author>();
   List<Story> recommended = List<Story>();
+  String url;
 
   Story({
     this.id,
@@ -41,7 +42,8 @@ class Story {
     this.tags,
     this.moreStories,
     this.cheerers,
-    this.recommended
+    this.recommended,
+    this.url
   });
   bool get isSytemUpdate {
     return tags.contains('עדכון') && tags.contains('מערכת');
@@ -53,6 +55,13 @@ class Story {
   }
   String get readingDurationString {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
+  }
+  String get shareText {
+    return "כדאי לך לקרוא את \"$title\" מאת ${author.name} $productionUrl @הדף" ;
+  }
+
+  String get productionUrl{
+    return url.replaceAll('.json', '').replaceAll('//daff.dev', 'daff.co.il');
   }
 
 
@@ -120,6 +129,7 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     cheerers: story['cheerers'] != null ? parseCheerersFromJson(story['cheerers']) : null,
     audioUrl: story['published_audio'],
     hasAudio: story['has_published_audio'] != null ? story['has_published_audio'] : false,
-    recommended: recommendedList
+    recommended: recommendedList,
+    url: story['url'],
   );
 }

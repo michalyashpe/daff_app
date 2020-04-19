@@ -88,17 +88,21 @@ Widget buildDrawer(BuildContext context){
               ),
               ],)
           ),
-           Container(
-            // alignment: Alignment.bottomCenter,
-              child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Container(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(' כל הזכויות שמורות לכותבים ולכותבות ' , style: TextStyle(color: Colors.grey[600])),
-                Icon(Icons.copyright, size: 15.0, color: Colors.grey[600]),
-                Text( ' ' + DateTime.now().year.toString(), style: TextStyle(color: Colors.grey[600])),
+                Row(
+                  children: <Widget>[
+                  Icon(Icons.copyright, size: 15.0, color: Colors.grey[600]),
+                  Text( ' ' + DateTime.now().year.toString(), style: TextStyle(color: Colors.grey[600])),
+                ],)
               ],)
-            ),
-          SizedBox(height: 10.0),
+          ),
+          SizedBox(height: 30.0),
         ],
       ),
     

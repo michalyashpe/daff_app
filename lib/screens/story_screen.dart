@@ -20,7 +20,6 @@ class StoryScreen extends StatefulWidget{
 }
 
 class _StoryScreenState extends State<StoryScreen>{
-  bool showPlayer = true;
   double padding = 10.0;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,6 @@ class _StoryScreenState extends State<StoryScreen>{
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildContent(model.story, loading: model.isLoading),
                 ),
-                
                 SizedBox(height: 40.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
@@ -71,7 +69,6 @@ class _StoryScreenState extends State<StoryScreen>{
                     ? buildStoryTagsWidgetLoader()
                     : buildStoryTagsWidget(model.story.tags, context,fontSize: 18.0),
                 ),
-                
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
@@ -79,27 +76,31 @@ class _StoryScreenState extends State<StoryScreen>{
                 ),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
-                Divider(color: Colors.grey[200], thickness: 5.0,),
+                _buildDivider(5.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildProfileBox(model.story, loading: model.isLoading)
                 ),
-                SizedBox(height: 10.0,),
-                Divider(color: Colors.grey[200], thickness: 15.0,),
-                 Padding(
+                _buildDivider(15.0),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildRecommendedStories( model.story, loading: model.isLoading)
                 ),
-                
+                !model.isLoading && model.story.hasAudio ?
+                  SizedBox(height: 70.0) : Text(''),
               ])
           )]
          ) );
       }
     );
   }
-      
+  
+  Widget _buildDivider(double height) {
+    return Container(color: Colors.grey[200], height: height,);
+  }
   Widget _buildRecommendedStories(Story story, {bool loading = false}){
-    return Container( 
+    return loading ? buildShimmeringBox(height: 50.0)
+    : Container( 
       padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +111,7 @@ class _StoryScreenState extends State<StoryScreen>{
         ),
         SizedBox(height: 5.0,),
         Column(children: story.recommended.map((Story s) => buildStoryPreviewWidget(s, context)).toList(),),
-        SizedBox(height: 15.0,),
+        // SizedBox(height: 15.0,),
     ],)
     );
   }
@@ -165,7 +166,7 @@ class _StoryScreenState extends State<StoryScreen>{
   }
   Widget _buildProfileBox(Story story, {bool loading = false}){
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
+      padding: EdgeInsets.symmetric(vertical: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

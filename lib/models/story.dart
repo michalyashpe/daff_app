@@ -117,7 +117,7 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     cheersCount: story['cheers_count'],
     cheerers: story['cheerers'] != null ? parseCheerersFromJson(story['cheerers']) : null,
     audioUrl: story['published_audio'],
-    hasAudio: story['has_published_audio'],
+    hasAudio: story['has_published_audio'] != null ? story['has_published_audio'] : false,
     recommended: recommendedList
   );
 }

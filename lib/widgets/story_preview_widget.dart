@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
@@ -95,7 +97,7 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
       
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
-          buildStoryTagsWidget(story.tags, context, tagView: tagView),
+          buildStoryTagsWidget(story.tags.sublist(0,min(7,story.tags.length)).toList(), context, tagView: tagView),
         ],): Text(''),
         
         SizedBox(height: storyPreviewLineHeight),

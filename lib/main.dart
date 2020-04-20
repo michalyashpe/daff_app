@@ -11,13 +11,14 @@ import 'package:sentry/sentry.dart';
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
-import 'package:daff_app/providers/home_screen_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'models/user.dart';
 
 final SentryClient _sentry = new SentryClient(dsn: dsn);
 
@@ -84,8 +85,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   FirebaseAPI firebaseAPI;
-  HomeModel homeModel;
   StoriesModel storiesModel ;
+  UserModel userModel;
 
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -96,9 +97,8 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
     storiesModel = StoriesModel();
-    // homeModel = HomeModel();
-    // homeModel.initialize();
-    
+    userModel = UserModel();
+    userModel.initialize();
   }
 
 
@@ -109,9 +109,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthenticationModel()),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
-        ChangeNotifierProvider(create: (_) => homeModel),
-        ChangeNotifierProvider(create: (_) => StoryModel()),
+        ChangeNotifierProvider(create: (_) => StoryModel(userModel.user)),
         ChangeNotifierProvider(create: (_) =>  storiesModel),
+        ChangeNotifierProvider(create: (_) =>  userModel),
         ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],
   child: MaterialApp(

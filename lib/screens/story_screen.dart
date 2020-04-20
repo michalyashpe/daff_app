@@ -191,7 +191,7 @@ class _StoryScreenState extends State<StoryScreen>{
               loading ?
                 buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
                 : Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-              !loading && story.author.aboutMe != '' ? 
+              !loading &&  story.author.aboutMe != null && story.author.aboutMe != '' ? 
                 Container(
                   width: MediaQuery.of(context).size.width - 150.0,
                   child: Text(story.author.aboutMe, 
@@ -327,7 +327,7 @@ showAlertDialog(BuildContext context, Story story) {
   Widget continueButton = FlatButton(
     child: Text("דיווח"),
     onPressed:  () {
-      Provider.of<StoryModel>(context, listen:  false).reportContent(story);
+      Provider.of<StoryModel>(context, listen:  false).reportContent();
       Navigator.of(context).pop();
       showDialog(
         context: context,

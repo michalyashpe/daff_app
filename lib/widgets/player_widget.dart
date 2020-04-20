@@ -234,7 +234,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   Future<int> _play() async {
-    Provider.of<StoryModel>(context, listen: false).reportAudioListening(widget.story);
+    Provider.of<StoryModel>(context, listen: false).reportAudioListening();
     setState(() => _playerState = PlayerState.buffering);
     print(_playerState);
 

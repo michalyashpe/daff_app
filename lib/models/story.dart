@@ -17,6 +17,7 @@ class Story {
   String imageUrl;
   String audioUrl;
   bool hasAudio;
+  int audioID;
   bool editorPick = false;
   List<String> tags = List<String>();
   List<Story> moreStories = List<Story>();
@@ -45,7 +46,8 @@ class Story {
     this.cheerers,
     this.recommended,
     this.url,
-    this.ltr
+    this.ltr,
+    this.audioID
   });
   bool get isSytemUpdate {
     return tags.contains('עדכון') && tags.contains('מערכת');
@@ -134,5 +136,6 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     recommended: recommendedList,
     url: story['url'],
     ltr: story['ltr'],
+    audioID: story['published_audio_id']
   );
 }

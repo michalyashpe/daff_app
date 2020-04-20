@@ -28,16 +28,61 @@ class StoryModel extends ChangeNotifier{
     ).then((http.Response response){
       Map<String, dynamic> storyData = json.decode(response.body);
       story = parseStoryFromJson(storyData);
+      reportReading(story);
       isLoading = false;
       notifyListeners();
 
     });
   }
 
+  void reportContent(Story story){
+    http.post(
+      daffServerUrl + '/offensive_content_reports.json',
+      headers: <String, String>{
+        'authorization': basicAuth,
+      },
+      body: {
+        'mobile_randi': '123123',
+        'offensive_content_report[story_id]' : story.id,
+        // 'offensive_content_report[email]' : 'dor@dorkalev.com', //TODO: ask user for email
+        // 'offensive_content_report[content]' : '',
+      }).then((http.Response response) {
+        Map<String, dynamic> data = json.decode(response.body);
+        print('reporting offensive content');
+        print(data);
+      });
+  }
+
+  void reportReading(Story story){
+    http.post(
+      daffServerUrl + '/stories/${story.id}/reading',
+      headers: <String, String>{
+        'authorization': basicAuth,
+      },
+      body: {
+        'mobile_randi': '123123',
+        'status': 'started', // TODO: report 'done' reading status & calculate reading time when done if it's more than story estimated reading time
+      }).then((http.Response response) {
+        Map<String, dynamic> data = json.decode(response.body);
+        print('reporting started reading');
+        print(data);
+    });
+  }
 
 
-
-
-
-
+  void reportAudioListening(Story story){
+    print('reporting started listening to audio');
+    http.post(
+      daffServerUrl + '/story_audio_playing/${story.audioID}',
+      headers: <String, String>{
+        'authorization': basicAuth,
+      },
+      body: {
+        'mobile_randi': '123123',
+      }).then((http.Response response) {
+        Map<String, dynamic> data = json.decode(response.body);
+        print('reporting started listening to audio:');
+        print(data);
+    });
+  }
 }

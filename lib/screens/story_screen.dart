@@ -273,27 +273,6 @@ class _StoryScreenState extends State<StoryScreen>{
         )
 
     ],);
-    // return Column(children: <Widget>[
-    //   Row(children: <Widget>[
-    //     loading ?
-    //       buildShimmeringCircle(20.0) 
-    //       : buildIcon('assets/icons/heart.svg',),
-    //     SizedBox(width: 5.0,),
-    //     loading ?
-    //       buildShimmeringBox(width: 200.0, height: 40.0)
-    //       : Flexible(child: Text(story.cheersSummary, style: TextStyle(fontSize: 20.0), maxLines: 4,))
-    //   ],),
-    //   SizedBox(height: 10.0),
-    //   Row(children: <Widget>[
-    //     loading ?
-    //       buildShimmeringCircle(20.0)
-    //     : buildIcon('assets/icons/eye1.svg'),
-    //     SizedBox(width: 5.0,),
-    //     loading ?
-    //       buildShimmeringBox(width: 200.0, height: 40.0)
-    //       : Text(story.readCountString, style: TextStyle(fontSize: 20.0))
-    //   ],)
-    // ],);
   }
 
  
@@ -310,41 +289,35 @@ class _StoryScreenState extends State<StoryScreen>{
               box.localToGlobal(Offset.zero) &
                   box.size);
       }
-      // setState(() { _selection = result; }); 
     },
     itemBuilder: (context) => [
-      
       PopupMenuItem(
         value: 2,
         child: Row(children: <Widget>[
-          // Icon(Icons.share),
           Text(' שיתוף',),
-          
           ],)
       ),
-     PopupMenuItem(
-        value: 1,
-        child: Text('דיווח על תוכן לא הולם',),
-      ),
-    ],
+        PopupMenuItem(
+          value: 1,
+          child: Text('דיווח על תוכן לא הולם',),
+        ),
+      ],
     icon: Icon(Icons.more_vert),
     offset: Offset(0, 60),
   );
 
 
 showAlertDialog(BuildContext context, Story story) {
-  
   AlertDialog resultDialog = AlertDialog(
-    
     content: Text("הדיווח שלך התקבל במערכת, תודה."),
     actions: [
       FlatButton(
         child: Text("סגור"),
-        onPressed:  () =>  Navigator.of(context).pop(),
+        onPressed:  () =>  Navigator.of(context,).pop(),
       ),
     ],
   );
-  // set up the buttons
+
   Widget cancelButton = FlatButton(
     child: Text("ביטול"),
     onPressed:  () =>  Navigator.of(context).pop(),
@@ -354,7 +327,7 @@ showAlertDialog(BuildContext context, Story story) {
   Widget continueButton = FlatButton(
     child: Text("דיווח"),
     onPressed:  () {
-      print('מדווח...');
+      Provider.of<StoryModel>(context, listen:  false).reportContent(story);
       Navigator.of(context).pop();
       showDialog(
         context: context,

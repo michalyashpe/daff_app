@@ -49,8 +49,6 @@ Author parseAuthorFromJson(Map<String, dynamic> author){
       stories.add(s);
     });
   } 
-  author.keys.forEach((f)=> print(f));
-  print(author['about_me']);
   return Author(
     id: author['id'],
     name: author['name'],

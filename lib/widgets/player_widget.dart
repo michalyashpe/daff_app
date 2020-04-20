@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 enum PlayerState { stopped, playing, paused, buffering }
 enum PlayingRouteState { speakers, earpiece }
@@ -232,6 +234,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   Future<int> _play() async {
+    Provider.of<StoryModel>(context, listen: false).reportAudioListening(widget.story);
     setState(() => _playerState = PlayerState.buffering);
     print(_playerState);
 

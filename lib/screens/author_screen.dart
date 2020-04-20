@@ -1,7 +1,6 @@
 import 'package:daff_app/models/author.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
-import 'package:daff_app/widgets/all_rights_widget.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -54,8 +53,6 @@ class _AuthorScreenState extends State<AuthorScreen>{
                     buildStoryPreviewLoaderWidget(context)
                   ])
                   : _buildAuthorStories(model.author, model.isLoading),
-                SizedBox(height: 10.0,),
-                buildAllRights(),
                 SizedBox(height: 10.0,),
               ],)
             )]

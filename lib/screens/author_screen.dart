@@ -132,7 +132,7 @@ class _AuthorScreenState extends State<AuthorScreen>{
     List<Widget> storyPreviewList = List<Widget>(); 
     author.stories.forEach((Story story){
       storyPreviewList.add(buildStoryPreviewWidget(story, context, authorName: false));
-      storyPreviewList.add(SizedBox(height: 15.0,));
+      storyPreviewList.add(SizedBox(height: 5.0,));
     });
 
     return Column(

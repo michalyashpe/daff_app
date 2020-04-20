@@ -70,8 +70,9 @@ class _StoriesScreenState extends State<StoriesScreen>{
                   return model.isLoading ? 
                     buildStoryPreviewLoaderWidget(context)
                   : Column(children: <Widget>[
-                    // Text(index.toString()),
-                    buildStoryPreviewWidget(stories[index], context)
+                    SizedBox(height: 5.0,),
+                    buildStoryPreviewWidget(stories[index], context),
+
                     ],);
                 },
                 childCount: model.isLoading ? 4 : stories.length

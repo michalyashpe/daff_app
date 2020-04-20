@@ -49,6 +49,8 @@ Author parseAuthorFromJson(Map<String, dynamic> author){
       stories.add(s);
     });
   } 
+  author.keys.forEach((f)=> print(f));
+  print(author['about_me']);
   return Author(
     id: author['id'],
     name: author['name'],
@@ -59,7 +61,6 @@ Author parseAuthorFromJson(Map<String, dynamic> author){
     aboutMe: author['about_me'],
     gender: author['gender'],
     copyrightsLine: author['copyrights_line'],
-    
     stories: stories
   );
   }

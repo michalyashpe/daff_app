@@ -88,7 +88,7 @@ class _StoryScreenState extends State<StoryScreen>{
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildProfileBox(model.story, loading: model.isLoading)
                 ),
-                _buildDivider(15.0),
+                _buildDivider(5.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildRecommendedStories( model.story, loading: model.isLoading)
@@ -112,12 +112,12 @@ class _StoryScreenState extends State<StoryScreen>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-        Text('מומלצים בשבילך:',
+        Text('מומלצים:',
           textAlign: TextAlign.right,
           style: TextStyle(fontSize: 20.0, color: Colors.grey[700]),
         ),
         SizedBox(height: 5.0,),
-        Column(children: story.recommended.map((Story s) => buildStoryPreviewWidget(s, context)).toList(),),
+        Column(children: story.recommended.map((Story s) => [buildStoryPreviewWidget(s, context), SizedBox(height: 5.0)]).expand((i) => i).toList(),),
         // SizedBox(height: 15.0,),
     ],)
     );
@@ -153,56 +153,56 @@ class _StoryScreenState extends State<StoryScreen>{
     return 
       loading ? 
         Row(children: <Widget>[
-        buildShimmeringCircle(20.0),
+          buildShimmeringCircle(20.0),
           buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
         ],)
-      : Wrap(
+      : GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+            child: Wrap(
         spacing: 5.0,
         // runSpacing: ,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-            child: buildAvatarImage(story.author.imageUrl, height: 30.0)
-          ),
+           buildAvatarImage(story.author.imageUrl, height: 30.0),
           Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.normal)),
           Text(
             story.dateFormatted + " \u{00B7} " +  story.readingDurationString,
             style: TextStyle(fontSize: 18.0, color: Colors.grey[600])
         )
-    ]);
+    ]));
 
   }
   Widget _buildProfileBox(Story story, {bool loading = false}){
-    return Container(
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
+      child: Container(
       padding: EdgeInsets.symmetric(vertical: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          loading ? 
-            buildShimmeringCircle(40.0)
-            : GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
-              child: buildAvatarImage(story.author.imageUrl)
-            ),
-            SizedBox(width: 15.0,), 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                loading ? buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
-                : Text('נכתב על ידי',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 18.0),
+          loading ? buildShimmeringCircle(40.0) : buildAvatarImage(story.author.imageUrl),
+          SizedBox(width: 15.0,), 
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              loading ? 
+                buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+                : Text('נכתב על ידי',style: TextStyle(color: Colors.grey[700], fontSize: 17.0),),
+              loading ?
+                buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
+                : Text(story.author.name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+              !loading && story.author.aboutMe != '' ? 
+                Container(
+                  width: MediaQuery.of(context).size.width - 150.0,
+                  child: Text(story.author.aboutMe, 
+                    maxLines: 5, 
+                    overflow: TextOverflow.ellipsis,
                   ),
-                GestureDetector(
-                  child: loading ?
-                    buildShimmeringBox(height: 20.0, width: MediaQuery.of(context).size.width * 0.7) 
-                    : Text(story.author.name, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-                  onTap: () => loading ? {} : Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id)))
-                )
-              ],
-            )
+                ) : SizedBox(),
+            ],
+          )
 
-    ],));
+    ],)));
   }
 
 

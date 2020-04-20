@@ -61,13 +61,15 @@ class Story {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
   }
   String get shareText {
-    return "כדאי לך לקרוא את \"$title\" מאת ${author.name} $productionUrl @הדף" ;
+    return 'כדאי לך לקרוא 👀 $productionUrl @ הדף - במה ליצירה עצמאית';
+    // return "כדאי לך לקרוא את \"$title\" מאת ${author.name} $productionUrl @הדף" ;
   }
 
-  String get productionUrl{
-    return url.replaceAll('.json', '').replaceAll('//daff.dev', 'daff.co.il');
-  }
+  String get productionUrl {
+    String newURL = url.replaceAll('.json', '').replaceAll('//daff.dev', 'daff.co.il');
+    return Uri.decodeFull(newURL);
 
+  }
 
 
   String get dateFormatted {

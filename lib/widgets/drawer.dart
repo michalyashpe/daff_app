@@ -71,10 +71,10 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
-                title: Text('סיפורים מוקלטים'),
+                title: Text('דפים מוקלטים'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('סיפורים מוקלטים', 'with_audio=true')));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('דפים מוקלטים', 'with_audio=true')));
                 },
               ),
               Divider(),

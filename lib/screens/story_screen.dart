@@ -1,3 +1,4 @@
+import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
@@ -207,7 +208,11 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
 
+
   Widget _buildContent(Story story ,{bool loading = false}) {
+
+    story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
+    // story.contents = HtmlHelper.replaceHrWithImage(story.contents);
     return loading 
     ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,13 +221,10 @@ class _StoryScreenState extends State<StoryScreen>{
         SizedBox(height: 20.0,),
         buildShimmeringParagraph(context),
         SizedBox(height: 20.0,),
-
     ],)
     : Html(
       data: story.contents,
-      
       defaultTextStyle: TextStyle(fontFamily: 'serif'),
-
       // customRender: (dom.Node node, List<Widget> children) {
       //   print(node);
       //   if (node is dom.Element) {
@@ -238,17 +240,17 @@ class _StoryScreenState extends State<StoryScreen>{
       customTextStyle: (dom.Node node, TextStyle baseStyle) {
         double fontSize = 20.0;
         Color color = Colors.black;
+        TextDecoration textDecoration = TextDecoration.none;
         if (node is dom.Element) {
           switch (node.localName) {
             case "figcaption":
               fontSize = 15.0;
               color = Colors.grey[700];
-            break;
-            }
-          
+              break;
+          }
         }
         return baseStyle.merge(GoogleFonts.alef())
-            .merge(TextStyle(fontSize: fontSize, height: 1.3, color: color,)); //for "figcaption" center + smaller font.  + for hr repleace with a widget
+            .merge(TextStyle(fontSize: fontSize, height: 1.3, color: color, decoration: textDecoration));// for hr repleace with a widget
       },
       customTextAlign: (dom.Node node) {
         if (node is dom.Element) {

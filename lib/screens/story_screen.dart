@@ -60,7 +60,7 @@ class _StoryScreenState extends State<StoryScreen>{
                     child: Text('מערכת הדף', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
                   ) : SizedBox(height: 0.0),
                 
-                SizedBox(height: 20.0,),
+                SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildMiniProfileBox(model.story, loading: model.isLoading)
@@ -95,7 +95,7 @@ class _StoryScreenState extends State<StoryScreen>{
                   child: _buildRecommendedStories( model.story, loading: model.isLoading)
                 ),
                 !model.isLoading && model.story.hasAudio ?
-                  SizedBox(height: 70.0) : Text(''),
+                  SizedBox(height: 70.0) : SizedBox(),
               ])
           )]
          ) );
@@ -119,7 +119,6 @@ class _StoryScreenState extends State<StoryScreen>{
         ),
         SizedBox(height: 5.0,),
         Column(children: story.recommended.map((Story s) => [buildStoryPreviewWidget(s, context), SizedBox(height: 5.0)]).expand((i) => i).toList(),),
-        // SizedBox(height: 15.0,),
     ],)
     );
   }
@@ -269,28 +268,31 @@ class _StoryScreenState extends State<StoryScreen>{
   Widget _buildRatingBox(Story story, {bool loading = false}){
     return loading ? buildShimmeringBox() 
     : Row(children: <Widget>[
-        Text(
+        Expanded(child: Text(
           story.ratingSummary,
           style: TextStyle(fontSize: 15.0, color: Colors.grey[700])
-        )
+        )),
+        IconButton(
+          onPressed: () =>share(story),
+          icon: Icon(Icons.share, color: Colors.grey)
+        ),
+
 
     ],);
   }
 
- 
+  void share(Story story){
+    final RenderBox box = context.findRenderObject();
+      Share.share(story.shareText,
+        subject: 'חשבתי שיעניין אותך לקרוא',
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+ }
 
 
  Widget _storyOptionsMenu(Story story) => PopupMenuButton<int>(
     onSelected: (result) {
       if (result == 1) showAlertDialog(context, story);
-      if (result == 2) {
-        final RenderBox box = context.findRenderObject();
-        Share.share(story.shareText,
-          subject: 'חשבתי שיעניין אותך לקרוא',
-          sharePositionOrigin:
-              box.localToGlobal(Offset.zero) &
-                  box.size);
-      }
+      if (result == 2) share(story);
     },
     itemBuilder: (context) => [
       PopupMenuItem(

@@ -209,8 +209,8 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
   Widget _buildContent(Story story ,{bool loading = false}) {
-
-    story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
+    if(!loading)
+      story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
     // story.contents = HtmlHelper.replaceHrWithImage(story.contents);
     return loading 
     ? Column(

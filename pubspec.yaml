@@ -45,13 +45,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: "^0.7.4"
 
 
 flutter_icons:
   android: "launcher_icon" 
   ios: true
   image_path: "assets/launcher4.jpg"
+  image_path_android: 'assets/ic_launcher.png'
 
 
 # For information on the generic Dart part of this file, see the

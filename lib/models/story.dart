@@ -65,8 +65,8 @@ class Story {
   }
 
   String get productionUrl {
-    String newURL = url.replaceAll('.json', '').replaceAll('//daff.dev', 'daff.co.il');
-    return Uri.decodeFull(newURL);
+    String newURL = url.replaceAll('.json', '').replaceAll('//daff.dev', '//daff.co.il');
+    return Uri.decodeFull("https:$newURL");
 
   }
 

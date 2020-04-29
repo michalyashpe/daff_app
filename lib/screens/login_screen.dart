@@ -1,6 +1,5 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -44,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String deviceToken = widget.firebaseAPI.deviceToken ;
       int status = await model.daffLogin(deviceToken);
       if (!model.isLoading && status == 200) {
-        Navigator.of(context).pushNamed(HomeScreen.routeName,);
+        // Navigator.of(context).pushNamed(HomeScreen.routeName,);
       }
 
     }

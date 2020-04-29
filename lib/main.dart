@@ -13,7 +13,6 @@ import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
-import 'package:daff_app/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -134,9 +133,6 @@ class _MyAppState extends State<MyApp> {
       textDirection: TextDirection.rtl, // set this property 
       child: SplashScreen(),
     ),
-    routes: {
-      HomeScreen.routeName: (ctx) => HomeScreen(),
-    },
   ));
   }
 }

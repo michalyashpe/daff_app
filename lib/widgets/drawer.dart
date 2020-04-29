@@ -1,4 +1,6 @@
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/screens/offer_signup_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +14,10 @@ Widget buildDrawer(BuildContext context){
         // padding: EdgeInsets.zero,
         children: <Widget>[
           Expanded( 
-            child: ListView(children: <Widget>[
+            child: ListView(
+              children: <Widget>[
               DrawerHeader(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 20.0, 0.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -27,14 +31,15 @@ Widget buildDrawer(BuildContext context){
                         semanticsLabel: 'Acme Logo'
                       ),
                       SizedBox(width: 10.0,),
-                      Text('הַדַּף', style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
+                      Text(appName, style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
                     ]
                   ),
-                      Text('במה ליצירה עצמאית', style: TextStyle(fontSize: 20.0))
+                      Text(appSlogen, style: TextStyle(fontSize: 20.0))
 
                 ],)
               ),
               ListTile(
+                dense: true,
                 title: Text('הַסִּפּוּר שֶׁלָּנוּ'),
                 onTap: () {
                   Navigator.pop(context);
@@ -43,6 +48,7 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
+                dense: true,
                 title: Text('עדכוני מערכת'),
                 onTap: () {
                   Navigator.pop(context);
@@ -50,6 +56,7 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
+                dense: true,
                 title: Text('בחירות העורך'),
                 onTap: () {
                   Navigator.pop(context);
@@ -57,6 +64,7 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
+                dense: true,
                 title: Text('אתגר התלונה'),
                 onTap: () {
                   Navigator.pop(context);
@@ -64,6 +72,7 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
+                dense: true,
                 title: Text('כל הסיפורים בסדר כרונולוגי'),
                 onTap: () {
                   Navigator.pop(context);
@@ -71,6 +80,7 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               ListTile(
+                dense: true,
                 title: Text('דפים מוקלטים'),
                 onTap: () {
                   Navigator.pop(context);
@@ -78,7 +88,17 @@ Widget buildDrawer(BuildContext context){
                 },
               ),
               Divider(),
+
               ListTile(
+                dense: true,
+                title: Text('כניסת משתמשים'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OfferSignUpScreen()));
+                },
+              ),
+              ListTile(
+                dense: true,
                 title: Text('תנאי השימוש והגנת הפרטיות'),
                 onTap: () {
                   Navigator.pop(context);
@@ -89,18 +109,15 @@ Widget buildDrawer(BuildContext context){
               ],)
           ),
           Container(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(' כל הזכויות שמורות לכותבים ולכותבות ' , style: TextStyle(color: Colors.grey[600])),
-                Row(
+            // padding: EdgeInsets.only(right: 10.0),
+            child: 
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                  Icon(Icons.copyright, size: 15.0, color: Colors.grey[600]),
-                  Text( ' ' + DateTime.now().year.toString(), style: TextStyle(color: Colors.grey[600])),
+                  Text(' כל הזכויות שמורות לכותבים ולכותבות ' , style: TextStyle(fontSize: 10.0, color: Colors.grey[600])),
+                  Icon(Icons.copyright, size: 10.0, color: Colors.grey[600]),
+                  Text( ' ' + DateTime.now().year.toString(), style: TextStyle(fontSize: 10.0, color: Colors.grey[600])),
                 ],)
-              ],)
           ),
           SizedBox(height: 30.0),
         ],

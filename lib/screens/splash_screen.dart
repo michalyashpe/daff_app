@@ -38,7 +38,7 @@ class SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SvgPicture.asset('assets/logo.svg',),
-          Text(slogen, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold))
+          Text(fullAppSlogen, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold))
         ]
       ),
     ));

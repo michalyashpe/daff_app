@@ -7,6 +7,8 @@ TextStyle h5bold = h5.merge(TextStyle( fontWeight: FontWeight.bold ));
 TextStyle h5grey = TextStyle(fontSize: 22.0, color: Colors.grey);
 TextStyle appBarTitle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold );
 
+TextStyle hyperlinkStyle = TextStyle(color: Colors.blueGrey, decoration: TextDecoration.underline);
+
 double storyPreviewLineHeight = 5.0;
 
 String appSlogen = 'במה ליצירה עצמאית';

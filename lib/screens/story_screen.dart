@@ -180,7 +180,7 @@ class _StoryScreenState extends State<StoryScreen>{
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          loading ? buildShimmeringCircle(40.0) : buildAvatarImage(story.author.imageUrl),
+          loading ? buildShimmeringCircle(30.0) : buildAvatarImage(story.author.imageUrl),
           SizedBox(width: 15.0,), 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

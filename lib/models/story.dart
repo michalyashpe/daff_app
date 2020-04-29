@@ -1,6 +1,7 @@
 
 
 
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/author.dart';
 
 class Story {
@@ -61,7 +62,7 @@ class Story {
      return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
   }
   String get shareText {
-    return 'כדאי לך לקרוא 👀 $productionUrl @ הַדַּף - במה ליצירה עצמאית';
+    return 'כדאי לך לקרוא 👀 $productionUrl @ $fullAppSlogen';
   }
 
   String get productionUrl {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,7 +38,7 @@ class SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SvgPicture.asset('assets/logo.svg',),
-          Text('הַדַּף - במה ליצירה עצמאית', style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold))
+          Text(slogen, style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold))
         ]
       ),
     ));

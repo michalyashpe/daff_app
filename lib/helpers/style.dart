@@ -8,3 +8,7 @@ TextStyle h5grey = TextStyle(fontSize: 22.0, color: Colors.grey);
 TextStyle appBarTitle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold );
 
 double storyPreviewLineHeight = 5.0;
+
+String appSlogen = 'במה ליצירה עצמאית';
+String appName = 'הַדַּף';
+String fullAppSlogen = '$appName - $appSlogen';

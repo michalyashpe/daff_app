@@ -1,4 +1,4 @@
-package com.example.daff_app
+package daff.co.il
 
 import android.os.Bundle
 

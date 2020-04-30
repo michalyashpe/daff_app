@@ -1,10 +1,10 @@
 import 'package:daff_app/helpers/style.dart';
-import 'package:daff_app/screens/signup_screen.dart';
+import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:flutter/material.dart';
 
-class OfferSignUpScreen extends StatelessWidget {
+class OfferConnectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,16 +40,16 @@ class OfferSignUpScreen extends StatelessWidget {
           Expanded(
             child: RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Text('ליצירת חשבון חדש', style: TextStyle(fontSize: 20.0)),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen(true))),
+              child: Text('כניסה', style: TextStyle(fontSize: 20.0)),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
             ))
           ]
       ),
       SizedBox(height: 20.0,),
-      buildHyperLink(
-        text: 'יש לי כבר חשבון',
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen(false))),
-      ),
+      // buildHyperLink(
+      //   text: 'יש לי כבר חשבון',
+      //   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen(false))),
+      // ),
       SizedBox(height: 10.0,),
       buildHyperLink(
         text: 'להמשיך לקרוא בלי להתחבר ',

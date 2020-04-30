@@ -1,5 +1,6 @@
 
 import 'package:daff_app/helpers/.daff_api.dart';
+import 'package:daff_app/models/user.dart';
 import 'package:flutter/foundation.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -7,17 +8,20 @@ import 'dart:convert';
 
 
 class AuthenticationModel extends ChangeNotifier {
+  final User user;
+
+  AuthenticationModel(this.user);
   String email;
   String password;
-  User user;
   bool isLoading = false;
 
-  Future<int> daffLogin(String deviceToken) async { // move to seperate model?
+  Future<int> daffLogin() async { // move to seperate model?
     Map<String,String> userData = {
       'email': email ,
       'password': password,
-      'deviceToken': deviceToken
+      'deviceToken': user.deviceId
     };
+    print('trying to login with: $userData');
     int status;
     isLoading = true;
     notifyListeners();
@@ -29,14 +33,16 @@ class AuthenticationModel extends ChangeNotifier {
       body: json.encode({'user': userData}))
       .then((http.Response response) {
         status = response.statusCode;
+        Map<String, dynamic> result = json.decode(response.body);
+        print(result);
         if (status == 200) { 
-          Map<String, dynamic> result = json.decode(response.body);
-          user = User(
-            email: result['user']['email'],
-            name: result['user']['name'],
-            nameInEnglish: result['user']['name_in_english'],
-            gender: result['user']['gender'],
-          );
+          
+          // user = User(
+          //   email: result['user']['email'],
+          //   name: result['user']['name'],
+          //   nameInEnglish: result['user']['name_in_english'],
+          //   gender: result['user']['gender'],
+          // );
           // addDeviceTokenToSP(deviceToken);
           //show user message - thanks and we'll send you updates with new stories
           //maybe notification settings page?
@@ -57,20 +63,4 @@ class AuthenticationModel extends ChangeNotifier {
   // }
 
 
-}
-
-class User {
-  int id;
-  String email;
-  String name;
-  String nameInEnglish;
-  String gender;
-
-  User({
-    this.id,
-    this.email,
-    this.name,
-    this.nameInEnglish,
-    this.gender,
-  });
 }

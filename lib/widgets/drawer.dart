@@ -1,11 +1,9 @@
-import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
-import 'package:daff_app/screens/offer_signup_screen.dart';
+import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
+import 'package:daff_app/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 Widget buildDrawer(BuildContext context){
@@ -17,26 +15,8 @@ Widget buildDrawer(BuildContext context){
             child: ListView(
               children: <Widget>[
               DrawerHeader(
-                padding: EdgeInsets.fromLTRB(0.0, 10.0, 20.0, 0.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      SvgPicture.asset(
-                        'assets/logo.svg',
-                        width: 45.0,
-                        semanticsLabel: 'Acme Logo'
-                      ),
-                      SizedBox(width: 10.0,),
-                      Text(appName, style: TextStyle(fontSize: 35.0, fontFamily: GoogleFonts.alef().fontFamily)),
-                    ]
-                  ),
-                      Text(appSlogen, style: TextStyle(fontSize: 20.0))
-
-                ],)
+                // padding: EdgeInsets.fromLTRB(0.0, 10.0, 20.0, 0.0),
+                child: buildAppLogoLarge()
               ),
               ListTile(
                 dense: true,
@@ -94,7 +74,7 @@ Widget buildDrawer(BuildContext context){
                 title: Text('כניסת משתמשים'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OfferSignUpScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
                 },
               ),
               ListTile(

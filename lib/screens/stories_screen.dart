@@ -1,8 +1,10 @@
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/stories_provider.dart';
+import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -55,6 +57,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
                       onPressed: () => Navigator.pop(context, false),
                     )
                   : null,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
+                  icon: FaIcon(FontAwesomeIcons.user
+                ,))
+              ],
               backgroundColor: Theme.of(context).backgroundColor,
             ),
             MediaQuery.of(context).size.width < 768.0 ?

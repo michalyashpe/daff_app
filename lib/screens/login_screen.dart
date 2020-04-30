@@ -40,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
     void onPressedFunction() async {
       if (!_formKey.currentState.validate()) return;
       _formKey.currentState.save();
-      String deviceToken = widget.firebaseAPI.deviceToken ;
-      int status = await model.daffLogin(deviceToken);
+      // String deviceToken = widget.firebaseAPI.deviceToken ;
+      int status = await model.daffLogin();
       if (!model.isLoading && status == 200) {
         // Navigator.of(context).pushNamed(HomeScreen.routeName,);
       }

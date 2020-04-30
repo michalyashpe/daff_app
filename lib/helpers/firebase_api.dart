@@ -2,7 +2,7 @@
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 
 String notificationUrl = '';
@@ -41,7 +41,7 @@ class FirebaseAPI extends ChangeNotifier {
         notificationUrl = message['data']['url'];
         print(notificationUrl);
         notifyListeners();
-        _launchURL(url: message['data']['url']);
+        // _launchURL(url: message['data']['url']);
   }
 
   // void initDeviceToken(){
@@ -52,13 +52,13 @@ class FirebaseAPI extends ChangeNotifier {
   //   isLoading = false;
   // }
 
-  void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // void _launchURL({String url = 'https://daff.co.il/users/sign_up'}) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
 
   // Future<bool> getDeviceTokenFromSP() async {

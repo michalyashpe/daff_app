@@ -3,6 +3,7 @@ library crashy;
 import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
+import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   FirebaseAPI firebaseAPI;
   StoriesModel storiesModel ;
-  UserModel userModel;
+  UserProvider userProvider;
 
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -96,8 +97,8 @@ class _MyAppState extends State<MyApp> {
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
     storiesModel = StoriesModel();
-    userModel = UserModel();
-    userModel.initialize();
+    userProvider = UserProvider();
+    userProvider.initialize();
   }
 
 
@@ -106,11 +107,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthenticationModel()),
+        ChangeNotifierProvider(create: (_) => AuthenticationModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
-        ChangeNotifierProvider(create: (_) => StoryModel(userModel.user)),
+        ChangeNotifierProvider(create: (_) => StoryModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) =>  storiesModel),
-        ChangeNotifierProvider(create: (_) =>  userModel),
+        ChangeNotifierProvider(create: (_) =>  userProvider),
         ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],
   child: MaterialApp(
@@ -127,7 +128,10 @@ class _MyAppState extends State<MyApp> {
     title: 'Daff Rocking App',
     theme: ThemeData(
       primarySwatch: Colors.grey,
-      textTheme: GoogleFonts.alefTextTheme(Theme.of(context).textTheme,),
+      fontFamily: GoogleFonts.alef().fontFamily,
+      textTheme:  TextTheme(
+          body1: TextStyle(fontSize: 16.0),
+        ),
     ),
     home: Directionality( // add this
       textDirection: TextDirection.rtl, // set this property 

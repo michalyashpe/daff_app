@@ -65,13 +65,15 @@ class OfferSignUpScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '$appName שלי. עם חשבון אישי אפשר לעשות הרבה יותר עם היישומון של $appName:',
+          'לא תאמינו מה משתמשים רשומים עושים עם יישומון $appName!',
+          // 'לא תאמינו מה אפשר לעשות ביישומון של $appName עם חשבון אישי:',
+          // 'עם חשבון אישי אפשר לעשות הרבה יותר עם היישומון של $appName:',
           // 'לאחר שתתחברו לחשבון משלכם תוכלו לעשות הרבה יותר עם היישומון של $appName:',
           style: TextStyle(fontSize: 23.0),
         ),
         SizedBox(height: 20.0,),
         _buildReason('להגיב ולפרגן על דפים שאתם אוהבים', Icons.favorite),
-        _buildReason('לעקוב אחרי הכותבים שאתם אוהבים', Icons.face),
+        _buildReason('לעקוב אחרי הכותבים שאתם מחבבים', Icons.face),
         _buildReason('לקבל המלצות לקריאה על פי טעמכם האישי', Icons.star),
         _buildReason('לשמור דפים שאהבתם', Icons.bookmark),
     ]);

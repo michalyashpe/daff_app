@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 Widget buildAppLogo(){
     return Column(
+      // crossAxisAlignment: CrossAxisAlignment.start, 
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
       
@@ -13,7 +14,7 @@ Widget buildAppLogo(){
         children: <Widget>[
           SvgPicture.asset(
             'assets/logo.svg',
-            width: 20.0,
+            width: 30.0,
             semanticsLabel: 'Acme Logo'
           ),
           SizedBox(width: 10.0,),

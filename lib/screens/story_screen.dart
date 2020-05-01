@@ -210,8 +210,8 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
   Widget _buildContent(Story story ,{bool loading = false}) {
-    if(!loading)
-      story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
+    // if(!loading)
+      // story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
     // story.contents = HtmlHelper.replaceHrWithImage(story.contents);
     return loading 
     ? Column(
@@ -229,13 +229,20 @@ class _StoryScreenState extends State<StoryScreen>{
       linkStyle: hyperlinkStyle,
       customTextStyle: (dom.Node node, TextStyle baseStyle) {
         double fontSize = 20.0;
-        Color color; //= Colors.black;
-        TextDecoration textDecoration; //= TextDecoration.none;
+        Color color;// = Colors.black;
+        TextDecoration textDecoration;// = TextDecoration.none;
         if (node is dom.Element) {
+          if (node.localName == 'a' && node.parent.localName =='figcaption'){
+            color = Colors.grey[700];
+            fontSize = 15.0;
+          }
           switch (node.localName) {
             case "figcaption":
-              fontSize = 15.0;
-              color = Colors.grey[700];
+              node.children.forEach((n) {
+                color = Colors.grey[700];
+                fontSize = 15.0;
+                textDecoration = TextDecoration.none;
+              } );
               break;
           }
         }

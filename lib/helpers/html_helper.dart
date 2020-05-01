@@ -8,13 +8,20 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HtmlHelper {
-  static String removeInnerTags(String tagName, String html){ //TODO: style links in figcaption
-    var document = parse(html);
-    // document.getElementsByTagName(tagName).forEach((tag) {
-    //   tag.innerHtml = tag.text;
-    // });
-    return document.outerHtml;  
-  }
+  // static String removeInnerTags(String tagName, String html){ //TODO: style links in figcaption
+  //   var document = parse(html);
+  //   document.getElementsByTagName(tagName).forEach((tag) {
+  //     print(tag.innerHtml);
+  //     print(tag.children.length);
+  //     tag.children.forEach((child){
+  //       print(child.innerHtml);
+  //       child.innerHtml = "<span>${child.innerHtml}</span>";
+  //       print(child.innerHtml);
+  //     });
+  //     // tag.innerHtml = tag.text;
+  //   });
+  //   return document.outerHtml;  
+  // }
   
   static String replaceHrWithImage(String html){ //TODO: replace hr with image
     // print(html);

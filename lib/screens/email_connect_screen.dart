@@ -129,11 +129,8 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
   Widget _buildSwipeAccountType() {
     return newAccount ? 
       buildHyperLink(text: 'יש לי כבר חשבון',  onPressed: () => setState(() {newAccount = false;}))
-      : Wrap(
-        children: <Widget>[
-        Text('אין לך חשבון? '),
-        buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {newAccount = true;}))
-      ],
+      : buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {newAccount = true;})
+      ,
     )
       ;
   }

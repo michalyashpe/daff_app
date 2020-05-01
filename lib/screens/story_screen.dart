@@ -210,9 +210,8 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
   Widget _buildContent(Story story ,{bool loading = false}) {
-    // if(!loading)
-      // story.contents = HtmlHelper.removeInnerTags('figcaption', story.contents);
-    // story.contents = HtmlHelper.replaceHrWithImage(story.contents);
+    if(!loading)
+      story.contents = HtmlHelper.replaceHrWithImage(story.contents);
     return loading 
     ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,32 +228,26 @@ class _StoryScreenState extends State<StoryScreen>{
       linkStyle: hyperlinkStyle,
       customTextStyle: (dom.Node node, TextStyle baseStyle) {
         double fontSize = 20.0;
-        Color color;// = Colors.black;
-        TextDecoration textDecoration;// = TextDecoration.none;
+        Color color;
+        TextDecoration textDecoration;
+        double height = 1.3;
         if (node is dom.Element) {
           if (node.localName == 'a' && node.parent.localName =='figcaption'){
             color = Colors.grey[700];
             fontSize = 15.0;
-          }
-          switch (node.localName) {
-            case "figcaption":
-              node.children.forEach((n) {
-                color = Colors.grey[700];
-                fontSize = 15.0;
-                textDecoration = TextDecoration.none;
-              } );
-              break;
-          }
+          } else if (node.localName == 'figcaption') {
+            color = Colors.grey[700];
+            fontSize = 15.0;
+            textDecoration = TextDecoration.none;
+          } 
         }
         return baseStyle.merge(GoogleFonts.alef())
-            .merge(TextStyle(fontSize: fontSize, height: 1.3, color: color, decoration: textDecoration));// for hr repleace with a widget
+            .merge(TextStyle(fontSize: fontSize, height: height, color: color, decoration: textDecoration, ));// for hr repleace with a widget
       },
       customTextAlign: (dom.Node node) {
         if (node is dom.Element) {
-          switch (node.localName) {
-            case "figcaption":
-              return TextAlign.center;
-            break;
+          if (node.localName == 'figcaption') {
+            return TextAlign.center;
           }
         }
         return story.ltr ? TextAlign.left : TextAlign.right ;

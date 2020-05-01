@@ -3,6 +3,7 @@ import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,9 +28,11 @@ class HtmlHelper {
     // print(html);
     var document = parse(html);
     document.getElementsByClassName('image').forEach((t) => print(t.innerHtml));
-    
-    document.getElementsByTagName('hr').forEach((tag) {
-      tag.innerHtml = '<img src="https://images.unsplash.com/photo-151>';
+    String img = 'asset:assets/hr.png';
+    document.getElementsByTagName('hr').forEach((tag) { 
+      String html = '<figure class="image"><img src="$img" width="70"></figure>';
+      Node newNode = parse(html).body.firstChild;
+      tag.replaceWith(newNode); 
     });
     return document.outerHtml;  
   }

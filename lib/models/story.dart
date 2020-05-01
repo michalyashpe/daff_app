@@ -51,7 +51,7 @@ class Story {
     this.audioID
   });
   bool get isSytemUpdate {
-    return tags.contains('עדכון') && tags.contains('מערכת');
+    return tags.contains('עדכון');// && tags.contains('מערכת');
   }
 
   bool get isNew {

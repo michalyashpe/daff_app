@@ -18,8 +18,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'models/user.dart';
-
 final SentryClient _sentry = new SentryClient(dsn: dsn);
 
 bool get isInDebugMode {

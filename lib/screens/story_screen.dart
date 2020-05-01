@@ -1,4 +1,5 @@
 import 'package:daff_app/helpers/html_helper.dart';
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
@@ -223,23 +224,13 @@ class _StoryScreenState extends State<StoryScreen>{
     ],)
     : Html(
       data: story.contents,
-      defaultTextStyle: TextStyle(fontFamily: 'serif'),
-      // customRender: (dom.Node node, List<Widget> children) {
-      //   print(node);
-      //   if (node is dom.Element) {
-      //     print(node.localName);
-      //     switch (node.localName) {
-      //       case "hr":
-      //         print('hihihi');
-      //         return Column(children: children);
-      //     }
-      //   }
-      //   return null;
-      // },
+      // defaultTextStyle: TextStyle(fontFamily: 'serif'),
+      onLinkTap: (String s) => HtmlHelper.linkTapHandler(s, context),
+      linkStyle: hyperlinkStyle,
       customTextStyle: (dom.Node node, TextStyle baseStyle) {
         double fontSize = 20.0;
-        Color color = Colors.black;
-        TextDecoration textDecoration = TextDecoration.none;
+        Color color; //= Colors.black;
+        TextDecoration textDecoration; //= TextDecoration.none;
         if (node is dom.Element) {
           switch (node.localName) {
             case "figcaption":

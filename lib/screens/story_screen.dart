@@ -1,5 +1,4 @@
 import 'package:daff_app/helpers/html_helper.dart';
-import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
@@ -10,10 +9,7 @@ import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:share/share.dart';
 
 class StoryScreen extends StatefulWidget{
@@ -221,39 +217,7 @@ class _StoryScreenState extends State<StoryScreen>{
         buildShimmeringParagraph(context),
         SizedBox(height: 20.0,),
     ],)
-    : Html(
-      data: story.contents,
-      // defaultTextStyle: TextStyle(fontFamily: 'serif'),
-      onLinkTap: (String s) => HtmlHelper.linkTapHandler(s, context),
-      linkStyle: hyperlinkStyle,
-      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-        double fontSize = 20.0;
-        Color color;
-        TextDecoration textDecoration;
-        double height = 1.3;
-        if (node is dom.Element) {
-          if (node.localName == 'a' && node.parent.localName =='figcaption'){
-            color = Colors.grey[700];
-            fontSize = 15.0;
-          } else if (node.localName == 'figcaption') {
-            color = Colors.grey[700];
-            fontSize = 15.0;
-            textDecoration = TextDecoration.none;
-          } 
-        }
-        return baseStyle.merge(GoogleFonts.alef())
-            .merge(TextStyle(fontSize: fontSize, height: height, color: color, decoration: textDecoration, ));// for hr repleace with a widget
-      },
-      customTextAlign: (dom.Node node) {
-        if (node is dom.Element) {
-          if (node.localName == 'figcaption') {
-            return TextAlign.center;
-          }
-        }
-        return story.ltr ? TextAlign.left : TextAlign.right ;
-      },
-
-    );
+    : HtmlHelper.buildHtml(story, context);
   }
 
   Widget _buildRatingBox(Story story, {bool loading = false}){

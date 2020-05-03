@@ -1,31 +1,59 @@
+import 'package:daff_app/helpers/style.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:html/dom.dart' as dom;
+
 
 class HtmlHelper {
-  // static String removeInnerTags(String tagName, String html){ //TODO: style links in figcaption
-  //   var document = parse(html);
-  //   document.getElementsByTagName(tagName).forEach((tag) {
-  //     print(tag.innerHtml);
-  //     print(tag.children.length);
-  //     tag.children.forEach((child){
-  //       print(child.innerHtml);
-  //       child.innerHtml = "<span>${child.innerHtml}</span>";
-  //       print(child.innerHtml);
-  //     });
-  //     // tag.innerHtml = tag.text;
-  //   });
-  //   return document.outerHtml;  
-  // }
+
+  static Widget buildHtml(Story story, BuildContext context){
+    return Html(
+      data: story.contents,
+      // defaultTextStyle: TextStyle(fontFamily: 'serif'),
+      onLinkTap: (String s) => HtmlHelper.linkTapHandler(s, context),
+      linkStyle: hyperlinkStyle,
+      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+        double fontSize = 20.0;
+        Color color;
+        TextDecoration textDecoration;
+        double height = 1.3;
+        if (node is dom.Element) {
+          if (node.localName == 'a' && node.parent.localName =='figcaption'){
+            color = Colors.grey[700];
+            fontSize = 15.0;
+          } else if (node.localName == 'figcaption') {
+            color = Colors.grey[700];
+            fontSize = 15.0;
+            textDecoration = TextDecoration.none;
+          } 
+        }
+        return baseStyle.merge(GoogleFonts.alef())
+            .merge(TextStyle(fontSize: fontSize, height: height, color: color, decoration: textDecoration, ));// for hr repleace with a widget
+      },
+      customTextAlign: (dom.Node node) {
+        if (node is dom.Element) {
+          if (node.localName == 'figcaption') {
+            return TextAlign.center;
+          }
+        }
+        return story.ltr ? TextAlign.left : TextAlign.right ;
+      },
+
+    );
+  }
+
   
-  static String replaceHrWithImage(String html){ //TODO: replace hr with image
-    // print(html);
+  static String replaceHrWithImage(String html){ 
     var document = parse(html);
     document.getElementsByClassName('image').forEach((t) => print(t.innerHtml));
     String img = 'asset:assets/hr.png';

@@ -10,6 +10,10 @@ import 'package:provider/provider.dart';
 enum PlayerState { stopped, playing, paused, buffering }
 enum PlayingRouteState { speakers, earpiece }
 
+double playerWidgetHeight = playerHeight + sliderHeight;
+double playerHeight = 60.0;
+double sliderHeight = 4.0;
+
 class PlayerWidget extends StatefulWidget {
   final PlayerMode mode;
   final Story story;
@@ -72,8 +76,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   Widget build(BuildContext context) {
 
-    double height = 60.0;
-    double sliderHeight = 4.0;
+
 
     return     MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -81,14 +84,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     
     Container(
     color: Colors.black,
-    height: height + sliderHeight,
+    height: playerHeight + sliderHeight,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       
       children: <Widget>[
         buildSlider(sliderHeight),
       Container( 
-        height: height,
+        height: playerHeight,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[

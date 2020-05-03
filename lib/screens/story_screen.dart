@@ -9,6 +9,8 @@ import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -19,15 +21,34 @@ class StoryScreen extends StatefulWidget{
   _StoryScreenState createState() => _StoryScreenState();
 }
 
+
+
 class _StoryScreenState extends State<StoryScreen>{
   double padding = 10.0;
+  bool _showBottomSocialBar = false ;
+  GlobalKey scrollKey = new GlobalKey();
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          bottomSheet: !model.isLoading && model.story.hasAudio ? PlayerWidget(story: model.story) : Text(''),
-          body:  CustomScrollView(
+          
+          bottomSheet: _buildBottomSheet(model.story, loading: model.isLoading),
+          body:  NotificationListener<ScrollNotification>(
+            key: scrollKey,
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollStartNotification) {
+                } else if (scrollNotification is ScrollUpdateNotification) {
+                } else if (scrollNotification is ScrollEndNotification) {
+                  if(scrollNotification.metrics.pixels > 200){
+                    // setState(() {});
+                  // } else setState(() {});
+                  }
+                }
+              },
+              child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,
@@ -44,7 +65,8 @@ class _StoryScreenState extends State<StoryScreen>{
               ],
             ),
             
-            SliverList(
+             SliverList(
+              
               delegate: SliverChildListDelegate([
                 SizedBox(height: 15.0,),
                 Padding(
@@ -56,7 +78,6 @@ class _StoryScreenState extends State<StoryScreen>{
                     padding: EdgeInsets.symmetric(horizontal: padding),
                     child: Text('מערכת הדף', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
                   ) : SizedBox(height: 0.0),
-                
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
@@ -87,6 +108,7 @@ class _StoryScreenState extends State<StoryScreen>{
                   child: _buildProfileBox(model.story, loading: model.isLoading)
                 ),
                 _buildDivider(5.0),
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildRecommendedStories( model.story, loading: model.isLoading)
@@ -95,8 +117,49 @@ class _StoryScreenState extends State<StoryScreen>{
                   SizedBox(height: 70.0) : SizedBox(),
               ])
           )]
-         ) );
+         )) );
       }
+    );
+  }
+
+  Widget _buildBottomSheet(Story story, {bool loading = false}){
+    double socialBarHeight = 60.0;
+    return loading ? Text('') 
+      : Container(
+        height: _showBottomSocialBar && story.hasAudio ? (playerWidgetHeight + socialBarHeight)
+          : story.hasAudio ? playerWidgetHeight
+          : _showBottomSocialBar ? socialBarHeight 
+          : 0.0,
+        child: Column(children: <Widget>[
+        story.hasAudio ? PlayerWidget(story: story): SizedBox(),
+        true ? _buildSocialBar(socialBarHeight) : SizedBox()
+        ],));
+  }
+
+  Widget _buildSocialBar(double height){
+    return Container(
+      padding: EdgeInsets.all(0),
+      margin: EdgeInsets.all(0),
+      height: height,
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey[200], width: 0.5))
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+        IconButton(
+          onPressed: (){},
+          icon: Icon(Icons.favorite_border, size: 20.0, color: Colors.grey),
+        ),
+        IconButton(
+          onPressed: (){},
+          icon: FaIcon(FontAwesomeIcons.comment, size: 18.0, color: Colors.grey),
+        ),
+        IconButton(
+          onPressed: (){},
+          icon: Icon(Icons.share, size: 20.0, color: Colors.grey),
+        ),
+      ],)
     );
   }
   

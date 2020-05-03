@@ -55,7 +55,7 @@ class HtmlHelper {
   
   static String replaceHrWithImage(String html){ 
     var document = parse(html);
-    document.getElementsByClassName('image').forEach((t) => print(t.innerHtml));
+    // document.getElementsByClassName('image').forEach((t) => print(t.innerHtml));
     String img = 'asset:assets/hr.png';
     document.getElementsByTagName('hr').forEach((tag) { 
       String html = '<figure class="image"><img src="$img" width="70"></figure>';

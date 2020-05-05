@@ -3,6 +3,7 @@ import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/comments_screen.dart';
+import 'package:daff_app/screens/new_comment_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/divider.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
@@ -42,9 +43,10 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
   void toggleSocialBar() {
-    if (_scrollController.position.pixels > 200.0) { //TODO: show social bar for stories with audio
+    double pageSize = _scrollController.position.maxScrollExtent;
+    if (_scrollController.position.pixels > pageSize * 0.5) { //TODO: show social bar for stories with audio
       setState(() {_showBottomSocialBar = true;});
-    } else if (_scrollController.position.pixels < 200.0 ){
+    } else if (_scrollController.position.pixels < pageSize * 0.5 ){
       setState(() {_showBottomSocialBar = false;});
     }
   }
@@ -165,8 +167,12 @@ class _StoryScreenState extends State<StoryScreen>{
           icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey),
         ),
         IconButton(
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen())),
           icon: buildCounterIcon(FontAwesomeIcons.comment, story.comments.length),
+          onPressed: () { 
+            story.comments.length == 0 ? 
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
+              : Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen()));
+          },
         ),
         IconButton(
           onPressed: () => share(story),
@@ -183,7 +189,9 @@ class _StoryScreenState extends State<StoryScreen>{
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
-            child: Text(count.toString(), style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey, fontWeight: FontWeight.w900))
+            child: Text(count > 0 ? count.toString() : '', 
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey, fontWeight: FontWeight.w900))
           ),
         ),
         FaIcon(FontAwesomeIcons.comment, size: size, color: Colors.grey,)
@@ -314,12 +322,6 @@ class _StoryScreenState extends State<StoryScreen>{
           story.ratingSummary,
           style: TextStyle(fontSize: 15.0, color: Colors.grey[700])
         )),
-        // IconButton(
-        //   onPressed: () =>share(story),
-        //   icon: Icon(Icons.share, color: Colors.grey)
-        // ),
-
-
     ],);
   }
 

@@ -52,17 +52,18 @@ class _CommentsScreenState extends State<CommentsScreen>{
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen())),
               child: Icon(Icons.edit),
-              backgroundColor: Colors.grey[300],
+              // backgroundColor: Colors.grey[300],
+              backgroundColor: Colors.amberAccent,
             ),
         );
   });}
   
 
   Widget _buildTitle(Story story){
-    return  
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Text('${story.comments.length} תגובות על "${story.title}" של ${story.author.name}:',
+    String text = story.comments.length == 0 ? 'אין עדיין תגובות על ' : '${story.comments.length} '; 
+      text = text+ 'תגובות על "${story.title}" של ${story.author.name}';
+    return  Padding( padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      child: Text(text,
         style: TextStyle(fontWeight: FontWeight.bold)
       
       )

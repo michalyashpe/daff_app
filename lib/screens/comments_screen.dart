@@ -1,5 +1,6 @@
 import 'package:daff_app/models/comment.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/divider.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _CommentsScreenState extends State<CommentsScreen>{
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text('תגובות על "${Provider.of<StoryModel>(context).story.title}"'),
+                title: Text('${model.story.comments.length} תגובות על "${model.story.title}"'),
                 automaticallyImplyLeading: false,
                 iconTheme: IconThemeData(color: Colors.grey),
                 floating: true,
@@ -35,15 +36,15 @@ class _CommentsScreenState extends State<CommentsScreen>{
               SliverList(
                 
                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                  print(index);
-                  return Column(children: <Widget>[
+                  return model.story.comments.length == 0 ?
+                  Center(child: Text('אין עדיין תגובות'))
+                  : Column(children: <Widget>[
                     buildComment(model.story.comments.elementAt(index)),
                     buildDivider(5.0)
-
                   ],);
 
                 }, 
-                childCount: model.isLoading ? 4 : model.story.comments.length))
+                childCount: model.story.comments.length))
             ])
         );
   });}
@@ -55,18 +56,21 @@ class _CommentsScreenState extends State<CommentsScreen>{
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-        Row(children: <Widget>[
-          buildAvatarImage(comment.author.imageUrl, height: 40.0),
-          SizedBox(width: 10.0,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-            Text(comment.author.name),
-            Text(comment.createdAtFormatted,style: TextStyle(color: Colors.grey[500]),),
+        GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(comment.author.name, comment.author.id))),
+          child: Row(children: <Widget>[
+            buildAvatarImage(comment.author.imageUrl, height: 45.0),
+            SizedBox(width: 10.0,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+              Text(comment.author.name),
+              Text(comment.createdAtFormatted,style: TextStyle(color: Colors.grey[500]),),
+            ],)
           ],)
-        ],),
+        ),
         SizedBox(height: 10.0,),
-        Text(comment.content),
+        Text(comment.content, style: TextStyle(fontSize: 20.0)),
       ],)
     );
   }

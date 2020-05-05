@@ -1,6 +1,7 @@
 import 'package:daff_app/models/comment.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
+import 'package:daff_app/screens/new_comment_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/divider.dart';
 import 'package:flutter/material.dart';
@@ -45,10 +46,17 @@ class _CommentsScreenState extends State<CommentsScreen>{
 
                 }, 
                 childCount: model.story.comments.length))
-            ])
+            ]),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen())),
+              child: Icon(Icons.edit),
+              backgroundColor: Colors.grey[300],
+            ),
         );
   });}
+  
 
+  
   Widget buildComment(Comment comment){
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),

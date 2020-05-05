@@ -21,7 +21,7 @@ class StoryModel extends ChangeNotifier{
   void fetchStoryData(int id){
     print('fetching story data...');
     isLoading = true;
-    notifyListeners();
+    // notifyListeners();
     http.get(
       daffServerUrl + '/stories/$id.json',
       headers: <String, String>{

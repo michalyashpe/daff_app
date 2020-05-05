@@ -1,4 +1,3 @@
-import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/email_connect_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
@@ -6,7 +5,6 @@ import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:daff_app/widgets/connect_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class ConnectScreen extends StatefulWidget {
   ConnectScreen();
@@ -95,8 +93,7 @@ class _ConnectScreenState extends State<ConnectScreen>{
           buildHyperLink(
             text: 'תנאי השימוש', 
             onPressed: () {
-              Provider.of<StoryModel>(context, listen: false).initialize(1959);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('תנאי השימוש והגנת הפרטיות')));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(1959)));
             })
         ],),
         SizedBox(height: 15.0,),

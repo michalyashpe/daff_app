@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class StoryScreen extends StatefulWidget{
+  int storyId;
+  StoryScreen(this.storyId);
   static const routeName = '/story_screen';
-  final String title;
-  StoryScreen(this.title);
   _StoryScreenState createState() => _StoryScreenState();
 }
 
@@ -26,29 +26,34 @@ class StoryScreen extends StatefulWidget{
 class _StoryScreenState extends State<StoryScreen>{
   double padding = 10.0;
   bool _showBottomSocialBar = false ;
-  GlobalKey scrollKey = new GlobalKey();
+  ScrollController _scrollController;
+  PlayerWidget audioPlayer;
 
+@override
+  void initState() {
+    Provider.of<StoryModel>(context, listen: false).initialize(widget.storyId); //TODO: make this work
+    _scrollController = ScrollController();
+    _scrollController.addListener(() => toggleSocialBar());
+
+    super.initState();
+  }
+
+  void toggleSocialBar() {
+    if (_scrollController.position.pixels > 200.0) { //TODO: show social bar for stories with audio
+      setState(() {_showBottomSocialBar = true;});
+    } else if (_scrollController.position.pixels < 200.0 ){
+      setState(() {_showBottomSocialBar = false;});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<StoryModel>(
       builder: (BuildContext context,  StoryModel model, Widget child) {
         return Scaffold(
-          
           bottomSheet: _buildBottomSheet(model.story, loading: model.isLoading),
-          body:  NotificationListener<ScrollNotification>(
-            key: scrollKey,
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollStartNotification) {
-                } else if (scrollNotification is ScrollUpdateNotification) {
-                } else if (scrollNotification is ScrollEndNotification) {
-                  if(scrollNotification.metrics.pixels > 200){
-                    // setState(() {});
-                  // } else setState(() {});
-                  }
-                }
-              },
-              child: CustomScrollView(
+          body:  CustomScrollView(
+            controller: _scrollController,
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,
@@ -65,8 +70,7 @@ class _StoryScreenState extends State<StoryScreen>{
               ],
             ),
             
-             SliverList(
-              
+            SliverList(
               delegate: SliverChildListDelegate([
                 SizedBox(height: 15.0,),
                 Padding(
@@ -117,13 +121,21 @@ class _StoryScreenState extends State<StoryScreen>{
                   SizedBox(height: 70.0) : SizedBox(),
               ])
           )]
-         )) );
+        ) );
       }
     );
   }
 
   Widget _buildBottomSheet(Story story, {bool loading = false}){
     double socialBarHeight = 60.0;
+    if (!loading) {
+      if (story.hasAudio){
+        audioPlayer = PlayerWidget(story: story);
+        _showBottomSocialBar = false; //TODO: enable social bar on stories with audio
+      }
+      socialBarHeight =  _scrollController.position.pixels > 200.0 ? 60.0 : 0.0;
+      
+    }
     return loading ? Text('') 
       : Container(
         height: _showBottomSocialBar && story.hasAudio ? (playerWidgetHeight + socialBarHeight)
@@ -131,15 +143,13 @@ class _StoryScreenState extends State<StoryScreen>{
           : _showBottomSocialBar ? socialBarHeight 
           : 0.0,
         child: Column(children: <Widget>[
-        story.hasAudio ? PlayerWidget(story: story): SizedBox(),
-        true ? _buildSocialBar(socialBarHeight) : SizedBox()
+        story.hasAudio ? audioPlayer : SizedBox(),
+        _showBottomSocialBar ? _buildSocialBar(socialBarHeight) : SizedBox()
         ],));
   }
 
   Widget _buildSocialBar(double height){
     return Container(
-      padding: EdgeInsets.all(0),
-      margin: EdgeInsets.all(0),
       height: height,
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.grey[200], width: 0.5))

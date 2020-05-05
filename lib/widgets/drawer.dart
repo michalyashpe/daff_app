@@ -1,10 +1,8 @@
-import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 Widget buildDrawer(BuildContext context){
   return Drawer(
@@ -23,8 +21,7 @@ Widget buildDrawer(BuildContext context){
                 title: Text('הַסִּפּוּר שֶׁלָּנוּ'),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<StoryModel>(context, listen: false).initialize(544);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('הַסִּפּוּר שֶׁלָּנוּ')));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(544)));
                 },
               ),
               ListTile(
@@ -82,8 +79,7 @@ Widget buildDrawer(BuildContext context){
                 title: Text('תנאי השימוש והגנת הפרטיות'),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<StoryModel>(context, listen: false).initialize(1959);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('תנאי השימוש והגנת הפרטיות')));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(1959)));
                 },
               ),
               ],)

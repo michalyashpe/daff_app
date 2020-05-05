@@ -1,6 +1,5 @@
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:html/dom.dart' as dom;
 
@@ -85,8 +83,7 @@ class HtmlHelper {
         final match = RegExp(r"stories\/(\d+)").firstMatch(cleanUrl);
         if (match != null) {
           int storyId = int.parse(match[1]);
-          Provider.of<StoryModel>(context, listen: false).initialize(storyId);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen('')));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(storyId)));
         } else {
           print("$url is not supported in app, redirecting to homepage");
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));

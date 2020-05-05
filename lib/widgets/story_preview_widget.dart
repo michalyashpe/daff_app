@@ -1,14 +1,11 @@
 import 'dart:math';
-
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView = false, bool authorName = true}){
@@ -20,8 +17,7 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
     padding: EdgeInsets.all(5.0),
     child: GestureDetector(
       onTap: () {
-        Provider.of<StoryModel>(context, listen: false).initialize(story.id);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(story.title)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(story.id)));
       },
       child: IntrinsicHeight(child: Row(
       children: <Widget>[

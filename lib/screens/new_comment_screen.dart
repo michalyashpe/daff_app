@@ -20,7 +20,7 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
         actions: <Widget>[
           FlatButton(
             onPressed: () => print('send form'),
-            child: Text('לפרסם' ,style: TextStyle(fontSize: 22.0, color: Colors.green, fontWeight: FontWeight.bold))
+            child: Text('לפרסם' ,style: TextStyle(fontSize: 20.0, color: Colors.grey[700], fontWeight: FontWeight.bold))
             )
           
         ],
@@ -32,6 +32,7 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextField(
+                style: TextStyle(fontSize: 20.0),
                 decoration: InputDecoration(
                   hintText: "התגובה שלי...",
                   contentPadding: EdgeInsets.all(10.0)

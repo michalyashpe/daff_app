@@ -13,6 +13,7 @@ import 'package:daff_app/widgets/story_tags_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -165,7 +166,7 @@ class _StoryScreenState extends State<StoryScreen>{
         ),
         IconButton(
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen())),
-          icon: FaIcon(FontAwesomeIcons.comment, size: 20.0, color: Colors.grey),
+          icon: buildCounterIcon(FontAwesomeIcons.comment, story.comments.length),
         ),
         IconButton(
           onPressed: () => share(story),
@@ -175,7 +176,20 @@ class _StoryScreenState extends State<StoryScreen>{
     );
   }
   
-
+  Widget buildCounterIcon(IconData iconData, int count){
+    double size = 24.0;
+    return Stack(
+      children: <Widget>[      
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(count.toString(), style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey, fontWeight: FontWeight.w900))
+          ),
+        ),
+        FaIcon(FontAwesomeIcons.comment, size: size, color: Colors.grey,)
+        ]);
+    
+  }
   Widget _buildRecommendedStories(Story story, {bool loading = false}){
     return loading ? buildShimmeringBox(height: 50.0)
     : Container( 

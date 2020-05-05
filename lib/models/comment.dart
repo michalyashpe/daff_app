@@ -14,7 +14,7 @@ class Comment{
 }
 Comment parseCommentFromJson(Map<String, dynamic> comment){
   return Comment(
-    author: parseAuthorFromJson(comment['user']),
+    author: comment['user'] != null ? parseAuthorFromJson(comment['user']) : null,
     content: comment['content'],
     createdAt: DateTime.parse(comment['created_at']),
 

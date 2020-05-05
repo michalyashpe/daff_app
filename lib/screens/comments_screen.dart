@@ -1,4 +1,5 @@
 import 'package:daff_app/models/comment.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/new_comment_screen.dart';
@@ -22,7 +23,7 @@ class _CommentsScreenState extends State<CommentsScreen>{
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text('${model.story.comments.length} תגובות על "${model.story.title}"'),
+                // title:,
                 automaticallyImplyLeading: false,
                 iconTheme: IconThemeData(color: Colors.grey),
                 floating: true,
@@ -37,15 +38,16 @@ class _CommentsScreenState extends State<CommentsScreen>{
               SliverList(
                 
                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                  return model.story.comments.length == 0 ?
-                  Center(child: Text('אין עדיין תגובות'))
-                  : Column(children: <Widget>[
-                    buildComment(model.story.comments.elementAt(index)),
-                    buildDivider(5.0)
-                  ],);
+                  if (index == 0 ) return _buildTitle(model.story);
+                  else return model.story.comments.length == 0 ?
+                    Center(child: Text('אין עדיין תגובות'))
+                    : Column(children: <Widget>[
+                      buildComment(model.story.comments.elementAt(index-1)),
+                      buildDivider(5.0)
+                    ],);
 
                 }, 
-                childCount: model.story.comments.length))
+                childCount: model.story.comments.length + 1))
             ]),
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen())),
@@ -56,7 +58,16 @@ class _CommentsScreenState extends State<CommentsScreen>{
   });}
   
 
-  
+  Widget _buildTitle(Story story){
+    return  
+    Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      child: Text('${story.comments.length} תגובות על "${story.title}" של ${story.author.name}:',
+        style: TextStyle(fontWeight: FontWeight.bold)
+      
+      )
+    );
+  }
   Widget buildComment(Comment comment){
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),

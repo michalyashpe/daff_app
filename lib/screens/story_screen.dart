@@ -2,7 +2,9 @@ import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
+import 'package:daff_app/screens/comments_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
+import 'package:daff_app/widgets/divider.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
 import 'package:daff_app/widgets/player_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
@@ -15,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class StoryScreen extends StatefulWidget{
-  int storyId;
+  final int storyId;
   StoryScreen(this.storyId);
   static const routeName = '/story_screen';
   _StoryScreenState createState() => _StoryScreenState();
@@ -106,12 +108,12 @@ class _StoryScreenState extends State<StoryScreen>{
                 ),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
-                _buildDivider(5.0),
+                buildDivider(5.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: _buildProfileBox(model.story, loading: model.isLoading)
                 ),
-                _buildDivider(5.0),
+                buildDivider(5.0),
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
@@ -162,7 +164,7 @@ class _StoryScreenState extends State<StoryScreen>{
           icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey),
         ),
         IconButton(
-          onPressed: (){},
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen())),
           icon: FaIcon(FontAwesomeIcons.comment, size: 20.0, color: Colors.grey),
         ),
         IconButton(
@@ -173,9 +175,7 @@ class _StoryScreenState extends State<StoryScreen>{
     );
   }
   
-  Widget _buildDivider(double height) {
-    return Container(color: Colors.grey[200], height: height,);
-  }
+
   Widget _buildRecommendedStories(Story story, {bool loading = false}){
     return loading ? buildShimmeringBox(height: 50.0)
     : Container( 

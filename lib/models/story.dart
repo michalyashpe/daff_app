@@ -1,8 +1,6 @@
-
-
-
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/author.dart';
+import 'package:daff_app/models/comment.dart';
 
 class Story {
   int id;
@@ -26,6 +24,7 @@ class Story {
   List<Story> recommended = List<Story>();
   String url;
   bool ltr;
+  List<Comment> comments;
 
   Story({
     this.id,
@@ -48,7 +47,8 @@ class Story {
     this.recommended,
     this.url,
     this.ltr,
-    this.audioID
+    this.audioID,
+    this.comments
   });
   bool get isSytemUpdate {
     return tags.contains('עדכון');// && tags.contains('מערכת');
@@ -111,6 +111,12 @@ Story parseStoryFromJson(Map<String, dynamic> story){
   List<String> sTags = List<String>();
   story['tags'].forEach((tag) => sTags.add(tag.toString()));
 
+
+  List<Comment> comments = List<Comment>();
+  if (story['comments'] != null)
+    story['comments'].forEach((comment) => comments.add(parseCommentFromJson(comment)));
+
+
   List<Story> recommendedList = List<Story>();
   if (story['recommended'] != null) {
     story['recommended'].forEach((dynamic storyData) {
@@ -138,6 +144,9 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     recommended: recommendedList,
     url: story['url'],
     ltr: story['ltr'],
-    audioID: story['published_audio_id']
+    audioID: story['published_audio_id'],
+    comments: comments,
   );
 }
+
+

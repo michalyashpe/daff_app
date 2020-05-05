@@ -144,11 +144,11 @@ class _StoryScreenState extends State<StoryScreen>{
           : 0.0,
         child: Column(children: <Widget>[
         story.hasAudio ? audioPlayer : SizedBox(),
-        _showBottomSocialBar ? _buildSocialBar(socialBarHeight) : SizedBox()
+        _showBottomSocialBar ? _buildSocialBar(socialBarHeight, story) : SizedBox()
         ],));
   }
 
-  Widget _buildSocialBar(double height){
+  Widget _buildSocialBar(double height, Story story){
     return Container(
       height: height,
       decoration: BoxDecoration(
@@ -159,15 +159,15 @@ class _StoryScreenState extends State<StoryScreen>{
         children: <Widget>[
         IconButton(
           onPressed: (){},
-          icon: Icon(Icons.favorite_border, size: 20.0, color: Colors.grey),
+          icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey),
         ),
         IconButton(
           onPressed: (){},
-          icon: FaIcon(FontAwesomeIcons.comment, size: 18.0, color: Colors.grey),
+          icon: FaIcon(FontAwesomeIcons.comment, size: 20.0, color: Colors.grey),
         ),
         IconButton(
-          onPressed: (){},
-          icon: Icon(Icons.share, size: 20.0, color: Colors.grey),
+          onPressed: () => share(story),
+          icon: Icon(Icons.share, size: 22.0, color: Colors.grey),
         ),
       ],)
     );
@@ -300,10 +300,10 @@ class _StoryScreenState extends State<StoryScreen>{
           story.ratingSummary,
           style: TextStyle(fontSize: 15.0, color: Colors.grey[700])
         )),
-        IconButton(
-          onPressed: () =>share(story),
-          icon: Icon(Icons.share, color: Colors.grey)
-        ),
+        // IconButton(
+        //   onPressed: () =>share(story),
+        //   icon: Icon(Icons.share, color: Colors.grey)
+        // ),
 
 
     ],);

@@ -6,6 +6,7 @@ class User {
   String nameInEnglish;
   String gender;
   String deviceId;
+  String authenticationToken;
 
 
   User({
@@ -14,7 +15,8 @@ class User {
     this.name,
     this.nameInEnglish,
     this.gender,
-    this.deviceId
+    this.deviceId,
+    this.authenticationToken
   });
 
 }

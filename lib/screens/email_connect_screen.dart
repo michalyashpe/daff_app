@@ -10,11 +10,14 @@ class EmailConnectScreen extends StatefulWidget {
 
 class _EmailConnectScreenState extends State<EmailConnectScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  bool newAccount = true;
+  String _passwordForVerification;
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<AuthenticationModel>(
+      builder: (BuildContext context, AuthenticationModel model, Widget child) {
+        return Scaffold(
       appBar: AppBar(
         title: Text('כניסה עם אימייל'),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -25,25 +28,26 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildConnectByEmailForm(),
+            _buildConnectByEmailForm(model),
             SizedBox(height: 3.0,),
             Text('מבטיחים לא לשלוח ספאם, רק סיפורים ושירים.', style: TextStyle(fontSize: 16.0)),
             SizedBox(height: 30.0,),
-            _buildSwipeAccountType()
+            _buildSwipeAccountType(model)
           ])
-        ));
+        ));});
   }
 
-  Widget _buildConnectByEmailForm() {
-    return Consumer<AuthenticationModel>(
-      builder: (BuildContext context, AuthenticationModel model, Widget child) {
-        return Form(
+  Widget _buildConnectByEmailForm(AuthenticationModel model) {
+    return  Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              _buildEmailField(),
-              _buildPasswordField(),
-              newAccount ? _buildConfirmPasswordField() : Text(''),
+              model.user.authenticationToken != null ? Text(model.user.authenticationToken, style: TextStyle(color: Colors.blue)) : SizedBox(),
+              model.firstLogin ? Text('אנחנו כמעט שם. יש לאשר את המייל שנשלח אליך זה עתה.', style: TextStyle(color: Colors.green, fontSize: 15.0)) : SizedBox(),
+              model.errors.length > 0 ? Text(model.errors.map((e) => e).join(), style: TextStyle(color: Colors.red, fontSize: 15.0)) : SizedBox(),
+              _buildEmailField(model.email),
+              _buildPasswordField(model.password),
+              model.newAccount ? _buildConfirmPasswordField() : SizedBox(),
               SizedBox(height: 30.0,),
               Row(
                 children: <Widget>[
@@ -54,7 +58,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                       onPressed: () async {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
-                        int status = await model.daffLogin();
+                        int status = model.newAccount ? await model.signUp() : await model.logIn();
                         print(status);
                         if (!model.isLoading && status == 200) {
                           print('wow');
@@ -65,15 +69,15 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                 ])
             ],
           ));
-    });
+    
   }
 
-  Widget _buildEmailField() {
+  Widget _buildEmailField(String email) {
     return TextFormField(
       onSaved: (String value) {
         Provider.of<AuthenticationModel>(context, listen: false).email = value;
       },
-      // initialValue: 'michal@yashpe.com',
+      initialValue: email,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: 'you@example.com',
@@ -89,31 +93,14 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
     );
   }
 
-  Widget _buildConfirmPasswordField(){
+
+  Widget _buildPasswordField(String password) {
     return TextFormField(
+      onChanged: (String value) => _passwordForVerification = value,
       onSaved: (String value) {
         Provider.of<AuthenticationModel>(context, listen: false).password = value;
       },
-      // initialValue: 'michmich',
-      validator: (String value) {
-        if (value.isEmpty) return 'יש לאמת סיסמה';
-        return null;
-      },
-      keyboardType: TextInputType.visiblePassword,
-      decoration: InputDecoration(
-
-        hintText: 'אימות סיסמה',
-        labelText: 'אימות סיסמה *',
-      ),
-    );
-  }
-
-  Widget _buildPasswordField() {
-    return TextFormField(
-      onSaved: (String value) {
-        Provider.of<AuthenticationModel>(context, listen: false).password = value;
-      },
-      // initialValue: 'michmich',
+      initialValue: password,
       validator: (String value) {
         if (value.isEmpty) return 'יש להקליד סיסמה';
         return null;
@@ -126,10 +113,32 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
     );
   }
 
-  Widget _buildSwipeAccountType() {
-    return newAccount ? 
-      buildHyperLink(text: 'יש לי כבר חשבון',  onPressed: () => setState(() {newAccount = false;}))
-      : buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {newAccount = true;})
+  Widget _buildConfirmPasswordField(){
+    return TextFormField(
+      onSaved: (String value) {
+        // _verifiedPassword = value;
+      },
+      validator: (String value) {
+        print(_passwordForVerification);
+        if (value.isEmpty) return 'יש לאמת סיסמה';
+        else if (value != _passwordForVerification )
+          return 'הסיסמה לא תואמת';
+        return null;
+      },
+      keyboardType: TextInputType.visiblePassword,
+      decoration: InputDecoration(
+        hintText: 'אימות סיסמה',
+        labelText: 'אימות סיסמה *',
+      ),
+    );
+  }
+
+
+  Widget _buildSwipeAccountType(AuthenticationModel model) {
+    model.initialize();
+    return model.newAccount ? 
+      buildHyperLink(text: 'יש לי כבר חשבון',  onPressed: () => setState(() {model.newAccount = false;}))
+      : buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {model.newAccount = true;})
       ,
     )
       ;

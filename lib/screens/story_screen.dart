@@ -178,11 +178,15 @@ class _StoryScreenState extends State<StoryScreen>{
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
         IconButton(
-          onPressed: (){},
-          icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey[600]),
+          onPressed: () => Provider.of<StoryModel>(context,listen:  false).cheer(),
+          icon: buildCounterIcon(
+            icon: Icon(Icons.favorite_border, size: 30.0, color: Colors.grey[600]), 
+            counter: story.cheersCount),
         ),
         IconButton(
-          icon: buildCounterIcon(FontAwesomeIcons.comment, story.comments.length),
+          icon: buildCounterIcon(
+            icon: FaIcon(FontAwesomeIcons.comment, size: 25.0, color: Colors.grey[600],),
+            counter: story.comments.length),
           onPressed: () { 
             story.comments.length == 0 ? 
               Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
@@ -197,19 +201,18 @@ class _StoryScreenState extends State<StoryScreen>{
     );
   }
   
-  Widget buildCounterIcon(IconData iconData, int count){
-    double size = 24.0;
+  Widget buildCounterIcon({Widget icon, int counter}){
     return Stack(
       children: <Widget>[      
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
-            child: Text(count > 0 ? count.toString() : '', 
+            child: Text(counter > 0 ? counter.toString() : '', 
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey[600], fontWeight: FontWeight.w900))
           ),
         ),
-        FaIcon(FontAwesomeIcons.comment, size: size, color: Colors.grey[600],)
+        icon
         ]);
     
   }

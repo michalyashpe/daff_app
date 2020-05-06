@@ -88,4 +88,17 @@ class StoryModel extends ChangeNotifier{
         print(data);
     });
   }
+
+  void cheer(){
+    http.put(
+      daffServerUrl + '/stories/${story.id}/cheer.json?user_email=${user.email}&user_token=${user.authenticationToken}',
+      headers: <String, String>{
+        'authorization': basicAuth,
+      }).then((http.Response response) {
+        Map<String, dynamic> data = json.decode(response.body);
+        print('cheering ${story.id} on ${user.deviceId}');
+        story.cheersCount ++;
+        notifyListeners();
+    });
+  }
 }

@@ -12,9 +12,9 @@ class ConnectScreen extends StatefulWidget {
 }
 
 class _ConnectScreenState extends State<ConnectScreen>{
-
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  //TODO: if connected show sign out button
     return WillPopScope(
       onWillPop: () async => true,
         child: Scaffold(

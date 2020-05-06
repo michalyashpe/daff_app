@@ -70,7 +70,7 @@ class HtmlHelper {
       String cleanUrl= url.replaceAll('https://', '').replaceAll('daff.co.il', '');
       if (cleanUrl =='')  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));
       else if (cleanUrl == '/stories') Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen('כל הסיפורים', '')));
-      else if (cleanUrl == '/users/sign_up') Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
+      else if (cleanUrl == '/users/sign_up') Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())); //TODO: handle state if already connected
       else if (cleanUrl.contains(('with_audio=true'))) Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('דפים מוקלטים', 'with_audio=true')));
       else if (cleanUrl.contains('editor_votes=true')) Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בחירות העורך', 'editor_votes=true')));
       else if (cleanUrl.contains('stories?tag')){

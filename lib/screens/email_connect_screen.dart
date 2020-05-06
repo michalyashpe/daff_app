@@ -105,13 +105,23 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         if (value.isEmpty) return 'יש להקליד סיסמה';
         return null;
       },
-      keyboardType: TextInputType.visiblePassword,
+      obscureText: !passwordVisibility['password'],
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         hintText: 'סיסמה',
         labelText: 'סיסמה *',
+        suffixIcon:  buildTogglePasswordButton('password')
       ),
     );
   }
+
+  Map<String, bool> passwordVisibility = {
+    'password': false,
+    'passwordVerification': false
+  };
+
+
+
 
   Widget _buildConfirmPasswordField(){
     return TextFormField(
@@ -125,14 +135,27 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
           return 'הסיסמה לא תואמת';
         return null;
       },
+      obscureText: !passwordVisibility['passwordVerification'],
       keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
         hintText: 'אימות סיסמה',
         labelText: 'אימות סיסמה *',
+        suffixIcon: buildTogglePasswordButton('passwordVerification')
       ),
     );
   }
 
+  Widget buildTogglePasswordButton(String key){
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(passwordVisibility[key] ? Icons.visibility : Icons.visibility_off,),
+      onPressed: () {
+          setState(() {
+              passwordVisibility[key] = !passwordVisibility[key];
+          });
+        },
+      );
+  }
 
   Widget _buildSwipeAccountType(AuthenticationModel model) {
     model.initialize();

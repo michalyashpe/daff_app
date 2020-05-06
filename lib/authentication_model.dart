@@ -19,10 +19,14 @@ class AuthenticationModel extends ChangeNotifier {
   String password;
   bool isLoading = false;
   
-  void initialize(){
+
+  void initialize({bool firstTime = false}){
+    if (firstTime) {
+      email = '';
+      password = '';
+    }
     firstLogin = false;
     errors = List<String>();
-    user.authenticationToken = null;
   }
 
 
@@ -47,8 +51,8 @@ class AuthenticationModel extends ChangeNotifier {
         print(result);
         if(result['error'] != null ) errors.add(result['error']);
         if (status == 200) { 
-          user.authenticationToken =  result['authentication_token'];
-          user.email = email;
+          user.authenticationToken = result['authentication_token'];
+          user.email =  email;
         }
       });
       isLoading = false;

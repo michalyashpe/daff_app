@@ -1,12 +1,13 @@
-//  https://daff.dev/stories.json?tag=%D7%9B%D7%90%D7%91
-
 import 'dart:convert';
 import 'package:daff_app/helpers/.daff_api.dart';
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class StoriesModel extends ChangeNotifier{
+  User user;
+  StoriesModel(this.user);
 
   List<Story> stories;
   int storiesCount ;

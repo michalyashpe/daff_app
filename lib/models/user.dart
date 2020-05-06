@@ -19,5 +19,9 @@ class User {
     this.authenticationToken
   });
 
+  bool get connected {
+    return authenticationToken != null;
+  }
+
 }
 

@@ -58,10 +58,15 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     )
                   : null,
               actions: <Widget>[
-                IconButton(
+                !model.user.connected 
+                ? IconButton(
                   onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
                   icon: FaIcon(FontAwesomeIcons.user
-                ,))
+                ,)) 
+                : IconButton(
+                  onPressed: () {}, //
+                  icon: FaIcon(FontAwesomeIcons.userAlt
+                ,)) 
               ],
               backgroundColor: Theme.of(context).backgroundColor,
             ),

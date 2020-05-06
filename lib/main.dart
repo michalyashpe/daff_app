@@ -94,7 +94,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     firebaseAPI = FirebaseAPI();
     firebaseAPI.initialize();
-    storiesModel = StoriesModel();
     userProvider = UserProvider();
     userProvider.initialize();
   }
@@ -108,7 +107,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => AuthenticationModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => StoryModel(userProvider.user)),
-        ChangeNotifierProvider(create: (_) =>  storiesModel),
+        ChangeNotifierProvider(create: (_) =>  StoriesModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) =>  userProvider),
         ChangeNotifierProvider(create: (_) =>  AuthorModel()),
       ],

@@ -11,7 +11,11 @@ class EmailConnectScreen extends StatefulWidget {
 class _EmailConnectScreenState extends State<EmailConnectScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   String _passwordForVerification;
-
+  @override
+  void initState() {
+    Provider.of<AuthenticationModel>(context, listen: false).initialize(firstTime: true);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +63,8 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
                         int status = model.newAccount ? await model.signUp() : await model.logIn();
-                        print(status);
                         if (!model.isLoading && status == 200) {
-                          print('wow');
-                          // Navigator.of(context).pushNamed(HomeScreen.routeName,);
+                          Navigator.of(context).popUntil((route) => route.isFirst);
                         }
                     })
                   )

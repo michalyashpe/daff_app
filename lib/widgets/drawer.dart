@@ -66,14 +66,14 @@ Widget buildDrawer(BuildContext context){
               ),
               Divider(),
 
-              ListTile(
-                dense: true,
-                title: Text('כניסת משתמשים'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
-                },
-              ),
+              // ListTile(
+              //   dense: true,
+              //   title: Text('כניסת משתמשים'),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
+              //   },
+              // ),
               ListTile(
                 dense: true,
                 title: Text('תנאי השימוש והגנת הפרטיות'),

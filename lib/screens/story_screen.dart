@@ -30,6 +30,8 @@ class StoryScreen extends StatefulWidget{
 class _StoryScreenState extends State<StoryScreen>{
   double padding = 10.0;
   bool _showBottomSocialBar = false ;
+  double socialBarHeight = 60.0;
+
   ScrollController _scrollController;
   PlayerWidget audioPlayer;
 
@@ -44,9 +46,9 @@ class _StoryScreenState extends State<StoryScreen>{
 
   void toggleSocialBar() {
     double pageSize = _scrollController.position.maxScrollExtent;
-    if (_scrollController.position.pixels > pageSize * 0.5) { //TODO: show social bar for stories with audio
+    if (_scrollController.position.pixels > pageSize * 0.5 && !_showBottomSocialBar ) { //TODO: show social bar for stories with audio
       setState(() {_showBottomSocialBar = true;});
-    } else if (_scrollController.position.pixels < pageSize * 0.5 ){
+    } else if (_scrollController.position.pixels < pageSize * 0.5  && _showBottomSocialBar){
       setState(() {_showBottomSocialBar = false;});
     }
   }
@@ -124,6 +126,7 @@ class _StoryScreenState extends State<StoryScreen>{
                 ),
                 !model.isLoading && model.story.hasAudio ?
                   SizedBox(height: 70.0) : SizedBox(),
+                SizedBox(height: socialBarHeight) ,
               ])
           )]
         ) );
@@ -132,7 +135,6 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
   Widget _buildBottomSheet(Story story, {bool loading = false}){
-    double socialBarHeight = 60.0;
     if (!loading) {
       if (story.hasAudio){
         audioPlayer = PlayerWidget(story: story);
@@ -157,14 +159,27 @@ class _StoryScreenState extends State<StoryScreen>{
     return Container(
       height: height,
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey[200], width: 0.5))
+        color: Theme.of(context).backgroundColor,
+        // border: Border(top: BorderSide(color: Colors.grey[600], width: 0.5)),
+         
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey[200],
+        //     // blurRadius: 2.0, // soften the shadow
+        //     spreadRadius: 2.0, //extend the shadow
+        //     // offset: Offset(
+        //     //   15.0, // Move to right 10  horizontally
+        //     //   15.0, // Move to bottom 10 Vertically
+        //     // ),
+        //   )
+        // ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
         IconButton(
           onPressed: (){},
-          icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey),
+          icon: Icon(Icons.favorite_border, size: 22.0, color: Colors.grey[600]),
         ),
         IconButton(
           icon: buildCounterIcon(FontAwesomeIcons.comment, story.comments.length),
@@ -176,7 +191,7 @@ class _StoryScreenState extends State<StoryScreen>{
         ),
         IconButton(
           onPressed: () => share(story),
-          icon: Icon(Icons.share, size: 22.0, color: Colors.grey),
+          icon: Icon(Icons.share, size: 22.0, color: Colors.grey[600]),
         ),
       ],)
     );
@@ -191,26 +206,26 @@ class _StoryScreenState extends State<StoryScreen>{
             alignment: Alignment.center,
             child: Text(count > 0 ? count.toString() : '', 
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey, fontWeight: FontWeight.w900))
+              style: TextStyle(fontSize: 10.0, fontFamily: GoogleFonts.montserrat().fontFamily, color: Colors.grey[600], fontWeight: FontWeight.w900))
           ),
         ),
-        FaIcon(FontAwesomeIcons.comment, size: size, color: Colors.grey,)
+        FaIcon(FontAwesomeIcons.comment, size: size, color: Colors.grey[600],)
         ]);
     
   }
   Widget _buildRecommendedStories(Story story, {bool loading = false}){
     return loading ? buildShimmeringBox(height: 50.0)
     : Container( 
-      padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+        SizedBox(height: 15.0,),
         Text('מומלצים:',
           textAlign: TextAlign.right,
           style: TextStyle(fontSize: 20.0, color: Colors.grey[700]),
         ),
         SizedBox(height: 5.0,),
-        Column(children: story.recommended.map((Story s) => [buildStoryPreviewWidget(s, context), SizedBox(height: 5.0)]).expand((i) => i).toList(),),
+        Column(children: story.recommended.map((Story s) => [SizedBox(height: 5.0), buildStoryPreviewWidget(s, context), ]).expand((i) => i).toList(),),
     ],)
     );
   }

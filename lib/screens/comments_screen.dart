@@ -52,8 +52,8 @@ class _CommentsScreenState extends State<CommentsScreen>{
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen())),
               child: Icon(Icons.edit),
-              // backgroundColor: Colors.grey[300],
-              backgroundColor: Colors.amberAccent,
+              backgroundColor: Colors.grey[300],
+              // backgroundColor: Colors.amberAccent,
             ),
         );
   });}

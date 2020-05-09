@@ -1,6 +1,9 @@
 import 'package:daff_app/models/story.dart';
+import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/screens/connect_screen.dart';
+import 'package:daff_app/screens/user_profile_screen.dart';
+import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
 import 'package:flutter/material.dart';
@@ -63,10 +66,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
                   icon: FaIcon(FontAwesomeIcons.user
                 ,)) 
-                : IconButton(
-                  onPressed: () {}, //
-                  icon: FaIcon(FontAwesomeIcons.userAlt
-                ,)) 
+                : _buildUserProfileButton(model.user),
               ],
               backgroundColor: Theme.of(context).backgroundColor,
             ),
@@ -75,6 +75,15 @@ class _StoriesScreenState extends State<StoriesScreen> {
               : buildTabletStoriesView(model)
           ]);
         }));
+  }
+  Widget _buildUserProfileButton(User user){
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen())),
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child:  buildAvatarImage(user.author.imageUrl)
+      )
+    );
   }
 
   Widget buildMobileStoriesView(StoriesModel model) {

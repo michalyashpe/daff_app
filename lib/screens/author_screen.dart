@@ -1,6 +1,6 @@
 import 'package:daff_app/models/author.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/author_screen_provider.dart';
+import 'package:daff_app/providers/author_provider.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -18,14 +18,14 @@ class _AuthorScreenState extends State<AuthorScreen>{
 
   @override
   void initState() {
-    Provider.of<AuthorModel>(context, listen: false).initialize(widget.authorId);
+    Provider.of<AuthorProvider>(context, listen: false).initialize(widget.authorId);
     super.initState();
   }
     @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<AuthorModel>(
-        builder: (BuildContext context,  AuthorModel model, Widget child) {
+      body: Consumer<AuthorProvider>(
+        builder: (BuildContext context,  AuthorProvider model, Widget child) {
           return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(

@@ -1,6 +1,7 @@
 
 import 'package:daff_app/helpers/.daff_api.dart';
 import 'package:daff_app/models/user.dart';
+import 'package:daff_app/providers/author_provider.dart';
 import 'package:flutter/foundation.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -30,14 +31,19 @@ class AuthenticationModel extends ChangeNotifier {
   }
 
 
-
+  void logOut(){
+    user.id = null;
+    user.authenticationToken = null;
+    user.email = null;
+    user.author = null;
+  }
   Future<int> logIn() async {
     initialize();
     print('trying to logIn with: $email / $password');
     int status;
     isLoading = true;
     notifyListeners();
-    await http.post(
+    http.Response response = await http.post(
       daffServerUrl + '/users/sign_in.json',
       headers: <String, String>{
         'authorization': basicAuth,
@@ -45,16 +51,17 @@ class AuthenticationModel extends ChangeNotifier {
       body:{
         'user[email]': email,
         'user[password]': password
-      }).then((http.Response response) {
-        status = response.statusCode;
-        Map<String, dynamic> result = json.decode(response.body);
-        print(result);
-        if(result['error'] != null ) errors.add(result['error']);
-        if (status == 200) { 
-          user.authenticationToken = result['authentication_token'];
-          user.email =  email;
-        }
       });
+      status = response.statusCode;
+      Map<String, dynamic> result = json.decode(response.body);
+      print(result);
+      if(result['error'] != null ) errors.add(result['error']);
+      if (status == 200) { 
+        user.authenticationToken = result['authentication_token'];
+        user.email =  email;
+        user.id = result['user_id'];
+        user.author = await AuthorProvider().fetchAuthorData(user.id);
+      }
       isLoading = false;
       notifyListeners();
       return status;

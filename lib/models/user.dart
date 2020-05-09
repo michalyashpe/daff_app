@@ -1,6 +1,9 @@
 
+import 'package:daff_app/models/author.dart';
+
 class User {
   int id;
+  Author author;
   String email;
   String name;
   String nameInEnglish;
@@ -9,8 +12,9 @@ class User {
   String authenticationToken;
 
 
-  User({
+  User ({
     this.id,
+    this.author,
     this.email,
     this.name,
     this.nameInEnglish,

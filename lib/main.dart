@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:sentry/sentry.dart';
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
-import 'package:daff_app/providers/author_screen_provider.dart';
+import 'package:daff_app/providers/author_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +109,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => StoryProvider(userProvider.user)),
         ChangeNotifierProvider(create: (_) => StoriesModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => userProvider),
-        ChangeNotifierProvider(create: (_) => AuthorModel()),
+        ChangeNotifierProvider(create: (_) => AuthorProvider()),
       ],
   child: MaterialApp(
      debugShowCheckedModeBanner: false,

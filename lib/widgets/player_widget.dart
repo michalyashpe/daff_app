@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/providers/story_provider.dart';
+import 'package:daff_app/widgets/loader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -117,15 +118,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                 color: Colors.white,
               )
               : _isPlaying && _duration == null ? 
-                Container(
-                  margin: EdgeInsets.only(left: 16.0),
-                  width: 16.0,
-                  height: 16.0, 
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    strokeWidth: 2.0,
-                  )
-                ) 
+                buildLoader(margin: EdgeInsets.only(left: 16.0))
                 : IconButton(
                   key: Key('pause_button'),
                   onPressed: _isPlaying ? () => _pause() : null,
@@ -237,7 +230,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   Future<int> _play() async {
-    Provider.of<StoryModel>(context, listen: false).reportAudioListening();
+    Provider.of<StoryProvider>(context, listen: false).reportAudioListening();
     setState(() => _playerState = PlayerState.buffering);
     print(_playerState);
 

@@ -1,5 +1,5 @@
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/providers/story_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,11 +9,12 @@ class NewCommentScreen extends StatefulWidget {
 }
 
 class _NewCommentScreenState extends State<NewCommentScreen>{
+  String commentContent;
 
   @override
   Widget build(BuildContext context) {
-     return Consumer<StoryModel>(
-      builder: (BuildContext context,  StoryModel model, Widget child) {
+     return Consumer<StoryProvider>(
+      builder: (BuildContext context,  StoryProvider model, Widget child) {
         return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -25,9 +26,15 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
         actions: <Widget>[
           
           FlatButton(
-            onPressed: () => print('send form'),
+            onPressed: () {
+              model.addComment(commentContent);
+              Navigator.of(context).pop();
+            } ,
             child: Row(children: <Widget>[
-              Text('לפרסם' ,style: TextStyle(fontSize: 20.0, color: Colors.grey[700], fontWeight: FontWeight.bold)),
+              Text('לפרסם' ,
+                style: TextStyle(fontSize: 20.0, color: Colors.grey[700], 
+                fontWeight: commentContent != null ? FontWeight.bold : FontWeight.normal)
+              ),
               // SizedBox(width: 5.0,),
               // Icon(Icons.send, size: 15.0, color: Colors.grey[700]),
 
@@ -45,6 +52,12 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
               SizedBox(height: 10.0,),
               //_buildTitle(model.story),
               TextField(
+                onChanged: (String value) {
+                  setState(() {
+                    commentContent = value;
+                    
+                  });
+                },
                 style: TextStyle(fontSize: 20.0),
                 decoration: InputDecoration(
                   hintText: 'תגובה חדשה על "${model.story.title}" של ${model.story.author.name}...',

@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:daff_app/helpers/dsn.dart';
 import 'package:daff_app/providers/user_provider.dart';
+import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/author_screen_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -106,10 +106,10 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthenticationModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
-        ChangeNotifierProvider(create: (_) => StoryModel(userProvider.user)),
-        ChangeNotifierProvider(create: (_) =>  StoriesModel(userProvider.user)),
-        ChangeNotifierProvider(create: (_) =>  userProvider),
-        ChangeNotifierProvider(create: (_) =>  AuthorModel()),
+        ChangeNotifierProvider(create: (_) => StoryProvider(userProvider.user)),
+        ChangeNotifierProvider(create: (_) => StoriesModel(userProvider.user)),
+        ChangeNotifierProvider(create: (_) => userProvider),
+        ChangeNotifierProvider(create: (_) => AuthorModel()),
       ],
   child: MaterialApp(
      debugShowCheckedModeBanner: false,

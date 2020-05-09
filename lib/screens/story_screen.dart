@@ -1,9 +1,10 @@
 import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/comments_screen.dart';
 import 'package:daff_app/screens/new_comment_screen.dart';
+import 'package:daff_app/screens/offer_connect_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/divider.dart';
 import 'package:daff_app/widgets/editor_pick_widget.dart';
@@ -55,8 +56,8 @@ class _StoryScreenState extends State<StoryScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<StoryModel>(
-      builder: (BuildContext context,  StoryModel model, Widget child) {
+    return Consumer<StoryProvider>(
+      builder: (BuildContext context,  StoryProvider model, Widget child) {
         return Scaffold(
           bottomSheet: _buildBottomSheet(model.story, loading: model.isLoading),
           body:  CustomScrollView(
@@ -393,7 +394,7 @@ showAlertDialog(BuildContext context, Story story) {
   Widget continueButton = FlatButton(
     child: Text("דיווח"),
     onPressed:  () {
-      Provider.of<StoryModel>(context, listen:  false).reportContent();
+      Provider.of<StoryProvider>(context, listen:  false).reportContent();
       Navigator.of(context).pop();
       showDialog(
         context: context,

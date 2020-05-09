@@ -1,10 +1,12 @@
 import 'package:daff_app/models/comment.dart';
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/providers/story_screen_provider.dart';
+import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/new_comment_screen.dart';
+import 'package:daff_app/screens/offer_connect_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/divider.dart';
+import 'package:daff_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +19,8 @@ class _CommentsScreenState extends State<CommentsScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<StoryModel>(
-      builder: (BuildContext context,  StoryModel model, Widget child) {
+    return Consumer<StoryProvider>(
+      builder: (BuildContext context,  StoryProvider model, Widget child) {
         return Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
@@ -38,7 +40,8 @@ class _CommentsScreenState extends State<CommentsScreen>{
               SliverList(
                 
                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                  if (index == 0 ) return _buildTitle(model.story);
+                  if (index == 0 ) 
+                    return model.isLoading ? Center( child: buildLoader()) : _buildTitle(model.story);
                   else return model.story.comments.length == 0 ?
                     Center(child: Text('אין עדיין תגובות'))
                     : Column(children: <Widget>[

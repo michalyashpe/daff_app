@@ -6,9 +6,9 @@ import 'package:daff_app/models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class StoryModel extends ChangeNotifier{
+class StoryProvider extends ChangeNotifier{
   User user;
-  StoryModel(this.user);
+  StoryProvider(this.user);
   Story story;
 
   bool isLoading = false;
@@ -74,7 +74,6 @@ class StoryModel extends ChangeNotifier{
 
 
   void reportAudioListening(){
-    print(story.id);
     http.post(
       daffServerUrl + '/story_audio_playing/${story.audioID}',
       headers: <String, String>{
@@ -96,9 +95,32 @@ class StoryModel extends ChangeNotifier{
         'authorization': basicAuth,
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
-        print('cheering ${story.id} on ${user.deviceId}');
+        print('cheering ${story.id} on ${user.deviceId}'); //TODO: handle exceptions
         story.cheersCount ++;
         notifyListeners();
+    });
+  }
+
+  void addComment(String content){
+    isLoading = true;
+    notifyListeners();
+    print('$daffServerUrl/stories/${story.id}/comments.json?user_email=${user.email}&user_token=${user.authenticationToken}');
+    if (content == null) return;
+     http.post(
+      '$daffServerUrl/stories/${story.id}/comments.json?user_email=${user.email}&user_token=${user.authenticationToken}',
+      headers: <String, String>{
+        'authorization': basicAuth,
+      },
+      body: {
+        'comment[story_id]': story.id.toString(),
+        'comment[content]': content,
+      }).then((http.Response response) {
+        print('adding a comment to ${story.id} on ${user.deviceId}: \"$content\"');
+        Map<String, dynamic> data = json.decode(response.body);
+        print(data);
+        if (data['success'] == true && data['errors'] == null) { //TODO: handle exceptions
+          fetchStoryData(story.id);
+        }
     });
   }
 }

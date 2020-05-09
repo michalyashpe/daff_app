@@ -53,7 +53,9 @@ class _CommentsScreenState extends State<CommentsScreen>{
                 childCount: model.story.comments.length + 1))
             ]),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen())),
+              onPressed: () => model.user.connected ?
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
+                :Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen())),
               child: Icon(Icons.edit),
               backgroundColor: Colors.grey[300],
               // backgroundColor: Colors.amberAccent,

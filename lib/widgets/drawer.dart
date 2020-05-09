@@ -1,4 +1,3 @@
-import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';

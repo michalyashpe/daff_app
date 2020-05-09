@@ -32,13 +32,14 @@ class _StoryScreenState extends State<StoryScreen>{
   double padding = 10.0;
   bool _showBottomSocialBar = false ;
   double socialBarHeight = 60.0;
-
+  bool userConnected = false;
   ScrollController _scrollController;
   PlayerWidget audioPlayer;
 
 @override
   void initState() {
-    Provider.of<StoryModel>(context, listen: false).initialize(widget.storyId); //TODO: make this work
+    userConnected = Provider.of<StoryProvider>(context, listen: false).user.connected;
+    Provider.of<StoryProvider>(context, listen: false).initialize(widget.storyId); //TODO: make this work
     _scrollController = ScrollController();
     _scrollController.addListener(() => toggleSocialBar());
 
@@ -161,25 +162,14 @@ class _StoryScreenState extends State<StoryScreen>{
       height: height,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
-        // border: Border(top: BorderSide(color: Colors.grey[600], width: 0.5)),
-         
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey[200],
-        //     // blurRadius: 2.0, // soften the shadow
-        //     spreadRadius: 2.0, //extend the shadow
-        //     // offset: Offset(
-        //     //   15.0, // Move to right 10  horizontally
-        //     //   15.0, // Move to bottom 10 Vertically
-        //     // ),
-        //   )
-        // ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
         IconButton(
-          onPressed: () => Provider.of<StoryModel>(context,listen:  false).cheer(),
+          onPressed: () => userConnected ?  
+            Provider.of<StoryProvider>(context,listen:  false).cheer() 
+            : Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen())),
           icon: buildCounterIcon(
             icon: Icon(Icons.favorite_border, size: 30.0, color: Colors.grey[600]), 
             counter: story.cheersCount),
@@ -189,9 +179,11 @@ class _StoryScreenState extends State<StoryScreen>{
             icon: FaIcon(FontAwesomeIcons.comment, size: 25.0, color: Colors.grey[600],),
             counter: story.comments.length),
           onPressed: () { 
-            story.comments.length == 0 ? 
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
-              : Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen()));
+            !userConnected && story.comments.length == 0 ? 
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen()))
+              : userConnected && story.comments.length == 0 ? 
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
+                : Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen()));
           },
         ),
         IconButton(

@@ -1,20 +1,36 @@
+import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/screens/email_connect_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
+import 'package:daff_app/screens/user_profile_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:daff_app/widgets/connect_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ConnectScreen extends StatefulWidget {
   ConnectScreen();
   _ConnectScreenState createState() => _ConnectScreenState();
 }
 
+
 class _ConnectScreenState extends State<ConnectScreen>{
   
   @override
-  Widget build(BuildContext context) {  //TODO: if connected show sign out button
+  void initState() { 
+    if (Provider.of<AuthModel>(context, listen: false).user.connected){
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen()));
+      });
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => true,
         child: Scaffold(

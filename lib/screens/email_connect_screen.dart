@@ -63,7 +63,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
                         int status = model.newAccount ? await model.signUp() : await model.login();
-                        if (!model.isLoading && status == 200) {
+                        if (!model.isLoading && status == 200 && model.errors.length == 0) {
                           if (model.fromOfferScreen) { //TODO: better solution for sending user back to last page from which he got the "offer connect" page
                             for (var i = 0; i < 3; i++) { 
                               if (Navigator.of(context).canPop() ) Navigator.of(context).pop();
@@ -137,7 +137,6 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         // _verifiedPassword = value;
       },
       validator: (String value) {
-        print(_passwordForVerification);
         if (value.isEmpty) return 'יש לאמת סיסמה';
         else if (value != _passwordForVerification )
           return 'הסיסמה לא תואמת';

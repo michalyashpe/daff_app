@@ -1,6 +1,7 @@
 import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
+import 'package:daff_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,12 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                   Expanded(
                     child: RaisedButton(
                       padding: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Text('כניסה', style: TextStyle(fontSize: 20.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                        Text('כניסה', style: TextStyle(fontSize: 20.0)),
+                        model.isLoading ? buildLoader(color: Colors.grey[300]) : SizedBox()
+                      ],),
                       onPressed: () async {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();

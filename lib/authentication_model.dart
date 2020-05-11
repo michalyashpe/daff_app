@@ -50,6 +50,7 @@ class AuthModel extends ChangeNotifier {
     user.disconnect();
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    notifyListeners();
   }
 
 

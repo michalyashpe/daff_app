@@ -1,7 +1,10 @@
+import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Widget buildDrawer(BuildContext context){
   return Drawer(
@@ -81,6 +84,23 @@ Widget buildDrawer(BuildContext context){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(1959)));
                 },
               ),
+              Provider.of<AuthModel>(context, listen: false).user.connected ? 
+                ListTile(
+                  dense: true,
+                  title: Text('ניתוק'),
+                  onTap: () {
+                    Provider.of<AuthModel>(context, listen: false).logOut();
+                    Navigator.pop(context);
+                  },
+                )
+                : ListTile(
+                  dense: true,
+                  title: Text('כניסה'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
+                  },
+                ),
               ],)
           ),
           Container(

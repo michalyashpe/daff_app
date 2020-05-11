@@ -1,6 +1,8 @@
+import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/stories_provider.dart';
+import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/screens/user_profile_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
@@ -61,7 +63,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     )
                   : null,
               actions: <Widget>[
-                !model.user.connected 
+                !Provider.of<AuthModel>(context).user.connected 
                 ? IconButton(
                   onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
                   icon: FaIcon(FontAwesomeIcons.user
@@ -78,7 +80,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
   }
   Widget _buildUserProfileButton(User user){
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen())),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(user.author.name, user.id))),
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child:  buildAvatarImage(user.author.imageUrl)

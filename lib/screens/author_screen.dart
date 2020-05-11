@@ -1,6 +1,7 @@
 import 'package:daff_app/models/author.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/author_provider.dart';
+import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -15,10 +16,12 @@ class AuthorScreen extends StatefulWidget{
 }
 
 class _AuthorScreenState extends State<AuthorScreen>{
-
+  bool _authorIsUser  = false;
   @override
   void initState() {
     Provider.of<AuthorProvider>(context, listen: false).initialize(widget.authorId);
+    if (widget.authorId == Provider.of<UserProvider>(context, listen: false).user.id)
+      _authorIsUser = true;
     super.initState();
   }
     @override
@@ -39,6 +42,10 @@ class _AuthorScreenState extends State<AuthorScreen>{
               leading: IconButton(icon:Icon(Icons.arrow_back),
                 onPressed:() => Navigator.pop(context, false),
               ),
+              actions: <Widget>[
+                _authorIsUser ? IconButton(
+                  icon: Icon(Icons.edit),) : SizedBox()
+              ],
             ),
             
             SliverList( 

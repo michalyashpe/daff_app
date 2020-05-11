@@ -13,14 +13,14 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
   String _passwordForVerification;
   @override
   void initState() {
-    Provider.of<AuthenticationModel>(context, listen: false).initialize(firstTime: true);
+    Provider.of<AuthModel>(context, listen: false).initialize(firstTime: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthenticationModel>(
-      builder: (BuildContext context, AuthenticationModel model, Widget child) {
+    return Consumer<AuthModel>(
+      builder: (BuildContext context, AuthModel model, Widget child) {
         return Scaffold(
       appBar: AppBar(
         title: Text('כניסה עם אימייל'),
@@ -41,7 +41,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         ));});
   }
 
-  Widget _buildConnectByEmailForm(AuthenticationModel model) {
+  Widget _buildConnectByEmailForm(AuthModel model) {
     return  Form(
           key: _formKey,
           child: Column(
@@ -62,7 +62,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                       onPressed: () async {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
-                        int status = model.newAccount ? await model.signUp() : await model.logIn();
+                        int status = model.newAccount ? await model.signUp() : await model.login();
                         if (!model.isLoading && status == 200) {
                           Navigator.of(context).popUntil((route) => route.isFirst);
                         }
@@ -77,7 +77,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
   Widget _buildEmailField(String email) {
     return TextFormField(
       onSaved: (String value) {
-        Provider.of<AuthenticationModel>(context, listen: false).email = value;
+        Provider.of<AuthModel>(context, listen: false).email = value;
       },
       initialValue: email,
       keyboardType: TextInputType.emailAddress,
@@ -100,7 +100,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
     return TextFormField(
       onChanged: (String value) => _passwordForVerification = value,
       onSaved: (String value) {
-        Provider.of<AuthenticationModel>(context, listen: false).password = value;
+        Provider.of<AuthModel>(context, listen: false).password = value;
       },
       initialValue: password,
       validator: (String value) {
@@ -159,7 +159,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
       );
   }
 
-  Widget _buildSwipeAccountType(AuthenticationModel model) {
+  Widget _buildSwipeAccountType(AuthModel model) {
     model.initialize();
     return model.newAccount ? 
       buildHyperLink(text: 'יש לי כבר חשבון',  onPressed: () => setState(() {model.newAccount = false;}))

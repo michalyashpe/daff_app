@@ -31,7 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>{
               actions: <Widget>[
                 FlatButton(
                   onPressed: () { 
-                    Provider.of<AuthenticationModel>(context, listen: false).logOut();
+                    Provider.of<AuthModel>(context, listen: false).logOut();
                     Navigator.of(context).pop();
                   },
                   child: Text('ניתוק'),

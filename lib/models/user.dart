@@ -27,5 +27,17 @@ class User {
     return authenticationToken != null;
   }
 
+  void disconnect(){
+    //reset all but deviceId;
+    authenticationToken = null;
+    id = null;
+    author = null;
+    email = null;
+    name = null;
+    nameInEnglish = null;
+    gender = null;
+    
+  }
+
 }
 

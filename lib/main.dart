@@ -54,14 +54,10 @@ Future<Null> _reportError(dynamic error, dynamic stackTrace) async {
 }
 
 Future<Null> main() async {
-  // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) async {
     if (isInDebugMode) {
-      // In development mode simply print to console.
       FlutterError.dumpErrorToConsole(details);
     } else {
-      // In production mode report to the application zone to report to
-      // Sentry.
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
   };
@@ -104,36 +100,54 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthenticationModel(userProvider.user)),
+        ChangeNotifierProvider(create: (_) => AuthModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => firebaseAPI),
         ChangeNotifierProvider(create: (_) => StoryProvider(userProvider.user)),
         ChangeNotifierProvider(create: (_) => StoriesModel(userProvider.user)),
         ChangeNotifierProvider(create: (_) => userProvider),
         ChangeNotifierProvider(create: (_) => AuthorProvider()),
       ],
-  child: MaterialApp(
-     debugShowCheckedModeBanner: false,
-    localizationsDelegates: [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      // GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: [
-      const Locale('he'), // Hebrew
-    ],
-    locale: Locale("he", "HE") ,
-    title: 'Daff Rocking App',
-    theme: ThemeData(
-      primarySwatch: Colors.grey,
-      fontFamily: GoogleFonts.alef().fontFamily,
-      textTheme:  TextTheme(
-          body1: TextStyle(fontSize: 16.0),
-        ),
-    ),
-    home: Directionality( // add this
-      textDirection: TextDirection.rtl, // set this property 
-      child: SplashScreen(),
-    ),
-  ));
+      child:  MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            // GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('he'), // Hebrew
+          ],
+          locale: Locale("he", "HE") ,
+          title: 'Daff Rocking App',
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+            fontFamily: GoogleFonts.alef().fontFamily,
+            textTheme:  TextTheme(
+                body1: TextStyle(fontSize: 16.0),
+              ),
+          ),
+          home: Directionality( 
+            textDirection: TextDirection.rtl, 
+            child: Consumer<AuthModel>( builder: (BuildContext context, AuthModel authModel, Widget child) {
+              return authModel.user.connected ? SplashScreen()
+              : FutureBuilder(
+                future: authModel.tryAutoLogin(),
+                builder: (ctx, authResultSnapshot) =>
+                  authResultSnapshot.connectionState == ConnectionState.waiting
+                    ? buildLoadingScreen()
+                    : SplashScreen(),
+                );
+            })
+          ),
+        )
+    );
   }
+}
+
+Widget buildLoadingScreen(){
+  return  Scaffold(
+      body: Center(
+        child: CircularProgressIndicator()
+      ),
+    );
 }

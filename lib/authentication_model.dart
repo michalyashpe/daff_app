@@ -1,16 +1,14 @@
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:daff_app/helpers/.daff_api.dart';
 import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/author_provider.dart';
 import 'package:flutter/foundation.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
-class AuthenticationModel extends ChangeNotifier {
+class AuthModel extends ChangeNotifier {
   final User user;
-  AuthenticationModel(this.user);
+  AuthModel(this.user);
 
   List<String> errors = List<String>();
   bool firstLogin = false;
@@ -19,7 +17,6 @@ class AuthenticationModel extends ChangeNotifier {
   String email;
   String password;
   bool isLoading = false;
-  
 
   void initialize({bool firstTime = false}){
     if (firstTime) {
@@ -31,13 +28,44 @@ class AuthenticationModel extends ChangeNotifier {
   }
 
 
-  void logOut(){
-    user.id = null;
-    user.authenticationToken = null;
-    user.email = null;
-    user.author = null;
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('authenticationToken') || prefs.get('daffServerUrl') != daffServerUrl) {
+      print('autoLogin failed');
+      return false;
+    }
+    
+    user.authenticationToken = prefs.getString('authenticationToken');
+    user.email = prefs.getString('email');
+    user.id = prefs.getInt('id');
+    user.author = await AuthorProvider().fetchAuthorData(user.id);
+
+    notifyListeners();
+    print('autoLogin succeeded');
+    return true;
   }
-  Future<int> logIn() async {
+
+  void logOut() async {
+    user.disconnect();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+
+  void submitAuth(){
+    setSharedPerencesAuthData();
+  }
+
+  void setSharedPerencesAuthData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('authenticationToken', user.authenticationToken);
+    prefs.setString('email', user.email);
+    prefs.setInt('id', user.id);
+    prefs.setString('daffServerUrl', daffServerUrl);
+    print('saved login for user');
+  }
+
+  Future<int> login() async {
     initialize();
     print('trying to logIn with: $email / $password');
     int status;
@@ -54,13 +82,13 @@ class AuthenticationModel extends ChangeNotifier {
       });
       status = response.statusCode;
       Map<String, dynamic> result = json.decode(response.body);
-      print(result);
       if(result['error'] != null ) errors.add(result['error']);
       if (status == 200) { 
         user.authenticationToken = result['authentication_token'];
         user.email =  email;
         user.id = result['user_id'];
         user.author = await AuthorProvider().fetchAuthorData(user.id);
+        submitAuth();
       }
       isLoading = false;
       notifyListeners();

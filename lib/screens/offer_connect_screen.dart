@@ -1,8 +1,10 @@
+import 'package:daff_app/authentication_model.dart';
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/screens/connect_screen.dart';
 import 'package:daff_app/widgets/app_logo.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OfferConnectScreen extends StatelessWidget {
   @override
@@ -41,7 +43,10 @@ class OfferConnectScreen extends StatelessWidget {
             child: RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 10.0),
               child: Text('כניסה', style: TextStyle(fontSize: 20.0)),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
+              onPressed: (){ 
+                Provider.of<AuthModel>(context, listen: false).fromOfferScreen = true;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen()));
+              } 
             ))
           ]
       ),

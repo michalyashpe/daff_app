@@ -32,13 +32,11 @@ class _StoryScreenState extends State<StoryScreen>{
   double padding = 10.0;
   bool _showBottomSocialBar = false ;
   double socialBarHeight = 60.0;
-  bool userConnected = false;
   ScrollController _scrollController;
   PlayerWidget audioPlayer;
 
 @override
   void initState() {
-    userConnected = Provider.of<StoryProvider>(context, listen: false).user.connected;
     Provider.of<StoryProvider>(context, listen: false).initialize(widget.storyId); //TODO: make this work
     _scrollController = ScrollController();
     _scrollController.addListener(() => toggleSocialBar());
@@ -158,6 +156,7 @@ class _StoryScreenState extends State<StoryScreen>{
   }
 
   Widget _buildSocialBar(double height, Story story){
+    bool userConnected = Provider.of<StoryProvider>(context, listen: false).user.connected;
     return Container(
       height: height,
       decoration: BoxDecoration(

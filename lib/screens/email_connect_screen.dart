@@ -46,7 +46,6 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              model.user.authenticationToken != null ? Text(model.user.authenticationToken, style: TextStyle(color: Colors.blue)) : SizedBox(),
               model.firstLogin ? Text('אנחנו כמעט שם. יש לאשר את המייל שנשלח אליך זה עתה.', style: TextStyle(color: Colors.green, fontSize: 15.0)) : SizedBox(),
               model.errors.length > 0 ? Text(model.errors.map((e) => e).join(), style: TextStyle(color: Colors.red, fontSize: 15.0)) : SizedBox(),
               _buildEmailField(model.email),
@@ -64,7 +63,12 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                         _formKey.currentState.save();
                         int status = model.newAccount ? await model.signUp() : await model.login();
                         if (!model.isLoading && status == 200) {
-                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          if (model.fromOfferScreen) {
+                            Navigator.of(context).pop(); //TODO: cleaner solution here
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          } else 
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                         }
                     })
                   )

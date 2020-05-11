@@ -9,6 +9,7 @@ import 'dart:convert';
 class AuthModel extends ChangeNotifier {
   final User user;
   AuthModel(this.user);
+  bool fromOfferScreen = false;
 
   List<String> errors = List<String>();
   bool firstLogin = false;

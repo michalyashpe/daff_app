@@ -17,7 +17,7 @@ class AuthorProvider extends ChangeNotifier{
   }
 
   Future<Author> fetchAuthorData(int id) async {
-    print('fetching author data...');
+    // print('fetching author data...');
     isLoading = true;
     // notifyListeners();
     var response = await http.get(

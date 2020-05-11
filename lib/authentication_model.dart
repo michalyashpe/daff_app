@@ -63,7 +63,6 @@ class AuthModel extends ChangeNotifier {
     prefs.setString('email', user.email);
     prefs.setInt('id', user.id);
     prefs.setString('daffServerUrl', daffServerUrl);
-    print('saved login for user');
   }
 
   Future<int> login() async {

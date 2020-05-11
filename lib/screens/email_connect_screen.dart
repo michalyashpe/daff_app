@@ -63,10 +63,11 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                         _formKey.currentState.save();
                         int status = model.newAccount ? await model.signUp() : await model.login();
                         if (!model.isLoading && status == 200) {
-                          if (model.fromOfferScreen) {
-                            Navigator.of(context).pop(); //TODO: cleaner solution here
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
+                          if (model.fromOfferScreen) { //TODO: better solution for sending user back to last page from which he got the "offer connect" page
+                            for (var i = 0; i < 3; i++) { 
+                              if (Navigator.of(context).canPop() ) Navigator.of(context).pop();
+                            }
+                            model.fromOfferScreen = false;
                           } else 
                             Navigator.of(context).popUntil((route) => route.isFirst);
                         }

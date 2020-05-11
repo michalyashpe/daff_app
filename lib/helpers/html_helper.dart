@@ -90,7 +90,8 @@ class HtmlHelper {
           Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(storyId)));
         } else {
           print("$url is not supported in app, redirecting to homepage");
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));
+          _launchURL(url);
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));
         }
       }
     }  

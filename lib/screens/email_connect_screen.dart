@@ -1,4 +1,5 @@
 import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -168,9 +169,12 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
     model.initialize();
     return model.newAccount ? 
       buildHyperLink(text: 'יש לי כבר חשבון',  onPressed: () => setState(() {model.newAccount = false;}))
-      : buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {model.newAccount = true;})
-      ,
-    )
+      : Column(children: <Widget>[
+        buildHyperLink(text: 'יצירת חשבון חדש', onPressed: () => setState(() {model.newAccount = true;})),
+        SizedBox(height: 10.0,),
+        buildHyperLink(text: 'שכחתי סיסמה', onPressed: () => HtmlHelper.linkTapHandler('https://daff.co.il/users/password/new', context))
+        ],);
+    
       ;
   }
 }

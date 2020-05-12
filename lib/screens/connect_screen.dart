@@ -54,46 +54,42 @@ class _ConnectScreenState extends State<ConnectScreen>{
   }
 
   Widget _buildConnectButtons(BuildContext context){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40.0),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: 30.0,),
-          buildAppLogoLarge(),
-          SizedBox(height: 30.0,),
-          buildConnectUpButton(
-            text: 'כניסה עם חשבון אימייל', 
-            iconData: FontAwesomeIcons.at,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EmailConnectScreen())),
-            ),
-          SizedBox(height: 20.0,),
-          buildConnectUpButton(
-            text: 'כניסה עם חשבון פייסבוק', 
-            iconData: FontAwesomeIcons.facebookSquare,
-            onPressed: (){}
-            ),
-          SizedBox(height: 20.0,),
-          buildConnectUpButton(// TODO: only for iphone users
-            text: 'כניסה עם חשבון אפל', 
-            iconData: FontAwesomeIcons.apple,
-            onPressed: (){}
-            ),
-          SizedBox(height: 20.0,),
-          Text('מבטיחים לא לשלוח ספאם, רק סיפורים ושירים.', style: TextStyle(fontSize: 18.0)),
-          // SizedBox(height: 30.0,),
-          // Wrap(children: <Widget>[
-          //   Text('יש לך כבר חשבון? '),
-          //   buildHyperLink(
-          //     text: 'כניסה מכאן', 
-          //       onPressed: () {setState(() {
-          //         signUp = false;
-                // });}
-            // )
-          // ],)
-          
-      ])
-    );
+    return Consumer<AuthModel>(
+      builder: (BuildContext context, AuthModel model, Widget child) {
+    
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 40.0),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 30.0,),
+            buildAppLogoLarge(),
+            SizedBox(height: 30.0,),
+            buildConnectUpButton(
+              text: 'כניסה עם חשבון אימייל', 
+              iconData: FontAwesomeIcons.at,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EmailConnectScreen())),
+              ),
+            SizedBox(height: 20.0,),
+            buildConnectUpButton(
+              text: 'כניסה עם חשבון פייסבוק', 
+              iconData: FontAwesomeIcons.facebookSquare,
+              onPressed: () {
+                model.facebookLogin();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              }
+              ),
+            SizedBox(height: 20.0,),
+            buildConnectUpButton(// TODO: only for iphone users
+              text: 'כניסה עם חשבון אפל', 
+              iconData: FontAwesomeIcons.apple,
+              onPressed: (){}
+              ),
+            SizedBox(height: 20.0,),
+            Text('מבטיחים לא לשלוח ספאם, רק סיפורים ושירים.', style: TextStyle(fontSize: 18.0)),
+        ])
+      );
+    });
   }
 
 

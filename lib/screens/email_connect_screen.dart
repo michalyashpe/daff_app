@@ -68,7 +68,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                       onPressed: () async {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
-                        int status = model.newAccount ? await model.signUp() : await model.login();
+                        int status = model.newAccount ? await model.emailSignUp() : await model.emailLogin();
                         if (!model.isLoading && status == 200 && model.errors.length == 0) {
                           if (model.fromOfferScreen) { //TODO: better solution for sending user back to last page from which he got the "offer connect" page
                             for (var i = 0; i < 3; i++) { 
@@ -179,7 +179,5 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         SizedBox(height: 10.0,),
         buildHyperLink(text: 'שכחתי סיסמה', onPressed: () => HtmlHelper.linkTapHandler('https://daff.co.il/users/password/new', context))
         ],);
-    
-      ;
   }
 }

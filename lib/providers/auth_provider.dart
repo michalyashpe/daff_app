@@ -1,3 +1,4 @@
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:daff_app/helpers/.daff_api.dart';
 import 'package:daff_app/models/user.dart';
@@ -18,6 +19,9 @@ class AuthModel extends ChangeNotifier {
   String email;
   String password;
   bool isLoading = false;
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
 
   void initialize({bool firstTime = false}){
     if (firstTime) {
@@ -47,6 +51,7 @@ class AuthModel extends ChangeNotifier {
   }
 
   void logOut() async {
+    facebookLogOut();
     user.disconnect();
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -66,7 +71,7 @@ class AuthModel extends ChangeNotifier {
     prefs.setString('daffServerUrl', daffServerUrl);
   }
 
-  Future<int> login() async {
+  Future<int> emailLogin() async {
     initialize();
     print('trying to logIn with: $email / $password');
     int status;
@@ -97,7 +102,7 @@ class AuthModel extends ChangeNotifier {
 
   }
 
-  Future<int> signUp() async {
+  Future<int> emailSignUp() async {
     initialize();
     print('trying to signUp with: $email / $password');
     int status;
@@ -131,10 +136,37 @@ class AuthModel extends ChangeNotifier {
   }
 
 
-  // void addDeviceTokenToSP(String deviceToken) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('deviceToken', deviceToken);
-  // }
+
+    Future<Null> facebookLogin() async {
+      final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+      switch (result.status) {
+        case FacebookLoginStatus.loggedIn:
+          final FacebookAccessToken accessToken = result.accessToken;
+          print('''
+            Logged in!
+            Token: ${accessToken.token}
+            User id: ${accessToken.userId}
+            Expires: ${accessToken.expires}
+            Permissions: ${accessToken.permissions}
+            Declined permissions: ${accessToken.declinedPermissions}
+            ''');
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          print('Login cancelled by the user.');
+          break;
+        case FacebookLoginStatus.error:
+          print('Something went wrong with the login process.\n'
+                'Here\'s the error Facebook gave us: ${result.errorMessage}');
+          break;
+      }
+    }
+
+  Future<Null> facebookLogOut() async {
+    print('facebookSignIn.isLoggedIn');
+    print(facebookSignIn.isLoggedIn);
+    if (await facebookSignIn.isLoggedIn) await facebookSignIn.logOut();
+    print('Logged out.');
+  }
 
 
 }

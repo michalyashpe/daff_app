@@ -1,4 +1,4 @@
-import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/providers/auth_provider.dart';
 import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';

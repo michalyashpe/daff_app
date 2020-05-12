@@ -1,4 +1,4 @@
-import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/providers/auth_provider.dart';
 import 'package:daff_app/helpers/html_helper.dart';
 import 'package:daff_app/widgets/hyperlink.dart';
 import 'package:daff_app/widgets/loader.dart';

@@ -1,4 +1,4 @@
-import 'package:daff_app/authentication_model.dart';
+import 'package:daff_app/providers/auth_provider.dart';
 import 'package:daff_app/screens/email_connect_screen.dart';
 import 'package:daff_app/screens/story_screen.dart';
 import 'package:daff_app/screens/user_profile_screen.dart';

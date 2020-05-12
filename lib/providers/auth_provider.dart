@@ -19,6 +19,7 @@ class AuthModel extends ChangeNotifier {
   String email;
   String password;
   bool isLoading = false;
+  bool isLoadingFacebook = false;
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
@@ -71,6 +72,9 @@ class AuthModel extends ChangeNotifier {
     prefs.setString('daffServerUrl', daffServerUrl);
   }
 
+
+
+// Email LOGIN ---------------------
   Future<int> emailLogin() async {
     initialize();
     print('trying to logIn with: $email / $password');
@@ -90,10 +94,11 @@ class AuthModel extends ChangeNotifier {
       Map<String, dynamic> result = json.decode(response.body);
       if(result['error'] != null ) errors.add(result['error']);
       if (status == 200) { 
-        user.authenticationToken = result['authentication_token'];
-        user.email =  email;
-        user.id = result['user_id'];
-        user.author = await AuthorProvider().fetchAuthorData(user.id);
+        user.connect(
+          loginToken: result['authentication_token'],
+          loginId: result['user_id'],
+          loginEmail: email
+        );
         submitAuth();
       }
       isLoading = false;
@@ -136,37 +141,69 @@ class AuthModel extends ChangeNotifier {
   }
 
 
-
-    Future<Null> facebookLogin() async {
-      final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-      switch (result.status) {
+  // FACEBOOK LOGIN ---------------------
+    Future<bool> facebookLogin() async {
+      final FacebookLoginResult facebookLoginResult = await facebookSignIn.logIn(['email']);
+      switch (facebookLoginResult.status) {
         case FacebookLoginStatus.loggedIn:
-          final FacebookAccessToken accessToken = result.accessToken;
-          print('''
+          isLoadingFacebook = true;
+          notifyListeners();
+          final FacebookAccessToken accessToken = facebookLoginResult.accessToken;
+            print('''
             Logged in!
-            Token: ${accessToken.token}
-            User id: ${accessToken.userId}
+            Token: ${accessToken.token} --send
+            User id: ${accessToken.userId} --send
+            EMAIL: ${accessToken.toString()}
             Expires: ${accessToken.expires}
             Permissions: ${accessToken.permissions}
             Declined permissions: ${accessToken.declinedPermissions}
             ''');
+
+          var response = await http.post(
+            '$daffServerUrl/authors/facebook_mobile_login',
+            headers: <String, String>{
+              'authorization': basicAuth,
+            },
+            body: {
+              'uid': accessToken.userId,
+              'token': accessToken.token
+            });
+            print(response.statusCode);
+            print(response.body);
+            Map<String, dynamic> result = json.decode(response.body);
+            // print(res);
+            await user.connect(
+              loginToken: result['user']['mobile_token'],
+              loginId: result['user']['id'],
+              loginEmail: result['user']['email']
+            );
+            submitAuth();
+            isLoadingFacebook = false;
+            notifyListeners();
+            return true;
+         
           break;
         case FacebookLoginStatus.cancelledByUser:
           print('Login cancelled by the user.');
+          return false;
           break;
         case FacebookLoginStatus.error:
           print('Something went wrong with the login process.\n'
-                'Here\'s the error Facebook gave us: ${result.errorMessage}');
+                'Here\'s the error Facebook gave us: ${facebookLoginResult.errorMessage}');
+          return false;
           break;
       }
+      return false;
     }
 
   Future<Null> facebookLogOut() async {
     bool loggedIn = await facebookSignIn.isLoggedIn;
-    print('facebookSignIn.isLoggedIn');
-    print(loggedIn);
-    if (loggedIn) await facebookSignIn.logOut();
-    print('Logged out.');
+    // print('facebookSignIn.isLoggedIn');
+    // print(loggedIn);
+    if (loggedIn) {
+      await facebookSignIn.logOut();
+      print('Logged out from facebook.');
+    }
   }
 
 

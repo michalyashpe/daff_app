@@ -72,11 +72,14 @@ class _ConnectScreenState extends State<ConnectScreen>{
               ),
             SizedBox(height: 20.0,),
             buildConnectUpButton(
+              loading: model.isLoadingFacebook,
               text: 'כניסה עם חשבון פייסבוק', 
               iconData: FontAwesomeIcons.facebookSquare,
-              onPressed: () {
-                model.facebookLogin();
-                Navigator.of(context).popUntil((route) => route.isFirst);
+              onPressed: () async {
+                bool loggedIn = await model.facebookLogin();
+                if (!model.isLoading && loggedIn) {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                }
               }
               ),
             SizedBox(height: 20.0,),

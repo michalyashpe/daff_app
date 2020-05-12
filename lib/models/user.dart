@@ -1,5 +1,6 @@
 
 import 'package:daff_app/models/author.dart';
+import 'package:daff_app/providers/author_provider.dart';
 
 class User {
   int id;
@@ -20,13 +21,18 @@ class User {
     this.nameInEnglish,
     this.gender,
     this.deviceId,
-    this.authenticationToken
+    this.authenticationToken,
   });
 
   bool get connected {
     return authenticationToken != null;
   }
 
+  Future<void> connect({ String loginToken, int loginId, String loginEmail }) async {
+    authenticationToken = loginToken;
+    id = loginId;
+    author = await AuthorProvider().fetchAuthorData(id);
+  }
   void disconnect(){
     //reset all but deviceId;
     authenticationToken = null;

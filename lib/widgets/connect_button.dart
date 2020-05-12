@@ -1,7 +1,8 @@
+import 'package:daff_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Widget buildConnectUpButton({String text, IconData iconData, Function onPressed }){
+Widget buildConnectUpButton({String text, IconData iconData, Function onPressed, bool loading = false }){
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -15,7 +16,8 @@ Widget buildConnectUpButton({String text, IconData iconData, Function onPressed 
               children: <Widget>[
               FaIcon(iconData, size: 22.0),
               SizedBox(width: 10.0,),
-              Text(text, style: TextStyle(fontSize: 20.0))
+              Text(text, style: TextStyle(fontSize: 20.0)),
+              loading ? buildLoader(color: Colors.grey[300]) : SizedBox()
             ],)
           )
         )

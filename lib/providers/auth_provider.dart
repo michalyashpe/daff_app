@@ -162,9 +162,10 @@ class AuthModel extends ChangeNotifier {
     }
 
   Future<Null> facebookLogOut() async {
+    bool loggedIn = await facebookSignIn.isLoggedIn;
     print('facebookSignIn.isLoggedIn');
-    print(facebookSignIn.isLoggedIn);
-    if (await facebookSignIn.isLoggedIn) await facebookSignIn.logOut();
+    print(loggedIn);
+    if (loggedIn) await facebookSignIn.logOut();
     print('Logged out.');
   }
 

@@ -44,7 +44,8 @@ class _AuthorScreenState extends State<AuthorScreen>{
               ),
               actions: <Widget>[
                 _authorIsUser ? IconButton(
-                  icon: Icon(Icons.edit),) : SizedBox()
+                  onPressed: () => print('coming soon'),
+                  icon: Icon(Icons.edit)) : Text('')
               ],
             ),
             

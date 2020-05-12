@@ -1,4 +1,3 @@
-import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,15 +74,15 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
     );});
   }
 
-  Widget _buildTitle(Story story){
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Text('תגובה חדשה על "${story.title}" של ${story.author.name}:',
-        style: TextStyle(fontWeight: FontWeight.bold)
+  // Widget _buildTitle(Story story){
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+  //     child: Text('תגובה חדשה על "${story.title}" של ${story.author.name}:',
+  //       style: TextStyle(fontWeight: FontWeight.bold)
       
-      )
-    );
+  //     )
+  //   );
 
-  }
+  // }
 
 }

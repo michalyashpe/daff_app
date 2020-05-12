@@ -94,7 +94,7 @@ class StoryProvider extends ChangeNotifier{
       headers: <String, String>{
         'authorization': basicAuth,
       }).then((http.Response response) {
-        Map<String, dynamic> data = json.decode(response.body);
+        // Map<String, dynamic> data = json.decode(response.body);
         print('cheering ${story.id} on ${user.deviceId}'); //TODO: handle exceptions
         story.cheersCount ++;
         notifyListeners();

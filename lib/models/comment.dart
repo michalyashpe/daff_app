@@ -4,7 +4,7 @@ class Comment{
   Author author;
   String content;
   DateTime createdAt;
-  String timeSinceCreated; //TODO
+  String timeSinceCreated; 
 
   Comment({this.author, this.content, this.createdAt, this.timeSinceCreated});
 

@@ -37,7 +37,7 @@ class _StoryScreenState extends State<StoryScreen>{
 
 @override
   void initState() {
-    Provider.of<StoryProvider>(context, listen: false).initialize(widget.storyId); //TODO: make this work
+    Provider.of<StoryProvider>(context, listen: false).initialize(widget.storyId);
     _scrollController = ScrollController();
     _scrollController.addListener(() => toggleSocialBar());
 

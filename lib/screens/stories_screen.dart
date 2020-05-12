@@ -4,7 +4,6 @@ import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:daff_app/screens/author_screen.dart';
 import 'package:daff_app/screens/connect_screen.dart';
-import 'package:daff_app/screens/user_profile_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';

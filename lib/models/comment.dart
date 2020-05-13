@@ -4,19 +4,17 @@ class Comment{
   Author author;
   String content;
   DateTime createdAt;
-  String timeSinceCreated; 
+  String niceCreatedAt; 
 
-  Comment({this.author, this.content, this.createdAt, this.timeSinceCreated});
+  Comment({this.author, this.content, this.createdAt, this.niceCreatedAt});
 
-  String get createdAtFormatted {
-    return "${createdAt.day}/${createdAt.month}/${createdAt.year.toString().substring(2)}  ${createdAt.hour}:${createdAt.minute}";
-  }
 }
 Comment parseCommentFromJson(Map<String, dynamic> comment){
   return Comment(
     author: comment['user'] != null ? parseAuthorFromJson(comment['user']) : null,
     content: comment['content'],
     createdAt: DateTime.parse(comment['created_at']),
+    niceCreatedAt: comment['nice_created_at']
 
   );
 }

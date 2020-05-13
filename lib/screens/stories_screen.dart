@@ -27,9 +27,9 @@ class _StoriesScreenState extends State<StoriesScreen> {
   bool homepage;
   @override
   void initState() {
-    print("loading stories page---------------");
-    print('title:' + widget.title);
-    print('query:' + widget.urlQuery);
+    // print("loading stories page---------------");
+    // print('title:' + widget.title);
+    // print('query:' + widget.urlQuery);
 
     homepage = widget.title == 'בית';
     Provider.of<StoriesModel>(context, listen: false)

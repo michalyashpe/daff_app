@@ -25,7 +25,6 @@ class _CommentsScreenState extends State<CommentsScreen>{
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                // title:,
                 automaticallyImplyLeading: false,
                 iconTheme: IconThemeData(color: Colors.grey),
                 floating: true,
@@ -90,7 +89,7 @@ class _CommentsScreenState extends State<CommentsScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
               Text(comment.author.name),
-              Text(comment.createdAtFormatted,style: TextStyle(color: Colors.grey[500]),),
+              Text(comment.niceCreatedAt,style: TextStyle(color: Colors.grey[500]),),
             ],)
           ],)
         ),

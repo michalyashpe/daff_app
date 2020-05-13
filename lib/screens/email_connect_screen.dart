@@ -48,8 +48,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              model.firstLogin ? Text('אנחנו כמעט שם. יש לאשר את המייל שנשלח אליך זה עתה.', style: TextStyle(color: Colors.green, fontSize: 15.0)) : SizedBox(),
-              model.errors.length > 0 ? Text(model.errors.map((e) => e).join(), style: TextStyle(color: Colors.red, fontSize: 15.0)) : SizedBox(),
+              model.errors.length > 0 ? Text(model.errors.map((e) => e).join(), style: TextStyle(color: Colors.red, fontSize: 17.0)) : SizedBox(),
               _buildEmailField(model.email),
               _buildPasswordField(model.password),
               model.newAccount ? _buildConfirmPasswordField() : SizedBox(),
@@ -69,15 +68,20 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
                         if (!_formKey.currentState.validate()) return;
                         _formKey.currentState.save();
                         int status = model.newAccount ? await model.emailSignUp() : await model.emailLogin();
-                        if (!model.isLoading && status == 200 && model.errors.length == 0) {
-                          if (model.fromOfferScreen) { //TODO: better solution for sending user back to last page from which he got the "offer connect" page
+                        if (!model.isLoading && status == 200 && model.errors.length == 0 && model.user.connected) {
+                         
+                          
+                          //TODO: better solution for sending user back to last page from which he got the "offer connect" page
+                          if (model.fromOfferScreen) { 
                             for (var i = 0; i < 3; i++) { 
                               if (Navigator.of(context).canPop() ) Navigator.of(context).pop();
                             }
                             model.fromOfferScreen = false;
                           } else 
                             Navigator.of(context).popUntil((route) => route.isFirst);
+                        
                         }
+                        //else: show errors...
                     })
                   )
                 ])
@@ -92,8 +96,10 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
         Provider.of<AuthModel>(context, listen: false).email = value;
       },
       initialValue: email,
+      textDirection: TextDirection.ltr,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
+        
         hintText: 'you@example.com',
         labelText: 'כתובת מייל *',
       ),
@@ -114,6 +120,7 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
       onSaved: (String value) {
         Provider.of<AuthModel>(context, listen: false).password = value;
       },
+      textDirection: TextDirection.ltr,
       initialValue: password,
       validator: (String value) {
         if (value.isEmpty) return 'יש להקליד סיסמה';
@@ -122,9 +129,9 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
       obscureText: !passwordVisibility['password'],
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
-        hintText: 'סיסמה',
+        // hintText: 'סיסמה',
         labelText: 'סיסמה *',
-        suffixIcon:  buildTogglePasswordButton('password')
+        // suffixIcon:  buildTogglePasswordButton('password')
       ),
     );
   }
@@ -148,12 +155,15 @@ class _EmailConnectScreenState extends State<EmailConnectScreen> {
           return 'הסיסמה לא תואמת';
         return null;
       },
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
       obscureText: !passwordVisibility['passwordVerification'],
       keyboardType: TextInputType.visiblePassword,
+      
       decoration: InputDecoration(
-        hintText: 'אימות סיסמה',
+        // hintText: 'אימות סיסמה',
         labelText: 'אימות סיסמה *',
-        suffixIcon: buildTogglePasswordButton('passwordVerification')
+        // suffixIcon: buildTogglePasswordButton('passwordVerification')
       ),
     );
   }

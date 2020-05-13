@@ -84,7 +84,7 @@ Widget buildDrawer(BuildContext context){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(1959)));
                 },
               ),
-              Provider.of<AuthModel>(context, listen: false).user.connected ? 
+              Provider.of<AuthModel>(context).user.connected ? 
                 ListTile(
                   dense: true,
                   title: Text('ניתוק'),

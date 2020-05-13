@@ -6,6 +6,7 @@ import 'package:daff_app/helpers/dsn.dart';
 import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,12 +108,13 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => userProvider),
         ChangeNotifierProvider(create: (_) => AuthorProvider()),
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            // GlobalCupertinoLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate
           ],
           supportedLocales: [
             const Locale('he'), // Hebrew

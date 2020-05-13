@@ -128,10 +128,13 @@ class AuthModel extends ChangeNotifier {
         if(result['errors'] == 'inactive_sign_up') {
           firstLogin = true;
           newAccount = false;
+          errors.add('אנחנו כמעט שם. יש לאשר את המייל שנשלח אליך ולאחר מכן להתחבר .');
+          notifyListeners();
         }
         else if(result['errors']['password'] != null ) result['errors']['password'].forEach((e) => errors.add('סיסמה לא תקינה: $e'));
         else if(result['errors']['email'] != null ) result['errors']['email'].forEach((e) => errors.add(' כתובת מייל לא תקינה: $e'));
         if (status == 200) { 
+          //user needs to approve email, and then log in.
         }
       });
       isLoading = false;
@@ -168,10 +171,7 @@ class AuthModel extends ChangeNotifier {
               'uid': accessToken.userId,
               'token': accessToken.token
             });
-            print(response.statusCode);
-            print(response.body);
             Map<String, dynamic> result = json.decode(response.body);
-            // print(res);
             await user.connect(
               loginToken: result['user']['mobile_token'],
               loginId: result['user']['id'],

@@ -52,7 +52,7 @@ class AuthModel extends ChangeNotifier {
   }
 
   void logOut() async {
-    facebookLogOut();
+    await facebookLogOut();
     user.disconnect();
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -94,7 +94,7 @@ class AuthModel extends ChangeNotifier {
       Map<String, dynamic> result = json.decode(response.body);
       if(result['error'] != null ) errors.add(result['error']);
       if (status == 200) { 
-        user.connect(
+        await user.connect(
           loginToken: result['authentication_token'],
           loginId: result['user_id'],
           loginEmail: email

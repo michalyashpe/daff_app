@@ -156,7 +156,6 @@ class AuthModel extends ChangeNotifier {
             Logged in!
             Token: ${accessToken.token} --send
             User id: ${accessToken.userId} --send
-            EMAIL: ${accessToken.toString()}
             Expires: ${accessToken.expires}
             Permissions: ${accessToken.permissions}
             Declined permissions: ${accessToken.declinedPermissions}

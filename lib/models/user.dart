@@ -31,6 +31,7 @@ class User {
   Future<void> connect({ String loginToken, int loginId, String loginEmail }) async {
     authenticationToken = loginToken;
     id = loginId;
+    email = loginEmail;
     author = await AuthorProvider().fetchAuthorData(id);
   }
   void disconnect(){
@@ -44,6 +45,8 @@ class User {
     gender = null;
     
   }
+
+  
 
 }
 

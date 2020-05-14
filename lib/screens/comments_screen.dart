@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CommentsScreen extends StatefulWidget {
-  CommentsScreen();
+  final Story story;
+  CommentsScreen(this.story);
   _CommentsScreenState createState() => _CommentsScreenState();
 }
 
@@ -40,20 +41,20 @@ class _CommentsScreenState extends State<CommentsScreen>{
                 
                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
                   if (index == 0 ) 
-                    return model.isLoading ? Center( child: buildLoader()) : _buildTitle(model.story);
-                  else return model.story.comments.length == 0 ?
+                    return model.isLoading ? Center( child: buildLoader()) : _buildTitle();
+                  else return widget.story.comments.length == 0 ?
                     Center(child: Text('אין עדיין תגובות'))
                     : Column(children: <Widget>[
-                      buildComment(model.story.comments.elementAt(index-1)),
+                      buildComment(widget.story.comments.elementAt(index-1)),
                       buildDivider(5.0)
                     ],);
 
                 }, 
-                childCount: model.story.comments.length + 1))
+                childCount: widget.story.comments.length + 1))
             ]),
             floatingActionButton: FloatingActionButton(
               onPressed: () => model.user.connected ?
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen(widget.story)))
                 :Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen())),
               child: Icon(Icons.edit),
               backgroundColor: Colors.grey[300],
@@ -63,9 +64,9 @@ class _CommentsScreenState extends State<CommentsScreen>{
   });}
   
 
-  Widget _buildTitle(Story story){
-    String text = story.comments.length == 0 ? 'אין עדיין תגובות על ' : '${story.comments.length} '; 
-      text = text+ 'תגובות על "${story.title}" של ${story.author.name}';
+  Widget _buildTitle(){
+    String text = widget.story.comments.length == 0 ? 'אין עדיין תגובות על ' : '${widget.story.comments.length} '; 
+      text = text+ 'תגובות על "${widget.story.title}" של ${widget.story.author.name}';
     return  Padding( padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Text(text,
         style: TextStyle(fontWeight: FontWeight.bold)

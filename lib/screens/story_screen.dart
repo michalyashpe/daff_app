@@ -34,14 +34,19 @@ class _StoryScreenState extends State<StoryScreen>{
   double socialBarHeight = 60.0;
   ScrollController _scrollController;
   PlayerWidget audioPlayer;
+  Story story;
 
 @override
   void initState() {
-    Provider.of<StoryProvider>(context, listen: false).initialize(widget.storyId);
+    initializeStory();
     _scrollController = ScrollController();
     _scrollController.addListener(() => toggleSocialBar());
 
     super.initState();
+  }
+
+  void initializeStory() async {
+    story = await Provider.of<StoryProvider>(context, listen: false).fetchStoryData(widget.storyId);
   }
 
   void toggleSocialBar() {
@@ -58,7 +63,7 @@ class _StoryScreenState extends State<StoryScreen>{
     return Consumer<StoryProvider>(
       builder: (BuildContext context,  StoryProvider model, Widget child) {
         return Scaffold(
-          bottomSheet: _buildBottomSheet(model.story, loading: model.isLoading),
+          bottomSheet: _buildBottomSheet(loading: model.isLoading),
           body:  CustomScrollView(
             controller: _scrollController,
           slivers: <Widget>[
@@ -73,7 +78,7 @@ class _StoryScreenState extends State<StoryScreen>{
                 onPressed:() => Navigator.pop(context, false),
               ),
               actions: <Widget>[
-                _storyOptionsMenu(model.story),
+                _storyOptionsMenu(),
               ],
             ),
             
@@ -82,9 +87,9 @@ class _StoryScreenState extends State<StoryScreen>{
                 SizedBox(height: 15.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildTitle(model.story, loading: model.isLoading)
+                  child: _buildTitle(loading: model.isLoading)
                 ),
-                !model.isLoading && model.story.isSytemUpdate ? 
+                !model.isLoading && story.isSytemUpdate ? 
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: padding),
                     child: Text('מערכת הדף', style: TextStyle(fontSize: 20.0, color: Colors.grey[700])) 
@@ -92,39 +97,39 @@ class _StoryScreenState extends State<StoryScreen>{
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildMiniProfileBox(model.story, loading: model.isLoading)
+                  child: _buildMiniProfileBox(loading: model.isLoading)
                 ),
                 SizedBox(height: 15.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildContent(model.story, loading: model.isLoading),
+                  child: _buildContent(loading: model.isLoading),
                 ),
                 SizedBox(height: 40.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
                   child: model.isLoading 
                     ? buildStoryTagsWidgetLoader()
-                    : buildStoryTagsWidget(model.story.tags, context,fontSize: 18.0),
+                    : buildStoryTagsWidget(story.tags, context,fontSize: 18.0),
                 ),
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildRatingBox(model.story, loading: model.isLoading),
+                  child: _buildRatingBox(loading: model.isLoading),
                 ),
                 // _buildMoreStories(context),
                 SizedBox(height: 10.0,),
                 buildDivider(5.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildProfileBox(model.story, loading: model.isLoading)
+                  child: _buildProfileBox(loading: model.isLoading)
                 ),
                 buildDivider(5.0),
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: _buildRecommendedStories( model.story, loading: model.isLoading)
+                  child: _buildRecommendedStories(loading: model.isLoading)
                 ),
-                !model.isLoading && model.story.hasAudio ?
+                !model.isLoading && story.hasAudio ?
                   SizedBox(height: 70.0) : SizedBox(),
                 SizedBox(height: socialBarHeight) ,
               ])
@@ -134,7 +139,7 @@ class _StoryScreenState extends State<StoryScreen>{
     );
   }
 
-  Widget _buildBottomSheet(Story story, {bool loading = false}){
+  Widget _buildBottomSheet({bool loading = false}){
     if (!loading) {
       if (story.hasAudio){
         audioPlayer = PlayerWidget(story: story);
@@ -151,11 +156,11 @@ class _StoryScreenState extends State<StoryScreen>{
           : 0.0,
         child: Column(children: <Widget>[
         story.hasAudio ? audioPlayer : SizedBox(),
-        _showBottomSocialBar ? _buildSocialBar(socialBarHeight, story) : SizedBox()
+        _showBottomSocialBar ? _buildSocialBar(socialBarHeight) : SizedBox()
         ],));
   }
 
-  Widget _buildSocialBar(double height, Story story){
+  Widget _buildSocialBar(double height){
     bool userConnected = Provider.of<StoryProvider>(context, listen: false).user.connected;
     return Container(
       height: height,
@@ -167,7 +172,7 @@ class _StoryScreenState extends State<StoryScreen>{
         children: <Widget>[
         IconButton(
           onPressed: () => userConnected ?  
-            Provider.of<StoryProvider>(context,listen:  false).cheer() 
+            Provider.of<StoryProvider>(context,listen:  false).cheer(story) 
             : Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen())),
           icon: buildCounterIcon(
             icon: Icon(Icons.favorite_border, size: 30.0, color: Colors.grey[600]), 
@@ -181,12 +186,12 @@ class _StoryScreenState extends State<StoryScreen>{
             !userConnected && story.comments.length == 0 ? 
               Navigator.push(context, MaterialPageRoute(builder: (context) => OfferConnectScreen()))
               : userConnected && story.comments.length == 0 ? 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen()))
-                : Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewCommentScreen(story)))
+                : Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsScreen(story)));
           },
         ),
         IconButton(
-          onPressed: () => share(story),
+          onPressed: () => share(),
           icon: Icon(Icons.share, size: 22.0, color: Colors.grey[600]),
         ),
       ],)
@@ -208,7 +213,7 @@ class _StoryScreenState extends State<StoryScreen>{
         ]);
     
   }
-  Widget _buildRecommendedStories(Story story, {bool loading = false}){
+  Widget _buildRecommendedStories({bool loading = false}){
     return loading ? buildShimmeringBox(height: 50.0)
     : Container( 
       child: Column(
@@ -232,7 +237,7 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
 
-  Widget _buildTitle(Story story, {bool loading = false}) {
+  Widget _buildTitle({bool loading = false}) {
     return loading ?
       buildShimmeringBox(height: 40.0, width: MediaQuery.of(context).size.width * 0.7) 
       : Wrap(
@@ -251,7 +256,7 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
  
-  Widget _buildMiniProfileBox(Story story, {bool loading = false}){
+  Widget _buildMiniProfileBox({bool loading = false}){
     return 
       loading ? 
         Row(children: <Widget>[
@@ -274,7 +279,7 @@ class _StoryScreenState extends State<StoryScreen>{
     ]));
 
   }
-  Widget _buildProfileBox(Story story, {bool loading = false}){
+  Widget _buildProfileBox({bool loading = false}){
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(story.author.name, story.author.id))),
       child: Container(
@@ -310,7 +315,7 @@ class _StoryScreenState extends State<StoryScreen>{
 
 
 
-  Widget _buildContent(Story story ,{bool loading = false}) {
+  Widget _buildContent({bool loading = false}) {
     if(!loading)
       story.contents = HtmlHelper.replaceHrWithImage(story.contents);
     return loading 
@@ -325,7 +330,7 @@ class _StoryScreenState extends State<StoryScreen>{
     : HtmlHelper.buildHtml(story, context);
   }
 
-  Widget _buildRatingBox(Story story, {bool loading = false}){
+  Widget _buildRatingBox({bool loading = false}){
     return loading ? buildShimmeringBox() 
     : Row(children: <Widget>[
         Expanded(child: Text(
@@ -335,7 +340,7 @@ class _StoryScreenState extends State<StoryScreen>{
     ],);
   }
 
-  void share(Story story){
+  void share(){
     final RenderBox box = context.findRenderObject();
       Share.share(story.shareText,
         subject: 'חשבתי שיעניין אותך לקרוא',
@@ -343,10 +348,10 @@ class _StoryScreenState extends State<StoryScreen>{
  }
 
 
- Widget _storyOptionsMenu(Story story) => PopupMenuButton<int>(
+ Widget _storyOptionsMenu() => PopupMenuButton<int>(
     onSelected: (result) {
-      if (result == 1) showAlertDialog(context, story);
-      if (result == 2) share(story);
+      if (result == 1) showAlertDialog(context);
+      if (result == 2) share();
     },
     itemBuilder: (context) => [
       PopupMenuItem(
@@ -365,7 +370,7 @@ class _StoryScreenState extends State<StoryScreen>{
   );
 
 
-showAlertDialog(BuildContext context, Story story) {
+showAlertDialog(BuildContext context) {
   AlertDialog resultDialog = AlertDialog(
     content: Text("הדיווח שלך התקבל במערכת, תודה."),
     actions: [
@@ -385,7 +390,7 @@ showAlertDialog(BuildContext context, Story story) {
   Widget continueButton = FlatButton(
     child: Text("דיווח"),
     onPressed:  () {
-      Provider.of<StoryProvider>(context, listen:  false).reportContent();
+      Provider.of<StoryProvider>(context, listen:  false).reportContent(story.id);
       Navigator.of(context).pop();
       showDialog(
         context: context,

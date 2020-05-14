@@ -9,36 +9,34 @@ import 'package:http/http.dart' as http;
 class StoryProvider extends ChangeNotifier{
   User user;
   StoryProvider(this.user);
-  Story story;
 
   bool isLoading = false;
 
-  void initialize(int id){
-    fetchStoryData(id);
+  // void initialize(int id){
+  //   fetchStoryData(id);
 
-  }
+  // }
 
-  void fetchStoryData(int id){
+  Future<Story> fetchStoryData(int id) async {
     print('fetching story data...');
     isLoading = true;
     // notifyListeners();
-    http.get(
+    http.Response response = await http.get(
       daffServerUrl + '/stories/$id.json',
       headers: <String, String>{
         'Content-type': 'application/json',
         'authorization': basicAuth,
       },
-    ).then((http.Response response){
-      Map<String, dynamic> storyData = json.decode(response.body);
-      story = parseStoryFromJson(storyData);
-      reportReading();
-      isLoading = false;
-      notifyListeners();
-
-    });
+    );
+    Map<String, dynamic> storyData = json.decode(response.body);
+    Story story = parseStoryFromJson(storyData);
+    reportReading(story.id);
+    isLoading = false;
+    notifyListeners();
+    return story;
   }
 
-  void reportContent(){
+  void reportContent(int storyId){
     http.post(
       daffServerUrl + '/offensive_content_reports.json',
       headers: <String, String>{
@@ -46,19 +44,19 @@ class StoryProvider extends ChangeNotifier{
       },
       body: {
         'mobile_randi': user.deviceId,
-        'offensive_content_report[story_id]' : story.id.toString(),
+        'offensive_content_report[story_id]' : storyId.toString(),
         // 'offensive_content_report[email]' : 'dor@dorkalev.com', //TODO: ask user for email
         // 'offensive_content_report[content]' : '',
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
-        print('reporting offensive content ${story.id} on ${user.deviceId}');
+        print('reporting offensive content ${storyId} on ${user.deviceId}');
         print(data);
       });
   }
 
-  void reportReading(){ 
+  void reportReading(int storyId){ 
     http.post(
-      daffServerUrl + '/stories/${story.id}/reading',
+      daffServerUrl + '/stories/$storyId/reading',
       headers: <String, String>{
         'authorization': basicAuth,
       },
@@ -67,13 +65,13 @@ class StoryProvider extends ChangeNotifier{
         'status': 'started', // TODO: report 'done' reading status & calculate reading time when done if it's more than story estimated reading time
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
-        print('reporting started reading for story ${story.id} on ${user.deviceId}');
+        print('reporting started reading for story $storyId on ${user.deviceId}');
         print(data);
     });
   }
 
 
-  void reportAudioListening(){
+  void reportAudioListening(Story story){
     http.post(
       daffServerUrl + '/story_audio_playing/${story.audioID}',
       headers: <String, String>{
@@ -88,38 +86,39 @@ class StoryProvider extends ChangeNotifier{
     });
   }
 
-  void cheer(){
+  void cheer(Story story){
     http.put(
       daffServerUrl + '/stories/${story.id}/cheer.json?user_email=${user.email}&user_token=${user.authenticationToken}',
       headers: <String, String>{
         'authorization': basicAuth,
       }).then((http.Response response) {
-        // Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = json.decode(response.body);
         print('cheering ${story.id} on ${user.deviceId}'); //TODO: handle exceptions
+        print(data);
         story.cheersCount ++;
         notifyListeners();
     });
   }
 
-  void addComment(String content){
+  void addComment(String content, int storyId){
     isLoading = true;
     notifyListeners();
-    print('$daffServerUrl/stories/${story.id}/comments.json?user_email=${user.email}&user_token=${user.authenticationToken}');
     if (content == null) return;
      http.post(
-      '$daffServerUrl/stories/${story.id}/comments.json?user_email=${user.email}&user_token=${user.authenticationToken}',
+      '$daffServerUrl/stories/$storyId/comments.json?user_email=${user.email}&user_token=${user.authenticationToken}',
       headers: <String, String>{
         'authorization': basicAuth,
       },
       body: {
-        'comment[story_id]': story.id.toString(),
+        'comment[story_id]': storyId.toString(),
         'comment[content]': content,
       }).then((http.Response response) {
-        print('adding a comment to ${story.id} on ${user.deviceId}: \"$content\"');
-        Map<String, dynamic> data = json.decode(response.body);
-        print(data);
-        if (data['success'] == true && data['errors'] == null) { //TODO: handle exceptions
-          fetchStoryData(story.id);
+        print('adding a comment to $storyId on ${user.deviceId}: \"$content\" -- statusCode: ${response.statusCode}');
+        if (response.statusCode == 200) {
+          Map<String, dynamic> data = json.decode(response.body);
+          if (data['success'] == true && data['errors'] == null) { //TODO: handle exceptions
+            fetchStoryData(storyId); 
+          }
         }
     });
   }

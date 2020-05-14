@@ -1,9 +1,11 @@
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NewCommentScreen extends StatefulWidget {
-  NewCommentScreen();
+  final Story story;
+  NewCommentScreen(this.story);
   _NewCommentScreenState createState() => _NewCommentScreenState();
 }
 
@@ -26,7 +28,7 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
           
           FlatButton(
             onPressed: () {
-              model.addComment(commentContent);
+              model.addComment(commentContent, widget.story.id);
               Navigator.of(context).pop();
             } ,
             child: Row(children: <Widget>[
@@ -59,7 +61,7 @@ class _NewCommentScreenState extends State<NewCommentScreen>{
                 },
                 style: TextStyle(fontSize: 20.0),
                 decoration: InputDecoration(
-                  hintText: 'תגובה חדשה על "${model.story.title}" של ${model.story.author.name}...',
+                  hintText: 'תגובה חדשה על "${widget.story.title}" של ${widget.story.author.name}...',
                   contentPadding: EdgeInsets.all(10.0)
                 ),
                 scrollPadding: EdgeInsets.all(20.0),

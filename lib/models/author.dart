@@ -64,13 +64,14 @@ Author parseAuthorFromJson(Map<String, dynamic> author){
   }
 
 
-List<Author> parseCheerersFromJson(List<dynamic> cheerersData){
-  List<Author> cheerersList = List<Author>();
+Map<Author, int> parseCheerersFromJson(List<dynamic> cheerersData){
+  Map<Author, int> cheerersList = Map<Author, int>();
   cheerersData.forEach((cheerer) {
-    cheerersList.add(Author(
+    Author author = Author(
       name: cheerer['safe_name'],
       id: cheerer['id']
-    ));
+    );
+    cheerersList[author] = cheerer['amount'];
   });
   return cheerersList;
 }

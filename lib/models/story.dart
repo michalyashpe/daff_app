@@ -3,6 +3,8 @@ import 'package:daff_app/models/author.dart';
 import 'package:daff_app/models/comment.dart';
 
 class Story {
+  int maxCheersByUser = 11;
+
   int id;
   String slug;
   String title;
@@ -20,7 +22,7 @@ class Story {
   bool editorPick = false;
   List<String> tags = List<String>();
   List<Story> moreStories = List<Story>();
-  List<Author> cheerers = List<Author>();
+  Map<Author, int> cheerers = Map<Author, int>();
   List<Story> recommended = List<Story>();
   String url;
   bool ltr;
@@ -80,18 +82,18 @@ class Story {
        '${date.day} ל${hebrewMonthNames[date.month-1]} ${date.year}';
   }
   
-  String get cheersSummary {
-    if (cheersCount == 0) return 'היה הראשון לפרגן';
-    String summary = '';
-    String names = '';
-    if (cheerers.length > 1 ) {
-      names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
-      summary = '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
-    } else 
-      summary = '$cheersCount פירגונים';
+  // String get cheersSummary {
+  //   if (cheersCount == 0) return 'היה הראשון לפרגן';
+  //   String summary = '';
+  //   String names = '';
+  //   if (cheerers.length > 1 ) {
+  //     names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
+  //     summary = '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
+  //   } else 
+  //     summary = '$cheersCount פירגונים';
     
-    return summary;
-  }
+  //   return summary;
+  // }
 
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';
@@ -99,6 +101,19 @@ class Story {
   String get ratingSummary {
     return 'הדף נקרא $readCount פעמים וקיבל $cheersCount פירגונים' ;
       // "$readCountString וקיבל $cheersSummary" : readCountString;
+  }
+
+  bool cheer(Author user){
+    if (cheerers.keys.contains(user)) {
+      if (cheerers[user] < maxCheersByUser) {
+        cheerers[user] ++;
+      } else return false;
+    } else {
+      cheerers[user] = 1;
+    }
+    // print('userId: ${user.id} cheerers IDs: ${cheerers.keys.map((a) => a.id)} cheers by user: ${cheerers[user]} ');
+    print('cheers by user: ${cheerers[user]}');
+    return true;
   }
 }
 

@@ -92,11 +92,11 @@ class _StoriesScreenState extends State<StoriesScreen> {
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
       if (!model.isLoading &&
           index == model.storiesPerPage * currentPage - 15) {
-        print("------------------");
-        print("current index: $index");
-        print('current page: ' + model.currentPage.toString());
-        print('stories left to scroll: ${model.storiesPerPage * currentPage - index}');
-        print('total stories fetched: ${stories.length}');
+        // print("------------------");
+        // print("current index: $index");
+        // print('current page: ' + model.currentPage.toString());
+        // print('stories left to scroll: ${model.storiesPerPage * currentPage - index}');
+        // print('total stories fetched: ${stories.length}');
         currentPage++;
         model
           ..fetchStoriesData(currentPage, widget.urlQuery).then(
@@ -126,12 +126,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
             (BuildContext context, int index) {
           if (!model.isLoading &&
               index == model.storiesPerPage * currentPage - 15) {
-            print("------------------");
-            print("current index: $index");
-            print('current page: ' + model.currentPage.toString());
-            print(
-                'stories left to scroll: ${model.storiesPerPage * currentPage - index}');
-            print('total stories fetched: ${stories.length}');
+            // print("------------------");
+            // print("current index: $index");
+            // print('current page: ' + model.currentPage.toString());
+            // print(
+            //     'stories left to scroll: ${model.storiesPerPage * currentPage - index}');
+            // print('total stories fetched: ${stories.length}');
             currentPage++;
             model
               ..fetchStoriesData(currentPage, widget.urlQuery).then(

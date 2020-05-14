@@ -86,15 +86,16 @@ class StoryProvider extends ChangeNotifier{
     });
   }
 
-  void cheer(Story story){
+  void cheer(Story story) {
+    bool cheered = story.cheer(user.author);
+    if (!cheered) return; 
     http.put(
       daffServerUrl + '/stories/${story.id}/cheer.json?user_email=${user.email}&user_token=${user.authenticationToken}',
       headers: <String, String>{
         'authorization': basicAuth,
       }).then((http.Response response) {
-        Map<String, dynamic> data = json.decode(response.body);
+        // Map<String, dynamic> data = json.decode(response.body);
         print('cheering ${story.id} on ${user.deviceId}'); //TODO: handle exceptions
-        print(data);
         story.cheersCount ++;
         notifyListeners();
     });

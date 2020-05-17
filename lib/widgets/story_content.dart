@@ -74,7 +74,7 @@ class _StoryContentState extends State<StoryContent> {
             onPressed:() => Navigator.pop(context, false),
           ),
           actions: <Widget>[
-            // _storyOptionsMenu(),
+            _storyOptionsMenu(),
           ],
         ),
         
@@ -358,6 +358,28 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+
+ Widget _storyOptionsMenu() => PopupMenuButton<int>(
+    onSelected: (result) {
+      if (result == 1) showAlertDialog(context);
+      if (result == 2) share();
+    },
+    itemBuilder: (context) => [
+      PopupMenuItem(
+        value: 2,
+        child: Row(children: <Widget>[
+          Text(' שיתוף',),
+          ],)
+      ),
+        PopupMenuItem(
+          value: 1,
+          child: Text('דיווח על תוכן לא הולם',),
+        ),
+      ],
+    icon: Icon(Icons.more_vert),
+    offset: Offset(0, 60),
+  );
+
 
 
 

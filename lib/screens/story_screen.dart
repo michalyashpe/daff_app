@@ -117,44 +117,4 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 }
 
-// Widget _buildBottomSheet({bool loading = false}){
-//   if (!loading) {
-//     if (story.hasAudio){
-//       audioPlayer = PlayerWidget(story: story);
-//       _showBottomSocialBar = false; //TODO: enable social bar on stories with audio
-//     }
-//     socialBarHeight =  _scrollController.position.pixels > 200.0 ? 60.0 : 0.0;
 
-//   }
-//   return loading ? Text('')
-//     : Container(
-//       height: _showBottomSocialBar && story.hasAudio ? (playerWidgetHeight + socialBarHeight)
-//         : story.hasAudio ? playerWidgetHeight
-//         : _showBottomSocialBar ? socialBarHeight
-//         : 0.0,
-//       child: Column(children: <Widget>[
-//       story.hasAudio ? audioPlayer : SizedBox(),
-//       _showBottomSocialBar ? _buildSocialBar(socialBarHeight) : SizedBox()
-//       ],));
-// }
-
-//  Widget _storyOptionsMenu() => PopupMenuButton<int>(
-//     onSelected: (result) {
-//       if (result == 1) showAlertDialog(context);
-//       if (result == 2) share();
-//     },
-//     itemBuilder: (context) => [
-//       PopupMenuItem(
-//         value: 2,
-//         child: Row(children: <Widget>[
-//           Text(' שיתוף',),
-//           ],)
-//       ),
-//         PopupMenuItem(
-//           value: 1,
-//           child: Text('דיווח על תוכן לא הולם',),
-//         ),
-//       ],
-//     icon: Icon(Icons.more_vert),
-//     offset: Offset(0, 60),
-//   );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/widgets/loader.dart';
@@ -11,9 +12,7 @@ import 'package:provider/provider.dart';
 enum PlayerState { stopped, playing, paused, buffering }
 enum PlayingRouteState { speakers, earpiece }
 
-double playerWidgetHeight = playerHeight + sliderHeight;
-double playerHeight = 60.0;
-double sliderHeight = 4.0;
+
 
 class PlayerWidget extends StatefulWidget {
   final PlayerMode mode;

@@ -49,7 +49,7 @@ class StoryProvider extends ChangeNotifier{
         // 'offensive_content_report[content]' : '',
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
-        print('reporting offensive content ${storyId} on ${user.deviceId}');
+        print('reporting offensive content $storyId on ${user.deviceId}');
         print(data);
       });
   }

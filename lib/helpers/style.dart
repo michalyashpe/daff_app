@@ -14,3 +14,11 @@ double storyPreviewLineHeight = 5.0;
 String appSlogen = 'במה ליצירה עצמאית';
 String appName = 'הַדַּף';
 String fullAppSlogen = '$appName - $appSlogen';
+
+
+
+double socialBarHeight = 60.0;
+
+double playerHeight = 60.0;
+double sliderHeight = 4.0;
+double playerWidgetHeight = playerHeight + sliderHeight;

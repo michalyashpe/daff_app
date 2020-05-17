@@ -78,7 +78,13 @@ class _ConnectScreenState extends State<ConnectScreen>{
               onPressed: () async {
                 bool loggedIn = await model.facebookLogin();
                 if (!model.isLoading && loggedIn) {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  if (model.fromOfferScreen) { 
+                    for (var i = 0; i < 2; i++) { 
+                      if (Navigator.of(context).canPop() ) Navigator.of(context).pop();
+                    }
+                    model.fromOfferScreen = false;
+                  } else 
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                 }
               }
               ),

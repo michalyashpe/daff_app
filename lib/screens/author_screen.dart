@@ -2,6 +2,7 @@ import 'package:daff_app/models/author.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/author_provider.dart';
 import 'package:daff_app/providers/user_provider.dart';
+import 'package:daff_app/screens/redirecting_screen.dart';
 import 'package:daff_app/widgets/avatar_widget.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
@@ -44,7 +45,7 @@ class _AuthorScreenState extends State<AuthorScreen>{
               ),
               actions: <Widget>[
                 _authorIsUser ? IconButton(
-                  onPressed: () => print('coming soon'),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RedirectingScreen('http://www.daff.co.il/authors/${model.author.id}'))),
                   icon: Icon(Icons.edit)) : Text('')
               ],
             ),

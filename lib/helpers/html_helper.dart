@@ -65,7 +65,7 @@ class HtmlHelper {
 
   static void linkTapHandler(String url, BuildContext context){
     if(!url.contains('daff.co.il')){
-       _launchURL(url);
+       launchURL(url);
     } else {
       String cleanUrl= url.replaceAll('https://', '').replaceAll('daff.co.il', '');
       if (cleanUrl =='')  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));
@@ -90,14 +90,14 @@ class HtmlHelper {
           Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(storyId)));
         } else {
           print("$url is not supported in app, redirecting to homepage");
-          _launchURL(url);
+          launchURL(url);
           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => StoriesScreen('בית', 'hits=true')));
         }
       }
     }  
   }
 
-  static Future<void> _launchURL(String url) async {
+  static Future<void> launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {

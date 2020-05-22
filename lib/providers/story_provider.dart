@@ -44,6 +44,8 @@ class StoryProvider extends ChangeNotifier{
       },
       body: {
         'mobile_randi': user.deviceId,
+        'params[user_email]': user.connected ? user.email : '',
+        'params[user_token]': user.connected ? user.authenticationToken: '',
         'offensive_content_report[story_id]' : storyId.toString(),
         // 'offensive_content_report[email]' : 'dor@dorkalev.com', //TODO: ask user for email
         // 'offensive_content_report[content]' : '',
@@ -62,6 +64,8 @@ class StoryProvider extends ChangeNotifier{
       },
       body: {
         'mobile_randi': user.deviceId,
+        'params[user_email]': user.connected ? user.email : '',
+        'params[user_token]': user.connected ? user.authenticationToken: '',
         'status': 'started', // TODO: report 'done' reading status & calculate reading time when done if it's more than story estimated reading time
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
@@ -79,6 +83,8 @@ class StoryProvider extends ChangeNotifier{
       },
       body: {
         'mobile_randi': user.deviceId,
+        'params[user_email]': user.connected ? user.email : '',
+        'params[user_token]': user.connected ? user.authenticationToken: '',
       }).then((http.Response response) {
         Map<String, dynamic> data = json.decode(response.body);
         print('reporting started listening to audio for story ${story.id} on ${user.deviceId}');

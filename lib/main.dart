@@ -6,6 +6,7 @@ import 'package:daff_app/helpers/dsn.dart';
 import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
+import 'package:daff_app/screens/stories_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -129,14 +130,14 @@ class _MyAppState extends State<MyApp> {
               ),
           ),
           home: Directionality( 
-            textDirection: TextDirection.rtl, 
+            textDirection: TextDirection.rtl,
             child: Consumer<AuthModel>( builder: (BuildContext context, AuthModel authModel, Widget child) {
-              return authModel.user.connected ? SplashScreen()
+              return authModel.user.connected ?  StoriesScreen('בית', 'hits=true')
               : FutureBuilder(
                 future: authModel.tryAutoLogin(),
                 builder: (ctx, authResultSnapshot) =>
                   authResultSnapshot.connectionState == ConnectionState.waiting
-                    ? buildLoadingScreen()
+                    ? SplashScreen()
                     : SplashScreen(),
                 );
             })
@@ -146,10 +147,3 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-Widget buildLoadingScreen(){
-  return  Scaffold(
-      body: Center(
-        child: CircularProgressIndicator()
-      ),
-    );
-}

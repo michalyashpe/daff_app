@@ -27,6 +27,23 @@ Widget buildAppLogo() {
   );
 }
 
+Widget buildLineLogo(){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+      SvgPicture.asset('assets/logo.svg',
+          width: 40.0, semanticsLabel: 'Acme Logo'),
+      SizedBox(
+        width: 10.0,
+      ),
+      Text(fullAppSlogen,
+          style: TextStyle(
+              fontSize: 17.0,
+              // letterSpacing: -0.5,
+              fontWeight: FontWeight.normal)),
+    ]);
+}
 Widget buildAppLogoLarge() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

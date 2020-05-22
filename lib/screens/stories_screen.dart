@@ -62,12 +62,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     )
                   : null,
               actions: <Widget>[
-                !Provider.of<AuthModel>(context).user.connected 
-                ? IconButton(
-                  onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
-                  icon: FaIcon(FontAwesomeIcons.user
-                ,)) 
-                : _buildUserProfileButton(model.user),
+                // !Provider.of<AuthModel>(context).user.connected 
+                // ? IconButton(
+                //   onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
+                //   icon: FaIcon(FontAwesomeIcons.user
+                // ,)) 
+                // : _buildUserProfileButton(model.user),
               ],
               backgroundColor: Theme.of(context).backgroundColor,
             ),
@@ -77,15 +77,15 @@ class _StoriesScreenState extends State<StoriesScreen> {
           ]);
         }));
   }
-  Widget _buildUserProfileButton(User user){
-    return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(user.author.name, user.id))),
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child:  buildAvatarImage(user.author.imageUrl)
-      )
-    );
-  }
+  // Widget _buildUserProfileButton(User user){
+  //   return GestureDetector(
+  //     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(user.author.name, user.id))),
+  //     child: Padding(
+  //       padding: EdgeInsets.all(10.0),
+  //       child:  buildAvatarImage(user.author.imageUrl)
+  //     )
+  //   );
+  // }
 
   Widget buildMobileStoriesView(StoriesModel model) {
     return SliverList(

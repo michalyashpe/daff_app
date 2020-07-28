@@ -7,13 +7,14 @@ import 'package:daff_app/providers/user_provider.dart';
 import 'package:daff_app/providers/story_provider.dart';
 import 'package:daff_app/screens/splash_screen.dart';
 import 'package:daff_app/screens/stories_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry/sentry.dart';
 import 'package:daff_app/providers/auth_provider.dart';
-import 'package:daff_app/helpers/firebase_api.dart';
 import 'package:daff_app/providers/author_provider.dart';
 import 'package:daff_app/providers/stories_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -71,8 +72,6 @@ Future<Null> main() async {
   });
 }
 
-
-
 class MyApp extends StatefulWidget {
   MyApp();
   @override
@@ -80,9 +79,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseAPI firebaseAPI;
-  StoriesModel storiesModel ;
+  // FirebaseAPI firebaseAPI;
+  StoriesModel storiesModel;
   UserProvider userProvider;
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -90,26 +92,27 @@ class _MyAppState extends State<MyApp> {
     ));
 
     super.initState();
-    firebaseAPI = FirebaseAPI();
-    firebaseAPI.initialize();
+    // firebaseAPI = FirebaseAPI();
+    // firebaseAPI.initialize();
     userProvider = UserProvider();
     userProvider.initialize();
   }
-
 
   _MyAppState();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthModel(userProvider.user)),
-        ChangeNotifierProvider(create: (_) => firebaseAPI),
-        ChangeNotifierProvider(create: (_) => StoryProvider(userProvider.user)),
-        ChangeNotifierProvider(create: (_) => StoriesModel(userProvider.user)),
-        ChangeNotifierProvider(create: (_) => userProvider),
-        ChangeNotifierProvider(create: (_) => AuthorProvider()),
-      ],
-      child: MaterialApp(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthModel(userProvider.user)),
+          ChangeNotifierProvider(
+              create: (_) => StoryProvider(userProvider.user)),
+          ChangeNotifierProvider(
+              create: (_) => StoriesModel(userProvider.user)),
+          ChangeNotifierProvider(create: (_) => userProvider),
+          ChangeNotifierProvider(create: (_) => AuthorProvider()),
+        ],
+        child: MaterialApp(
+          navigatorObservers: <NavigatorObserver>[observer],
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -120,30 +123,30 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: [
             const Locale('he'), // Hebrew
           ],
-          locale: Locale("he", "HE") ,
+          locale: Locale("he", "HE"),
           title: 'Daff Rocking App',
           theme: ThemeData(
             primarySwatch: Colors.grey,
             fontFamily: GoogleFonts.alef().fontFamily,
-            textTheme:  TextTheme(
-                body1: TextStyle(fontSize: 16.0),
-              ),
+            textTheme: TextTheme(
+              bodyText1: TextStyle(fontSize: 16.0),
+            ),
           ),
-          home: Directionality( 
-            textDirection: TextDirection.rtl,
-            child: Consumer<AuthModel>( builder: (BuildContext context, AuthModel authModel, Widget child) {
-              return authModel.user.connected ?  StoriesScreen('בית', 'hits=true')
-              : FutureBuilder(
-                future: authModel.tryAutoLogin(),
-                builder: (ctx, authResultSnapshot) =>
-                  authResultSnapshot.connectionState == ConnectionState.waiting
-                    ? SplashScreen()
-                    : SplashScreen(),
-                );
-            })
-          ),
-        )
-    );
+          home: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Consumer<AuthModel>(builder:
+                  (BuildContext context, AuthModel authModel, Widget child) {
+                return authModel.user.connected
+                    ? StoriesScreen('בית', 'hits=true')
+                    : FutureBuilder(
+                        future: authModel.tryAutoLogin(),
+                        builder: (ctx, authResultSnapshot) =>
+                            authResultSnapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? SplashScreen()
+                                : SplashScreen(),
+                      );
+              })),
+        ));
   }
 }
-

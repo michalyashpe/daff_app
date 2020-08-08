@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:daff_app/helpers/style.dart';
 import 'package:daff_app/models/story.dart';
 import 'package:daff_app/screens/story_screen.dart';
@@ -19,18 +18,19 @@ Widget buildStoryPreviewWidget(Story story, BuildContext context, {bool tagView 
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(story.id)));
       },
-      child: IntrinsicHeight(child: Row(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: _buildStoryImage(story, context)
-        ),
-        SizedBox(width: 10.0,),
-        Expanded(
-          flex: 3,
-          child: _buildStoryInfo(story, context, tagView: tagView, authorName: authorName)
-        )
-        
+      child: IntrinsicHeight(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: _buildStoryImage(story, context)
+            ),
+            SizedBox(width: 10.0,),
+            Expanded(
+              flex: 3,
+              child: _buildStoryInfo(story, context, tagView: tagView, authorName: authorName)
+            )
+            
   ],))));
 }
 
@@ -54,7 +54,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
     left: 5.0,
     child: story.hasAudio ? 
       Icon(Icons.volume_up, color: Colors.white, size: 20.0,) 
-      : Text(''),
+      : SizedBox(),
   ),
   Positioned(
     top: 5.0,
@@ -63,7 +63,7 @@ Widget _buildStoryImage(Story story, BuildContext context){
       Container(
         height: 20.0, width: 50.0, color: Colors.green[800], 
         child: Text('חדש', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold ,color: Colors.white), textAlign: TextAlign.center,) 
-      ) : Text(''),
+      ) : SizedBox(),
   )
   ],);
 }
@@ -93,8 +93,9 @@ Widget _buildStoryInfo(Story story, BuildContext context, {bool tagView = false,
       
         story.tags.length > 0 ? Column(children: <Widget>[
           SizedBox(height: storyPreviewLineHeight),
-          buildStoryTagsWidget(story.tags.sublist(0,min(5,story.tags.length)).toList(), context, tagView: tagView),
-        ],): Text(''),
+          // buildStoryTagsWidget(story.tags.sublist(0,min(5,story.tags.length)).toList(), context, tagView: tagView),
+          buildStoryTagsWidget(story.tags, context, tagView: tagView),
+        ],): SizedBox(),
         
         SizedBox(height: storyPreviewLineHeight),
         Text(story.dateFormatted),

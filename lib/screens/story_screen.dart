@@ -34,7 +34,9 @@ class _StoryScreenState extends State<StoryScreen> {
     return Consumer<StoryProvider>(
         builder: (BuildContext context, StoryProvider model, Widget child) {
       return Scaffold(
-        body: !model.isLoading && story != null ? StoryContent(story) : buildStoryContentShimmeringBoxes(),
+        body: !model.isLoading && story != null
+            ? StoryContent(story)
+            : buildStoryContentShimmeringBoxes(),
         bottomSheet: !model.isLoading && story != null && story.hasAudio
             ? PlayerWidget(story: story)
             : SizedBox(),
@@ -116,5 +118,3 @@ class _StoryScreenState extends State<StoryScreen> {
     ]);
   }
 }
-
-

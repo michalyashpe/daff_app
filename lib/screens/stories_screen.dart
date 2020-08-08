@@ -1,14 +1,18 @@
-import 'package:daff_app/providers/auth_provider.dart';
+// import 'package:daff_app/providers/auth_provider.dart';
+// import 'package:daff_app/models/user.dart';
+// import 'package:daff_app/screens/author_screen.dart';
+// import 'package:daff_app/screens/connect_screen.dart';
+// import 'package:daff_app/widgets/avatar_widget.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:daff_app/models/story.dart';
-import 'package:daff_app/models/user.dart';
 import 'package:daff_app/providers/stories_provider.dart';
-import 'package:daff_app/screens/author_screen.dart';
-import 'package:daff_app/screens/connect_screen.dart';
-import 'package:daff_app/widgets/avatar_widget.dart';
+import 'package:daff_app/widgets/app_logo.dart';
+
 import 'package:daff_app/widgets/drawer.dart';
 import 'package:daff_app/widgets/story_preview_widget.dart';
+import 'package:daff_app/widgets/user_avatar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -53,39 +57,22 @@ class _StoriesScreenState extends State<StoriesScreen> {
               floating: true,
               pinned: false,
               snap: true,
-              title: Text(widget.title,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              title: buildMiniLogo(),
               leading: !homepage
                   ? IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () => Navigator.pop(context, false),
                     )
                   : null,
-              actions: <Widget>[
-                // !Provider.of<AuthModel>(context).user.connected 
-                // ? IconButton(
-                //   onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectScreen())),
-                //   icon: FaIcon(FontAwesomeIcons.user
-                // ,)) 
-                // : _buildUserProfileButton(model.user),
-              ],
+              actions: <Widget>[buildUserAvatar(context)],
               backgroundColor: Theme.of(context).backgroundColor,
             ),
-            MediaQuery.of(context).size.width < 768.0 ?
-              buildMobileStoriesView(model)
-              : buildTabletStoriesView(model)
+            MediaQuery.of(context).size.width < 768.0
+                ? buildMobileStoriesView(model)
+                : buildTabletStoriesView(model)
           ]);
         }));
   }
-  // Widget _buildUserProfileButton(User user){
-  //   return GestureDetector(
-  //     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorScreen(user.author.name, user.id))),
-  //     child: Padding(
-  //       padding: EdgeInsets.all(10.0),
-  //       child:  buildAvatarImage(user.author.imageUrl)
-  //     )
-  //   );
-  // }
 
   Widget buildMobileStoriesView(StoriesModel model) {
     return SliverList(
@@ -143,6 +130,4 @@ class _StoriesScreenState extends State<StoriesScreen> {
               : buildStoryPreviewWidget(stories[index], context);
         }, childCount: model.isLoading ? 4 : stories.length));
   }
-
-  
 }

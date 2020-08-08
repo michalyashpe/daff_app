@@ -1,5 +1,6 @@
-
 import 'package:daff_app/models/author.dart';
+import 'package:daff_app/models/comment.dart';
+import 'package:daff_app/models/story.dart';
 import 'package:daff_app/providers/author_provider.dart';
 
 class User {
@@ -12,8 +13,7 @@ class User {
   String deviceId;
   String authenticationToken;
 
-
-  User ({
+  User({
     this.id,
     this.author,
     this.email,
@@ -28,13 +28,15 @@ class User {
     return authenticationToken != null;
   }
 
-  Future<void> connect({ String loginToken, int loginId, String loginEmail }) async {
+  Future<void> connect(
+      {String loginToken, int loginId, String loginEmail}) async {
     authenticationToken = loginToken;
     id = loginId;
     email = loginEmail;
     author = await AuthorProvider().fetchAuthorData(id);
   }
-  void disconnect(){
+
+  void disconnect() {
     //reset all but deviceId;
     authenticationToken = null;
     id = null;
@@ -43,10 +45,13 @@ class User {
     name = null;
     nameInEnglish = null;
     gender = null;
-    
   }
 
-  
+  bool cheeredStory(Story story) {
+    return story.cheerers.keys.where((Author a) => a.id == id).length > 0;
+  }
 
+  bool commentedStory(Story story) {
+    return story.comments.where((Comment c) => c.author.id == id).length > 0;
+  }
 }
-

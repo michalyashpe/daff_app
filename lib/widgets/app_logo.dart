@@ -27,36 +27,57 @@ Widget buildAppLogo() {
   );
 }
 
-Widget buildLineLogo(){
+Widget buildLineLogo() {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: <Widget>[
-      SvgPicture.asset('assets/logo.svg',
-          width: 40.0, semanticsLabel: 'Acme Logo'),
-      SizedBox(
-        width: 10.0,
-      ),
-      Text(fullAppSlogen,
-          style: TextStyle(
-              fontSize: 17.0,
-              // letterSpacing: -0.5,
-              fontWeight: FontWeight.normal)),
-    ]);
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        SvgPicture.asset('assets/logo.svg',
+            width: 40.0, semanticsLabel: 'Acme Logo'),
+        SizedBox(
+          width: 10.0,
+        ),
+        Text(fullAppSlogen,
+            style: TextStyle(
+                fontSize: 17.0,
+                // letterSpacing: -0.5,
+                fontWeight: FontWeight.normal)),
+      ]);
 }
+
+Widget buildMiniLogo() {
+  return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        SvgPicture.asset('assets/logo.svg',
+            width: 40.0, semanticsLabel: 'Acme Logo'),
+        SizedBox(
+          width: 5.0,
+        ),
+        Text(appName,
+            style: TextStyle(
+                fontSize: 30.0,
+                // letterSpacing: -0.5,
+                fontWeight: FontWeight.normal)),
+      ]);
+}
+
 Widget buildAppLogoLarge() {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.end, 
-        children: <Widget>[
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
           SvgPicture.asset('assets/logo.svg',
               width: 45.0, semanticsLabel: 'Acme Logo'),
-          SizedBox(width: 10.0,),
-          Text(appName, style: TextStyle(fontSize: 35.0,)),
-          
+          SizedBox(
+            width: 10.0,
+          ),
+          Text(appName,
+              style: TextStyle(
+                fontSize: 35.0,
+              )),
         ]),
         Text(appSlogen, style: TextStyle(fontSize: 20.0))
       ]);

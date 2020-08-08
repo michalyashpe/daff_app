@@ -3,36 +3,35 @@ import 'package:daff_app/screens/stories_screen.dart';
 import 'package:daff_app/widgets/shimmering_box.dart';
 import 'package:flutter/material.dart';
 
-Widget buildStoryTagsWidget(List<String> tags, BuildContext context, {bool tagView = false, double fontSize = 13.5}){
+Widget buildStoryTagsWidget(List<String> tags, BuildContext context,
+    {bool tagView = false, double fontSize = 13.5}) {
   List<Widget> tagsList = List<Widget>();
   tags.forEach((String tagName) {
     Widget tag = GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StoriesScreen(tagName, 'tag=$tagName')));
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          color: Colors.grey[300],
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Text(tagName, style: TextStyle(fontSize: fontSize)) 
-      )
-    )
-  ;
-  tagsList.add(tag);
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      StoriesScreen(tagName, 'tag=$tagName')));
+        },
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              color: Colors.grey[300],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 5.0),
+            child: Text(tagName, style: TextStyle(fontSize: fontSize))));
+    tagsList.add(tag);
   });
   return Wrap(
-    spacing: 5.0,
-    runSpacing: storyPreviewLineHeight,
-    children: tagsList
-  );
+      spacing: 5.0, runSpacing: storyPreviewLineHeight, children: tagsList);
 }
 
-Widget buildStoryTagsWidgetLoader(){
+Widget buildStoryTagsWidgetLoader() {
   double height = 15.0;
   double width = 50.0;
-    return Wrap(
+  return Wrap(
     spacing: 5.0,
     runSpacing: storyPreviewLineHeight,
     children: <Widget>[
@@ -40,7 +39,5 @@ Widget buildStoryTagsWidgetLoader(){
       buildShimmeringBox(width: width, height: height),
       buildShimmeringBox(width: width, height: height),
     ],
-    
   );
-  
 }

@@ -1,5 +1,8 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 Widget buildDivider(double height) {
-    return Container(color: Colors.grey[200], height: height,);
-  }
+  return Container(
+    color: Colors.grey[200],
+    height: height,
+  );
+}

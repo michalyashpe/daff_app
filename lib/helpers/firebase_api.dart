@@ -1,18 +1,17 @@
-
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-
 String notificationUrl = '';
+
 class FirebaseAPI extends ChangeNotifier {
   bool isLoading = false;
   String deviceToken = "";
   // FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   // String url;
 
-  void initialize(){
+  void initialize() {
     // initFirebase();
     // initDeviceToken();
   }
@@ -37,11 +36,11 @@ class FirebaseAPI extends ChangeNotifier {
   //   );
   // }
 
-  void showStory(Map<String, dynamic> message){
-        notificationUrl = message['data']['url'];
-        print(notificationUrl);
-        notifyListeners();
-        // _launchURL(url: message['data']['url']);
+  void showStory(Map<String, dynamic> message) {
+    notificationUrl = message['data']['url'];
+    print(notificationUrl);
+    notifyListeners();
+    // _launchURL(url: message['data']['url']);
   }
 
   // void initDeviceToken(){
@@ -60,12 +59,10 @@ class FirebaseAPI extends ChangeNotifier {
   //   }
   // }
 
-
   // Future<bool> getDeviceTokenFromSP() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   String deviceToken = prefs.getString('deviceToken') ?? 0;
   //   return (deviceToken != null);
   // }
-
 
 }

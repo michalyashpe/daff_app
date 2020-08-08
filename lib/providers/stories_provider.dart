@@ -5,22 +5,18 @@ import 'package:daff_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class StoriesModel extends ChangeNotifier{
+class StoriesModel extends ChangeNotifier {
   User user;
   StoriesModel(this.user);
 
   List<Story> stories;
-  int storiesCount ;
-  int pagesCount ;
+  int storiesCount;
+  int pagesCount;
   int storiesPerPage = 30;
   int currentPage;
   String urlQuery;
 
-
   bool isLoading = false;
-  
-
-
 
   Future<List<Story>> fetchStoriesData(int page, String query) async {
     // print(page);
@@ -50,8 +46,7 @@ class StoriesModel extends ChangeNotifier{
     // print('pagesCount $pagesCount');
     // print('storiesPerPage $storiesPerPage');
     // print('currentPage storiesCount ${stories.length}');
-    
-    return stories;
 
+    return stories;
   }
 }

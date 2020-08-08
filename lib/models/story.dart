@@ -28,60 +28,72 @@ class Story {
   bool ltr;
   List<Comment> comments;
 
-  Story({
-    this.id,
-    this.slug,
-    this.title,
-    this.author,
-    this.date,
-    this.formattedDate,
-    this.readingDuration,
-    this.contents,
-    this.readCount,
-    this.cheersCount,
-    this.editorPick,
-    this.imageUrl,
-    this.audioUrl,
-    this.hasAudio,
-    this.tags,
-    this.moreStories,
-    this.cheerers,
-    this.recommended,
-    this.url,
-    this.ltr,
-    this.audioID,
-    this.comments
-  });
+  Story(
+      {this.id,
+      this.slug,
+      this.title,
+      this.author,
+      this.date,
+      this.formattedDate,
+      this.readingDuration,
+      this.contents,
+      this.readCount,
+      this.cheersCount,
+      this.editorPick,
+      this.imageUrl,
+      this.audioUrl,
+      this.hasAudio,
+      this.tags,
+      this.moreStories,
+      this.cheerers,
+      this.recommended,
+      this.url,
+      this.ltr,
+      this.audioID,
+      this.comments});
   bool get isSytemUpdate {
-    return tags.contains('עדכון');// && tags.contains('מערכת');
+    return tags.contains('עדכון'); // && tags.contains('מערכת');
   }
 
   bool get isNew {
     Duration difference = DateTime.now().difference(date);
     return difference.inHours <= 24;
   }
+
   String get readingDurationString {
-     return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
+    return (readingDuration == 1) ? 'דקת קריאה' : '$readingDuration דקות קריאה';
   }
+
   String get shareText {
     return 'כדאי לך לקרוא 👀 $productionUrl @ $fullAppSlogen';
   }
 
   String get productionUrl {
-    String newURL = url.replaceAll('.json', '').replaceAll('//daff.dev', '//daff.co.il');
+    String newURL =
+        url.replaceAll('.json', '').replaceAll('//daff.dev', '//daff.co.il');
     return Uri.decodeFull("https:$newURL");
-
   }
-
 
   String get dateFormatted {
-    List<String> hebrewMonthNames = ['ינואר', 'פברואר', 'מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-    return date.year == DateTime.now().year ? 
-       '${date.day} ל${hebrewMonthNames[date.month-1]}'
-       :
-       '${date.day} ל${hebrewMonthNames[date.month-1]} ${date.year}';
+    List<String> hebrewMonthNames = [
+      'ינואר',
+      'פברואר',
+      'מרץ',
+      'אפריל',
+      'מאי',
+      'יוני',
+      'יולי',
+      'אוגוסט',
+      'ספטמבר',
+      'אוקטובר',
+      'נובמבר',
+      'דצמבר'
+    ];
+    return date.year == DateTime.now().year
+        ? '${date.day} ל${hebrewMonthNames[date.month - 1]}'
+        : '${date.day} ל${hebrewMonthNames[date.month - 1]} ${date.year}';
   }
-  
+
   // String get cheersSummary {
   //   if (cheersCount == 0) return 'היה הראשון לפרגן';
   //   String summary = '';
@@ -89,25 +101,27 @@ class Story {
   //   if (cheerers.length > 1 ) {
   //     names = cheerers.sublist(0,cheerers.length-1).map((author) => author.name).join(', ');
   //     summary = '$cheersCount פירגונים מ$names ו${cheerers.last.name}';
-  //   } else 
+  //   } else
   //     summary = '$cheersCount פירגונים';
-    
+
   //   return summary;
   // }
 
   String get readCountString {
     return 'הדף נקרא $readCount פעמים';
   }
+
   String get ratingSummary {
-    return 'הדף נקרא $readCount פעמים וקיבל $cheersCount פירגונים' ;
-      // "$readCountString וקיבל $cheersSummary" : readCountString;
+    return 'הדף נקרא $readCount פעמים וקיבל $cheersCount פירגונים';
+    // "$readCountString וקיבל $cheersSummary" : readCountString;
   }
 
-  bool cheer(Author user){
+  bool cheer(Author user) {
     if (cheerers.keys.contains(user)) {
       if (cheerers[user] < maxCheersByUser) {
-        cheerers[user] ++;
-      } else return false;
+        cheerers[user]++;
+      } else
+        return false;
     } else {
       cheerers[user] = 1;
     }
@@ -117,20 +131,14 @@ class Story {
   }
 }
 
-
-
-
-
-
-Story parseStoryFromJson(Map<String, dynamic> story){
+Story parseStoryFromJson(Map<String, dynamic> story) {
   List<String> sTags = List<String>();
   story['tags'].forEach((tag) => sTags.add(tag.toString()));
 
-
   List<Comment> comments = List<Comment>();
   if (story['comments'] != null)
-    story['comments'].forEach((comment) => comments.add(parseCommentFromJson(comment)));
-
+    story['comments']
+        .forEach((comment) => comments.add(parseCommentFromJson(comment)));
 
   List<Story> recommendedList = List<Story>();
   if (story['recommended'] != null) {
@@ -153,9 +161,13 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     author: parseAuthorFromJson(story['user']),
     contents: story['content_without_header'].toString(),
     cheersCount: story['cheers_count'],
-    cheerers: story['cheerers'] != null ? parseCheerersFromJson(story['cheerers']) : null,
+    cheerers: story['cheerers'] != null
+        ? parseCheerersFromJson(story['cheerers'])
+        : null,
     audioUrl: story['published_audio'],
-    hasAudio: story['has_published_audio'] != null ? story['has_published_audio'] : false,
+    hasAudio: story['has_published_audio'] != null
+        ? story['has_published_audio']
+        : false,
     recommended: recommendedList,
     url: story['url'],
     ltr: story['ltr'],
@@ -163,5 +175,3 @@ Story parseStoryFromJson(Map<String, dynamic> story){
     comments: comments,
   );
 }
-
-

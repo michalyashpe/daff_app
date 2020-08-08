@@ -6,7 +6,7 @@ import 'package:daff_app/helpers/.daff_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class AuthorProvider extends ChangeNotifier{
+class AuthorProvider extends ChangeNotifier {
   Author author;
 
   bool isLoading = false;
@@ -35,6 +35,4 @@ class AuthorProvider extends ChangeNotifier{
     notifyListeners();
     return author;
   }
-
-
 }

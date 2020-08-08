@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 
-class UserProvider extends ChangeNotifier{
+class UserProvider extends ChangeNotifier {
   User user;
 
-  void initialize(){
+  void initialize() {
     user = User();
     initPlatformState();
   }
 
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-Future<void> initPlatformState() async {
-
-  Map<String, dynamic> deviceData;
+  Future<void> initPlatformState() async {
+    Map<String, dynamic> deviceData;
 
     try {
       if (Platform.isAndroid) {
@@ -31,10 +30,7 @@ Future<void> initPlatformState() async {
       };
     }
     print('using device: ${user.deviceId}');
-   
   }
-
-
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     return <String, dynamic>{

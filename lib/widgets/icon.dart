@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-Widget buildIcon(String iconUrl, {double height = 30.0}){
+Widget buildIcon(String iconUrl, {double height = 30.0}) {
   return Container(
     height: height,
     width: height,
@@ -11,6 +11,9 @@ Widget buildIcon(String iconUrl, {double height = 30.0}){
       border: Border.all(width: 2.0),
       shape: BoxShape.circle,
     ),
-    child: SvgPicture.asset(iconUrl, width: height / 2,),
+    child: SvgPicture.asset(
+      iconUrl,
+      width: height / 2,
+    ),
   );
 }

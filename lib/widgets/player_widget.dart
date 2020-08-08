@@ -12,8 +12,6 @@ import 'package:provider/provider.dart';
 enum PlayerState { stopped, playing, paused, buffering }
 enum PlayingRouteState { speakers, earpiece }
 
-
-
 class PlayerWidget extends StatefulWidget {
   final PlayerMode mode;
   final Story story;
@@ -75,97 +73,98 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    return     MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child:
-    
-    Container(
-    color: Colors.black,
-    height: playerHeight + sliderHeight,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      
-      children: <Widget>[
-        buildSlider(sliderHeight),
-      Container( 
-        height: playerHeight,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-          widget.story.imageUrl != null && widget.story.imageUrl != '' ? 
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(7.0),
-              child: Image.network(widget.story.imageUrl) //buildAvatarImage(story)
-            ): null,
-            Expanded( child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: Container(
+            color: Colors.black,
+            height: playerHeight + sliderHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-              Text(widget.story.title, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold)),
-              Text(widget.story.author.name , style: TextStyle(color: Colors.white)),  
-            ],)),
-            
-            !_isPlaying ?
-              IconButton(
-                key: Key('play_button'),
-                onPressed: _isPlaying ? null : () => _play(),
-                icon: Icon(Icons.play_circle_outline),
-                color: Colors.white,
-              )
-              : _isPlaying && _duration == null ? 
-                buildLoader(margin: EdgeInsets.only(left: 16.0))
-                : IconButton(
-                  key: Key('pause_button'),
-                  onPressed: _isPlaying ? () => _pause() : null,
-                  icon: Icon(Icons.pause_circle_outline),
-                  color: Colors.white,
-                ),
-          ],)
-        ),
-        
-    ],)
-  ));
-
+                buildSlider(sliderHeight),
+                Container(
+                    height: playerHeight,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        widget.story.imageUrl != null &&
+                                widget.story.imageUrl != ''
+                            ? Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.all(7.0),
+                                child: Image.network(widget
+                                    .story.imageUrl) //buildAvatarImage(story)
+                                )
+                            : null,
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(widget.story.title,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold)),
+                            Text(widget.story.author.name,
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        )),
+                        !_isPlaying
+                            ? IconButton(
+                                key: Key('play_button'),
+                                onPressed: _isPlaying ? null : () => _play(),
+                                icon: Icon(Icons.play_circle_outline),
+                                color: Colors.white,
+                              )
+                            : _isPlaying && _duration == null
+                                ? buildLoader(
+                                    margin: EdgeInsets.only(left: 16.0))
+                                : IconButton(
+                                    key: Key('pause_button'),
+                                    onPressed:
+                                        _isPlaying ? () => _pause() : null,
+                                    icon: Icon(Icons.pause_circle_outline),
+                                    color: Colors.white,
+                                  ),
+                      ],
+                    )),
+              ],
+            )));
   }
 
-  Widget buildSlider(double height){
+  Widget buildSlider(double height) {
     Color activeTrackColor = Colors.grey[700];
     return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Container( 
-        color: activeTrackColor,
-        child: SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            activeTrackColor: activeTrackColor,
-            inactiveTrackColor: Colors.grey[300],
-            trackShape: RectangularSliderTrackShape(),
-            trackHeight: height,
-            thumbColor: Colors.grey,
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
-            overlayColor: Colors.grey,
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
-          ),
-          child: Slider(
-            onChanged: (v) {
-              final Position = v * _duration.inMilliseconds;
-              _audioPlayer
-                  .seek(Duration(milliseconds: Position.round()));
-            },
-            value: (_position != null &&
-                    _duration != null &&
-                    _position.inMilliseconds > 0 &&
-                    _position.inMilliseconds < _duration.inMilliseconds)
-                ? _position.inMilliseconds / _duration.inMilliseconds
-                : 0.0,
-          ),
-        )
-    ));
-
+        textDirection: TextDirection.ltr,
+        child: Container(
+            color: activeTrackColor,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: activeTrackColor,
+                inactiveTrackColor: Colors.grey[300],
+                trackShape: RectangularSliderTrackShape(),
+                trackHeight: height,
+                thumbColor: Colors.grey,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
+                overlayColor: Colors.grey,
+                overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+              ),
+              child: Slider(
+                onChanged: (v) {
+                  final Position = v * _duration.inMilliseconds;
+                  _audioPlayer.seek(Duration(milliseconds: Position.round()));
+                },
+                value: (_position != null &&
+                        _duration != null &&
+                        _position.inMilliseconds > 0 &&
+                        _position.inMilliseconds < _duration.inMilliseconds)
+                    ? _position.inMilliseconds / _duration.inMilliseconds
+                    : 0.0,
+              ),
+            )));
   }
+
   void _initAudioPlayer() {
     _audioPlayer = AudioPlayer(mode: mode);
 
@@ -229,7 +228,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   Future<int> _play() async {
-    Provider.of<StoryProvider>(context, listen: false).reportAudioListening(widget.story);
+    Provider.of<StoryProvider>(context, listen: false)
+        .reportAudioListening(widget.story);
     setState(() => _playerState = PlayerState.buffering);
     print(_playerState);
 
@@ -281,6 +281,3 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     setState(() => _playerState = PlayerState.stopped);
   }
 }
-
-
-
